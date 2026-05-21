@@ -1,0 +1,65 @@
+[
+  {
+    "module_key": "product-selection",
+    "module_name": "选款中心",
+    "file": "modules/product-selection.md",
+    "page_count": 9,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "design-task",
+    "module_name": "开款任务管理",
+    "file": "modules/design-task.md",
+    "page_count": 7,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "style-management",
+    "module_name": "款式管理",
+    "file": "modules/style-management.md",
+    "page_count": 10,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "image-update",
+    "module_name": "图片更新任务",
+    "file": "modules/image-update.md",
+    "page_count": 9,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "spot-goods",
+    "module_name": "现货管理",
+    "file": "modules/spot-goods.md",
+    "page_count": 11,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "temu-product",
+    "module_name": "Temu商品管理",
+    "file": "modules/temu-product.md",
+    "page_count": 13,
+    "version": "2.4.1"
+  },
+  {
+    "module_key": "size-chart",
+    "module_name": "尺码表管理",
+    "file": "modules/size-chart.md",
+    "page_count": 6,
+    "version": "1.0.0"
+  },
+  {
+    "module_key": "notification-center",
+    "module_name": "通知中心",
+    "file": "modules/notification-center.md",
+    "page_count": 0,
+    "version": "2.6.0"
+  },
+  {
+    "module_key": "shop-management",
+    "module_name": "店铺管理",
+    "file": "modules/shop-management.md",
+    "page_count": 5,
+    "version": "2.6.0"
+  }
+]

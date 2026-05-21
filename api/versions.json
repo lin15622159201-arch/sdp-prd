@@ -1,0 +1,10 @@
+[
+  {
+    "version": "v2.4.1",
+    "modules": ["product-selection", "design-task", "style-management", "image-update", "spot-goods", "temu-product"]
+  },
+  {
+    "version": "v2.6.0",
+    "modules": ["design-task", "style-management", "image-update", "spot-goods", "temu-product", "shop-management", "notification-center"]
+  }
+]

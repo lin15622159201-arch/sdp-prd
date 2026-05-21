@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDP 规划文档</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --nav-width: 200px;
+  --toc-width: 250px;
+  --primary: #1a73e8;
+  --primary-light: #e8f0fe;
+  --border: #e0e0e0;
+  --bg: #fafafa;
+  --text: #333;
+  --text-secondary: #666;
+  --radius: 6px;
+  --break-lg: 1280px;
+  --break-md: 1050px;
+  --break-sm: 780px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text);
+  display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+}
+
+/* ═══ Top bar ═══ */
+.topbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 20px; background: #fff;
+  border-bottom: 1px solid var(--border);
+  min-height: 48px; flex-shrink: 0;
+}
+.topbar-brand { font-size: 15px; font-weight: 700; white-space: nowrap; margin-right: 12px; }
+.topbar-tabs { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
+.topbar-tab {
+  padding: 5px 14px; border-radius: 16px; font-size: 12px; cursor: pointer;
+  background: #f5f5f5; color: var(--text-secondary); border: none;
+  white-space: nowrap; transition: all 0.15s; font-family: inherit;
+}
+.topbar-tab:hover { background: #e8e8e8; }
+.topbar-tab.active { background: var(--primary); color: #fff; font-weight: 500; }
+.topbar-tab .tab-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px;
+}
+.topbar-tab .tab-dot.developing { background: #ff9800; }
+.topbar-tab .tab-dot.launched { background: #4caf50; }
+.topbar-tab .tab-dot.planning { background: #9e9e9e; }
+.topbar-status-select {
+  font-size: 12px; padding: 5px 28px 5px 10px; border: 1px solid var(--border);
+  border-radius: 16px; background: #f5f5f5; color: var(--text);
+  cursor: pointer; font-family: inherit; outline: none; transition: all 0.15s;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+}
+.topbar-status-select:hover { border-color: var(--primary); background: #eee; }
+.topbar-status-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.15); }
+.topbar-info { margin-left: auto; font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+/* ═══ Body: 3 columns ═══ */
+.app-body { display: flex; flex: 1; overflow: hidden; }
+
+/* ── Left nav ── */
+.nav-panel {
+  width: var(--nav-width); min-width: var(--nav-width);
+  background: #fff; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.nav-section-label {
+  padding: 10px 14px 4px; font-size: 10px; font-weight: 600;
+  color: var(--text-secondary); letter-spacing: 0.8px; text-transform: uppercase;
+}
+.nav-section-label:first-child { padding-top: 14px; }
+.nav-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; cursor: pointer; font-size: 12px; color: var(--text);
+  transition: all 0.12s; border-left: 3px solid transparent; text-decoration: none;
+}
+.nav-item:hover { background: #f5f5f5; }
+.nav-item.active {
+  background: var(--primary-light); color: var(--primary);
+  border-left-color: var(--primary); font-weight: 500;
+}
+.nav-item .nav-badge {
+  margin-left: auto; font-size: 9px; padding: 1px 5px; border-radius: 6px; font-weight: 500;
+}
+.nav-badge.changed { background: #fff3e0; color: #e65100; }
+.nav-badge.new { background: #e8f5e9; color: #2e7d32; }
+.nav-badge.new-feature { background: #e3f2fd; color: #1565c0; }
+.nav-badge.doc { background: var(--primary-light); color: var(--primary); }
+
+/* ── Middle TOC ── */
+.toc-panel {
+  width: var(--toc-width); min-width: var(--toc-width);
+  background: #fafbfc; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.toc-header {
+  padding: 12px 14px 8px; font-size: 11px; font-weight: 600;
+  color: var(--text-secondary); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.toc-body { flex: 1; overflow-y: auto; padding: 6px 0; }
+.toc-item {
+  display: block; padding: 4px 14px; cursor: pointer;
+  font-size: 11px; color: var(--text-secondary); transition: all 0.12s;
+  border-left: 2px solid transparent; text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.6;
+}
+.toc-item:hover { color: var(--text); background: #f0f0f0; }
+.toc-item.active { color: var(--primary); border-left-color: var(--primary); background: var(--primary-light); }
+.toc-lvl2 { padding-left: 26px; }
+.toc-lvl3 { padding-left: 38px; }
+
+/* ── Right content ── */
+.content-panel {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #fff;
+}
+.content-header {
+  padding: 10px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px; min-height: 42px; flex-shrink: 0;
+}
+.content-header .doc-title { font-size: 15px; font-weight: 600; }
+.content-header .doc-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  background: var(--primary-light); color: var(--primary);
+}
+.content-body {
+  flex: 1; overflow-y: auto; padding: 20px 28px 48px; scroll-behavior: smooth;
+}
+
+/* ── TOC toggle ── */
+.toc-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 4px; border: 1px solid var(--border);
+  background: #fff; cursor: pointer; color: var(--text-secondary); font-size: 14px;
+  transition: all 0.15s; margin-right: 6px; flex-shrink: 0;
+}
+.toc-toggle:hover { background: #f0f0f0; color: var(--primary); }
+.toc-panel.collapsed { width: 0; min-width: 0; overflow: hidden; border-right: none; }
+
+/* ═══ Markdown ═══ */
+.markdown-body { font-size: 14px; line-height: 1.75; }
+.markdown-body h1 { font-size: 24px; margin: 28px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); scroll-margin-top: 16px; }
+.markdown-body h2 { font-size: 20px; margin: 26px 0 12px; scroll-margin-top: 16px; }
+.markdown-body h3 { font-size: 16px; margin: 20px 0 8px; scroll-margin-top: 16px; }
+.markdown-body h4 { font-size: 14px; margin: 16px 0 6px; }
+.markdown-body p { margin: 8px 0; }
+.markdown-body ul, .markdown-body ol { margin: 8px 0; padding-left: 24px; }
+.markdown-body li { margin: 4px 0; }
+.markdown-body code {
+  background: #f5f5f5; padding: 2px 6px; border-radius: 3px;
+  font-size: 13px; font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+}
+.markdown-body pre {
+  background: #1e1e1e; color: #d4d4d4; padding: 16px;
+  border-radius: var(--radius); overflow-x: auto;
+  font-size: 13px; line-height: 1.5; margin: 12px 0;
+}
+.markdown-body pre code { background: none; padding: 0; font-size: inherit; }
+.markdown-body table {
+  border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 13px;
+}
+.markdown-body th {
+  background: #f5f7fa; padding: 8px 12px; text-align: left;
+  border: 1px solid var(--border); font-weight: 600; white-space: nowrap;
+}
+.markdown-body td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+.markdown-body tr:hover { background: #fafbfc; }
+.markdown-body blockquote {
+  border-left: 4px solid var(--primary); padding: 4px 16px; margin: 12px 0;
+  color: var(--text-secondary); background: #f8f9fa;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.markdown-body a { color: var(--primary); text-decoration: none; }
+.markdown-body a:hover { text-decoration: underline; }
+.markdown-body hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.markdown-body strong { font-weight: 600; }
+.markdown-body input[type="checkbox"] { margin-right: 6px; }
+.markdown-body img { max-width: 100%; height: auto; display: block; border-radius: var(--radius); margin: 12px 0; cursor: zoom-in; transition: opacity 0.15s; }
+.markdown-body img:hover { opacity: 0.85; }
+
+/* ═══ Lightbox ═══ */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  animation: lb-in 0.18s ease;
+}
+.lightbox.open { display: flex; }
+@keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+.lightbox img {
+  max-width: 92vw; max-height: 88vh; object-fit: contain;
+  border-radius: 8px; box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+  cursor: default;
+}
+.lightbox-close {
+  position: fixed; top: 20px; right: 24px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  color: #fff; font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+.module-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; background: var(--primary-light); color: var(--primary);
+  border-radius: 12px; font-size: 11px; cursor: pointer;
+  transition: background 0.15s; border: none; text-decoration: none !important;
+}
+.module-chip:hover { background: #d2e3fc; }
+
+/* ═══ States ═══ */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; color: var(--text-secondary); gap: 12px;
+}
+.empty-state svg { opacity: 0.3; }
+.loading { padding: 24px; text-align: center; color: var(--text-secondary); }
+.loading::after {
+  content: ""; display: inline-block; width: 16px; height: 16px;
+  border: 2px solid var(--border); border-top-color: var(--primary);
+  border-radius: 50%; animation: spin 0.6s linear infinite;
+  margin-left: 8px; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-box {
+  background: #fff3f3; border: 1px solid #ffcdd2;
+  border-radius: var(--radius); padding: 16px; color: #c62828; font-size: 13px;
+}
+
+/* ═══ Responsive ═══ */
+/* Large desktop: full 3-column, comfortable */
+@media (min-width: 1280px) {
+  .content-body { max-width: 960px; }
+}
+
+/* Standard laptop (1280px): slightly tighter content */
+@media (max-width: 1279px) and (min-width: 1051px) {
+  :root { --toc-width: 230px; }
+  .content-body { max-width: 780px; }
+}
+
+/* Small laptop / tablet landscape (1050px): collapse TOC by default, toggle to show */
+@media (max-width: 1050px) {
+  :root { --toc-width: 220px; }
+  .toc-panel:not(.show) { width: 0; min-width: 0; overflow: hidden; border-right: none; }
+  .toc-panel.show {
+    position: absolute; left: var(--nav-width); top: 48px; bottom: 0;
+    z-index: 10; width: var(--toc-width); min-width: var(--toc-width);
+    background: #fafbfc; box-shadow: 2px 0 12px rgba(0,0,0,0.10);
+    border-right: 1px solid var(--border);
+  }
+  .content-body { max-width: 100%; }
+}
+
+/* Tablet / narrow (780px): hide nav + toc, single column */
+@media (max-width: 780px) {
+  .nav-panel { display: none; }
+  .toc-panel { display: none; }
+  .toc-toggle { display: none; }
+  .content-body { padding: 12px 16px 32px; }
+  .topbar { padding: 8px 12px; }
+  .topbar-brand { font-size: 13px; margin-right: 8px; }
+  .topbar-tab { padding: 4px 10px; font-size: 11px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  body { background: #1e1e1e; color: #d4d4d4; }
+  .topbar, .nav-panel, .content-panel { background: #252526; border-color: #3e3e3e; }
+  .toc-panel { background: #1e1e1e; border-color: #3e3e3e; }
+  .toc-header { color: #999; border-color: #3e3e3e; }
+  .toc-item { color: #aaa; }
+  .toc-item:hover { background: #2a2a2a; color: #ddd; }
+  .toc-item.active { background: #1a3a5c; color: #5ca3ff; }
+  .nav-item:hover { background: #2a2a2a; }
+  .nav-item.active { background: #1a3a5c; }
+  .topbar-tab { background: #333; color: #aaa; }
+  .topbar-tab:hover { background: #444; }
+  .markdown-body code { background: #333; color: #ddd; }
+  .markdown-body th { background: #2d2d2d; }
+  .markdown-body tr:hover { background: #2a2a2a; }
+  .markdown-body blockquote { background: #252525; }
+  .nav-badge.changed { background: #3e2723; }
+  .nav-badge.new { background: #1b3a1b; }
+  .nav-badge.new-feature { background: #0d2137; }
+  .nav-badge.doc { background: #1a3a5c; }
+  .doc-badge { background: #1a3a5c; }
+  .topbar-status-sep { color: #888; border-color: #3e3e3e; }
+  .topbar-status-select { background-color: #333; color: #ccc; border-color: #444;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); }
+  .topbar-status-select:hover { background-color: #444; border-color: var(--primary); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Top bar ═══ -->
+<div class="topbar">
+  <span class="topbar-brand">SDP 规划文档</span>
+  <select class="topbar-status-select" id="topbar-status-select" onchange="onStatusFilterChange()">
+    <option value="开发中">开发中</option>
+    <option value="已上线">已上线</option>
+  </select>
+  <div class="topbar-tabs" id="topbar-tabs">加载中…</div>
+  <span class="topbar-info" id="topbar-info"></span>
+</div>
+
+<!-- ═══ 3-column body ═══ -->
+<div class="app-body">
+
+  <!-- Left: Navigation -->
+  <nav class="nav-panel" id="nav-panel">
+    <div class="nav-section-label" id="nav-revision-label">规划文档</div>
+    <div id="nav-revision-item"></div>
+    <div class="nav-section-label" id="nav-modules-label">变更模块</div>
+    <div id="nav-modules"></div>
+  </nav>
+
+  <!-- Middle: TOC -->
+  <div class="toc-panel">
+    <div class="toc-header">文档目录</div>
+    <div class="toc-body" id="toc-body">
+      <div style="padding:16px 14px;font-size:11px;color:#999;">加载文档后显示</div>
+    </div>
+  </div>
+
+  <!-- Right: Content -->
+  <main class="content-panel">
+    <div class="content-header" id="content-header">
+      <button class="toc-toggle" id="toc-toggle" title="切换目录" onclick="toggleTOC()">☰</button>
+      <span class="doc-title" id="doc-title">选择迭代版本</span>
+    </div>
+    <div class="content-body" id="content-body">
+      <div class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
+        </svg>
+        <p>在上方选择迭代版本</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API_REVISIONS = 'api/revisions.json';
+const API_MODULES  = 'api/modules.json';
+
+let modulesMap         = {};
+let allRevisions       = [];
+let visibleRevisions   = [];
+let currentRev         = null;
+let currentMod         = null;
+let revisionModRefs    = [];
+let tocObserver        = null;
+let currentStatusFilter = '开发中';  // default dropdown selection
+
+const API_VERSIONS = 'api/versions.json';
+
+// ═══ Init ═══
+async function init() {
+  await Promise.all([loadModules(), loadRevisions()]);
+  document.getElementById('topbar-status-select').value = currentStatusFilter;
+  filterRevisions();
+  renderTopbarTabs();
+  if (visibleRevisions.length > 0) selectRevision(visibleRevisions[0]);
+}
+
+async function loadModules() {
+  try {
+    const resp = await fetch(API_MODULES);
+    if (resp.ok) { const list = await resp.json(); list.forEach(m => { modulesMap[m.module_key] = m; }); }
+  } catch (e) { console.warn('loadModules:', e); }
+}
+
+async function loadRevisions() {
+  try {
+    const resp = await fetch(API_REVISIONS);
+    if (resp.ok) { allRevisions = await resp.json(); }
+  } catch (e) { console.warn('loadRevisions:', e); }
+}
+
+function filterRevisions() {
+  visibleRevisions = allRevisions.filter(r => r.status === currentStatusFilter);
+}
+
+// ═══ Top bar: dropdown + version tabs ═══
+function onStatusFilterChange() {
+  const sel = document.getElementById('topbar-status-select');
+  currentStatusFilter = sel.value;
+  filterRevisions();
+  renderTopbarTabs();
+  if (visibleRevisions.length > 0) {
+    selectRevision(visibleRevisions[0]);
+  } else {
+    currentRev = null;
+    currentMod = null;
+    document.getElementById('content-body').innerHTML =
+      '<div class="empty-state"><p>「' + escapeHtml(currentStatusFilter) + '」暂无版本</p></div>';
+    clearTOC();
+    document.getElementById('nav-revision-item').innerHTML = '';
+    document.getElementById('nav-modules').innerHTML = '';
+    document.getElementById('topbar-info').textContent = '暂无版本';
+  }
+}
+
+function renderTopbarTabs() {
+  const container = document.getElementById('topbar-tabs');
+  if (!visibleRevisions.length) {
+    container.innerHTML = '<span style="font-size:12px;color:#999;">暂无版本</span>';
+    return;
+  }
+  const dotClassMap = { '规划中': 'planning', '开发中': 'developing', '已上线': 'launched' };
+
+  let html = '';
+  visibleRevisions.forEach(r => {
+    html += `<button class="topbar-tab" data-version="${escapeHtml(r.version)}" data-status="${escapeHtml(r.status)}" onclick="selectRevisionByVersion('${escapeHtml(r.version)}')">
+      <span class="tab-dot ${dotClassMap[r.status] || 'planning'}"></span>${escapeHtml(r.version)}
+    </button>`;
+  });
+  container.innerHTML = html;
+  document.getElementById('topbar-info').textContent =
+    `共 ${visibleRevisions.length} 个版本 · ${Object.keys(modulesMap).length} 个模块`;
+}
+
+function highlightTopbarTab(version) {
+  document.querySelectorAll('.topbar-tab.active').forEach(el => el.classList.remove('active'));
+  const tab = document.querySelector(`.topbar-tab[data-version="${CSS.escape(version)}"]`);
+  if (tab) tab.classList.add('active');
+}
+
+function selectRevisionByVersion(version) {
+  const rev = visibleRevisions.find(r => r.version === version);
+  if (rev) selectRevision(rev);
+}
+
+// ═══ Select revision ═══
+async function selectRevision(rev) {
+  currentMod = null;
+  currentRev = rev;
+  highlightTopbarTab(rev.version);
+
+  const body = document.getElementById('content-body');
+  body.innerHTML = '<div class="loading">加载中…</div>';
+  clearTOC();
+
+  try {
+    const resp = await fetch(rev.path);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const md = await resp.text();
+
+    revisionModRefs = extractModuleRefs(md);
+
+    // Fix relative image paths: rebase them to the MD file's directory
+    const mdDir = rev.path.includes('/') ? rev.path.slice(0, rev.path.lastIndexOf('/') + 1) : '';
+    const clean = md
+      .replace(/^---[\s\S]*?---\n*/, '')
+      .replace(/!\[([^\]]*)\]\((?!https?:\/\/|\/|data:)([^)]+)\)/g, (_, alt, src) => `![${alt}](${mdDir}${src})`);
+    body.innerHTML = `<div class="markdown-body">${marked.parse(clean)}</div>`;
+    enhanceModuleLinks(body);
+
+    setContentHeader(rev.title, `${rev.version} · ${rev.status}`);
+    buildTOC();
+    renderNavPanel();
+  } catch (e) {
+    body.innerHTML = `<div class="error-box">加载失败: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+// ═══ Extract module refs ═══
+// Priority: Section 6 变更汇总 table (explicit field) > Section 3/4 headings (structural)
+function extractModuleRefs(md) {
+  const refs = [], seen = new Set();
+
+  // ── Primary: Parse Section 6 "变更汇总" table ──
+  // Table format: | 模块 | 变更前版本 | 变更后版本 | 变更类型 | 状态 |
+  // 变更类型 explicit values: 功能优化 / 新增模块 / 新增 → mapped to changeType
+  const sec6Start = md.indexOf('## 6. 变更汇总');
+  if (sec6Start !== -1) {
+    const sec6 = md.slice(sec6Start, md.indexOf('\n---\n', sec6Start) !== -1 ? md.indexOf('\n---\n', sec6Start) : md.length);
+    // Match: | 模块名称 | oldVer | newVer | 变更类型 | status |
+    const rowRe = /^\|\s*(.+?)\s*\|\s*[^\s|]+\s*\|\s*[^\s|]+\s*\|\s*(.+?)\s*\|/gm;
+    let m;
+    while ((m = rowRe.exec(sec6)) !== null) {
+      const nameRaw = m[1].trim();
+      const typeRaw = m[2].trim();
+      // Skip header rows
+      if (nameRaw === '模块' || nameRaw.startsWith('-') || nameRaw === '') continue;
+
+      // Extract module_key from "名称 (key)" format, or match by Chinese name
+      const keyMatch = nameRaw.match(/\((\w+(?:-\w+)*)\)/);
+      let key, name;
+      if (keyMatch) {
+        key = keyMatch[1];
+        name = nameRaw.slice(0, nameRaw.lastIndexOf('(')).trim();
+      } else {
+        name = nameRaw;
+        let mod = findModuleByName(name);
+        if (!mod) {
+          // Try "english-key (中文名)" format: extract key before parentheses
+          const reverseMatch = nameRaw.match(/^([\w-]+)\s*\([^)]*\)$/);
+          if (reverseMatch) mod = modulesMap[reverseMatch[1]] || null;
+        }
+        key = mod ? mod.module_key : null;
+      }
+
+      // Map explicit 变更类型 to changeType
+      // 功能优化 → 'changed'  |  新增功能 → 'new_feature'  |  新增模块/新增 → 'new'
+      const typeLower = typeRaw.toLowerCase();
+      let changeType;
+      if (typeLower === '新增功能') {
+        changeType = 'new_feature';
+      } else if (typeLower.includes('新增') || typeLower.includes('new')) {
+        changeType = 'new';
+      } else {
+        changeType = 'changed';
+      }
+
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        refs.push({ key, name, changeType });
+      } else if (!key && name && !seen.has(name)) {
+        seen.add(name);
+        refs.push({ key: null, name, changeType });
+      }
+    }
+  }
+
+  // ── Fallback: Section 3/4 headings, only when Section 6 returned nothing ──
+  if (refs.length === 0) {
+    // Section 3: "### 3.X 模块：名称" or "### 3.X 模块：名称 (key)"
+    const h3Re = /^###\s+3\.\d+\s+模块[：:]\s*(.+)$/gm;
+    let m3;
+    while ((m3 = h3Re.exec(md)) !== null) {
+      const text = m3[1].trim();
+      const keyMatch = text.match(/\((\w+(?:-\w+)*)\)/);
+      let key, name;
+      if (keyMatch) {
+        key = keyMatch[1];
+        name = text.slice(0, text.lastIndexOf('(')).trim();
+      } else {
+        name = text;
+        const mod = findModuleByName(name);
+        key = mod ? mod.module_key : null;
+      }
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        refs.push({ key, name, changeType: 'changed' });
+      } else if (!key && name && !seen.has(name)) {
+        seen.add(name);
+        refs.push({ key: null, name, changeType: 'changed' });
+      }
+    }
+
+    // Section 4: "### 4.X 模块：名称" → genuinely new modules
+    const h4Re = /^###\s+4\.\d+\s+模块[：:]\s*(.+)$/gm;
+    let m4;
+    while ((m4 = h4Re.exec(md)) !== null) {
+      const name = m4[1].trim().replace(/\(.*\)/, '').trim();
+      if (!name || seen.has(name)) continue;
+      seen.add(name);
+      const matched = findModuleByName(name);
+      refs.push({ key: matched ? matched.module_key : null, name, changeType: 'new' });
+    }
+  }
+
+  return refs;
+}
+
+function findModuleByName(name) {
+  for (const [key, mod] of Object.entries(modulesMap)) {
+    if (mod.module_name === name || key === name) return mod;
+  }
+  return null;
+}
+
+// ═══ Left nav panel ═══
+function renderNavPanel() {
+  updateNavLabels(currentRev.status);
+
+  // Revision item
+  const revItem = document.getElementById('nav-revision-item');
+  const revBadge = currentRev.status === '已上线' ? '已上线' : (currentRev.status === '开发中' ? '开发中' : '规划中');
+  revItem.innerHTML = `<div class="nav-item active" onclick="openRevisionDoc()">
+    <span>${escapeHtml(currentRev.title.replace(/^规划文档[：:]?\s*/, ''))}</span>
+    <span class="nav-badge doc">${revBadge}</span>
+  </div>`;
+
+  // Module items
+  const modContainer = document.getElementById('nav-modules');
+
+  if (currentRev.status === '已上线') {
+    // 已上线: show all baseline modules
+    renderBaselineModules(modContainer);
+  } else {
+    // 开发中 / 规划中: show changed modules from revision
+    renderChangedModules(modContainer);
+  }
+}
+
+function renderBaselineModules(container) {
+  const allModules = Object.values(modulesMap).sort((a, b) =>
+    (a.module_name || '').localeCompare(b.module_name || '')
+  );
+  if (!allModules.length) {
+    container.innerHTML = '<div style="padding:8px 14px;font-size:11px;color:#999;">无模块数据</div>';
+    return;
+  }
+  container.innerHTML = allModules.map(m =>
+    `<div class="nav-item" onclick="openModule('${escapeHtml(m.module_key)}')">
+      <span>${escapeHtml(m.module_name)}</span>
+      <span class="nav-badge doc">基线</span>
+    </div>`
+  ).join('');
+  document.getElementById('nav-modules-label').textContent = '基线模块';
+}
+
+function updateNavLabels(status) {
+  const modulesLabel = document.getElementById('nav-modules-label');
+  const revLabel = document.getElementById('nav-revision-label');
+  switch (status) {
+    case '已上线':
+      revLabel.textContent = '版本规划';
+      modulesLabel.textContent = '基线模块';
+      break;
+    case '开发中':
+      revLabel.textContent = '规划文档';
+      modulesLabel.textContent = '变更模块';
+      break;
+    case '规划中':
+      revLabel.textContent = '规划文档';
+      modulesLabel.textContent = '涉及模块';
+      break;
+  }
+}
+
+function renderChangedModules(container) {
+  const changedModules = revisionModRefs.filter(r => r.changeType === 'changed' && r.key && modulesMap[r.key]);
+  const newFeatureModules = revisionModRefs.filter(r => r.changeType === 'new_feature');
+  const newModules = revisionModRefs.filter(r => r.changeType === 'new');
+
+  let html = '';
+  if (changedModules.length === 0 && newFeatureModules.length === 0 && newModules.length === 0) {
+    html = '<div style="padding:8px 14px;font-size:11px;color:#999;">未识别到变更模块</div>';
+  }
+  changedModules.forEach(ref => {
+    const mod = modulesMap[ref.key];
+    html += `<div class="nav-item" onclick="openModule('${escapeHtml(ref.key)}')">
+      <span>${escapeHtml(mod ? mod.module_name : ref.name)}</span>
+      <span class="nav-badge changed">变更</span>
+    </div>`;
+  });
+  newFeatureModules.forEach(ref => {
+    const mod = modulesMap[ref.key];
+    html += `<div class="nav-item" onclick="openModule('${escapeHtml(ref.key)}')">
+      <span>${escapeHtml(mod ? mod.module_name : ref.name)}</span>
+      <span class="nav-badge new-feature">新增功能</span>
+    </div>`;
+  });
+  newModules.forEach(ref => {
+    const mod = modulesMap[ref.key];
+    html += `<div class="nav-item" style="${ref.key ? '' : 'cursor:default;color:#999'}" onclick="${ref.key ? `openModule('${escapeHtml(ref.key)}')` : ''}">
+      <span>${escapeHtml(mod ? mod.module_name : ref.name)}</span>
+      <span class="nav-badge new">新增</span>
+      ${!ref.key ? '<span style="font-size:10px;color:#999;margin-left:auto">待创建</span>' : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function openRevisionDoc() {
+  if (!currentRev) return;
+  selectRevision(currentRev);
+}
+
+async function openModule(moduleKey) {
+  if (!currentRev) return;
+  currentMod = moduleKey;
+  const mod = modulesMap[moduleKey];
+
+  const body = document.getElementById('content-body');
+  body.innerHTML = '<div class="loading">加载模块文档…</div>';
+  clearTOC();
+
+  const version = currentRev.version;
+  const status = currentRev.status;
+
+  // Build path priority based on status
+  let paths = [];
+  if (status === '已上线') {
+    // 已上线: baseline first, versioned as fallback (for archive)
+    paths = [`modules/${moduleKey}.md`, `modules/${version}/${moduleKey}.md`];
+  } else if (status === '开发中') {
+    // 开发中: versioned first (WIP), baseline as fallback
+    paths = [`modules/${version}/${moduleKey}.md`, `modules/${moduleKey}.md`];
+  } else {
+    // 规划中: baseline only (no versioned modules yet)
+    paths = [`modules/${moduleKey}.md`, `modules/${version}/${moduleKey}.md`];
+  }
+
+  let loaded = false;
+  for (const p of paths) {
+    try {
+      const resp = await fetch(p);
+      if (!resp.ok) continue;
+      let md = await resp.text();
+      md = md.replace(/^---[\s\S]*?---\n*/, '');
+      body.innerHTML = `<div class="markdown-body">${marked.parse(md)}</div>`;
+      enhanceModuleLinks(body);
+      const sourceLabel = p.includes(`/${version}/`) ? '版本快照' : '基线文档';
+      setContentHeader(mod ? mod.module_name : moduleKey, p.includes(`/${version}/`) ? `${version} 版本快照` : '已上线基线');
+      loaded = true;
+      break;
+    } catch (e) { /* try next */ }
+  }
+
+  if (!loaded) {
+    body.innerHTML = `<div class="error-box">无法加载模块「${escapeHtml(moduleKey)}」</div>`;
+  } else {
+    buildTOC();
+  }
+
+  highlightNavItem(moduleKey);
+}
+
+function highlightNavItem(moduleKey) {
+  document.querySelectorAll('.nav-item.active').forEach(el => el.classList.remove('active'));
+  if (moduleKey) {
+    // Find the active module nav item by looking through module links
+    const modItems = document.querySelectorAll('#nav-modules .nav-item');
+    modItems.forEach(item => {
+      if (item.textContent.includes(moduleKey) || item.getAttribute('onclick')?.includes(moduleKey)) {
+        item.classList.add('active');
+      }
+    });
+  } else {
+    // Highlight revision item
+    const revItem = document.querySelector('#nav-revision-item .nav-item');
+    if (revItem) revItem.classList.add('active');
+  }
+}
+
+// ═══ TOC ═══
+function clearTOC() {
+  document.getElementById('toc-body').innerHTML = '<div style="padding:16px 14px;font-size:11px;color:#999;">加载中…</div>';
+  if (tocObserver) tocObserver.disconnect();
+}
+
+function buildTOC() {
+  const container = document.querySelector('.markdown-body');
+  const tocBody = document.getElementById('toc-body');
+  if (tocObserver) tocObserver.disconnect();
+
+  if (!container) {
+    tocBody.innerHTML = '<div style="padding:16px 14px;font-size:11px;color:#999;">无内容</div>';
+    return;
+  }
+
+  const headings = container.querySelectorAll('h1, h2, h3');
+  if (!headings.length) {
+    tocBody.innerHTML = '<div style="padding:16px 14px;font-size:11px;color:#999;">无标题</div>';
+    return;
+  }
+
+  const usedIds = new Set();
+  headings.forEach(h => {
+    if (!h.id) {
+      let base = h.textContent.trim()
+        .replace(/[^\w一-鿿]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'heading';
+      let id = base, n = 1;
+      while (usedIds.has(id)) { id = base + '-' + (++n); }
+      usedIds.add(id);
+      h.id = id;
+    } else { usedIds.add(h.id); }
+  });
+
+  let html = '';
+  headings.forEach(h => {
+    const lvl = parseInt(h.tagName[1]);
+    html += `<a class="toc-item toc-lvl${lvl}" data-target="${h.id}" onclick="scrollToHeading('${h.id}')">${escapeHtml(h.textContent.trim())}</a>`;
+  });
+  tocBody.innerHTML = html;
+
+  tocObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.toc-item.active').forEach(el => el.classList.remove('active'));
+        const link = tocBody.querySelector(`[data-target="${CSS.escape(e.target.id)}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-16px 0px -80% 0px' });
+  headings.forEach(h => tocObserver.observe(h));
+}
+
+function scrollToHeading(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.toc-item.active').forEach(a => a.classList.remove('active'));
+  const link = document.querySelector(`.toc-item[data-target="${CSS.escape(id)}"]`);
+  if (link) link.classList.add('active');
+}
+
+// ═══ Content header ═══
+function setContentHeader(title, type) {
+  document.getElementById('doc-title').textContent = title;
+  const hdr = document.getElementById('content-header');
+  let badge = hdr.querySelector('.doc-badge');
+  if (!badge) { badge = document.createElement('span'); badge.className = 'doc-badge'; hdr.appendChild(badge); }
+  badge.textContent = type;
+}
+
+// ═══ Lightbox ═══
+(function () {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = '<button class="lightbox-close" title="关闭">✕</button><img>';
+  document.body.appendChild(lb);
+
+  const lbImg = lb.querySelector('img');
+
+  function open(src) { lbImg.src = src; lb.classList.add('open'); document.addEventListener('keydown', onKey); }
+  function close() { lb.classList.remove('open'); lbImg.src = ''; document.removeEventListener('keydown', onKey); }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+
+  lb.querySelector('.lightbox-close').addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+
+  document.addEventListener('click', e => {
+    if (e.target.matches('.markdown-body img')) open(e.target.src);
+  });
+})();
+
+// ═══ Module chips ═══
+function enhanceModuleLinks(container) {
+  const known = {};
+  Object.values(modulesMap).forEach(m => { known[m.module_key] = m; known[m.module_name] = m; });
+  container.querySelectorAll('table td').forEach(td => {
+    if (td.querySelector('.module-chip')) return;
+    let html = td.innerHTML;
+    let changed = false;
+    Object.entries(known).forEach(([key, mod]) => {
+      if (key === mod.module_key) {
+        const esc = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re = new RegExp(`\\b(${esc})\\b`, 'g');
+        if (re.test(html)) {
+          re.lastIndex = 0;
+          html = html.replace(re, `<a class="module-chip" onclick="event.stopPropagation();openModule('${escapeHtml(key)}')">${escapeHtml(key)}</a>`);
+          changed = true;
+        }
+      }
+    });
+    if (changed) td.innerHTML = html;
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+
+function toggleTOC() {
+  const panel = document.querySelector('.toc-panel');
+  panel.classList.toggle('show');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && currentRev) selectRevision(currentRev);
+});
+
+init();
+</script>
+</body>
+</html>

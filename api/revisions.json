@@ -1,0 +1,38 @@
+[
+  {
+    "file": "规划文档_v2.6.0_SDP商品开发迭代.md",
+    "path": "revisions/规划文档_v2.6.0_SDP商品开发迭代.md",
+    "status": "开发中",
+    "title": "规划文档：SDP v2.6 商品开发迭代",
+    "version": "v2.6.0",
+    "date": "2026-05-19",
+    "docId": "REV-20260519-001"
+  },
+  {
+    "file": "规划文档_v2.4.1_SDP功能优化.md",
+    "path": "revisions/规划文档_v2.4.1_SDP功能优化.md",
+    "status": "已上线",
+    "title": "规划文档：SDP v2.4.1 功能优化",
+    "version": "v2.4.1",
+    "date": "2026-05-19",
+    "docId": "REV-20260519-002"
+  },
+  {
+    "file": "规划文档_v2.4.3_SKC维度调整.md",
+    "path": "revisions/规划文档_v2.4.3_SKC维度调整.md",
+    "status": "规划中",
+    "title": "规划文档：现货管理 SKC 维度调整",
+    "version": "v2.4.3",
+    "date": "2026-05-14",
+    "docId": "REV-20260514-001"
+  },
+  {
+    "file": "规划文档_v2.4_一款多商品.md",
+    "path": "revisions/规划文档_v2.4_一款多商品.md",
+    "status": "已上线",
+    "title": "规划文档：一款多商品",
+    "version": "v2.4",
+    "date": "2026-05-11",
+    "docId": "REV-20260511-001"
+  }
+]
