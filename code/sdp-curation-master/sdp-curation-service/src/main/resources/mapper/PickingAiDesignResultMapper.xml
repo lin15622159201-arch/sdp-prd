@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.PickingAiDesignResultMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.PickingAiDesignResult" id="PickingAiDesignResultMap">
+        <!--@mbg.generated-->
+        <!--@Table picking_ai_design_result-->
+        <id property="pickingResultId" column="picking_result_id" jdbcType="BIGINT"/>
+        <result property="inspirationId" column="inspiration_id" jdbcType="BIGINT"/>
+        <result property="designTaskId" column="design_task_id" jdbcType="BIGINT"/>
+        <result property="designTaskCode" column="design_task_code" jdbcType="VARCHAR"/>
+        <result property="pickingState" column="picking_state" jdbcType="INTEGER"/>
+        <result property="pickingId" column="picking_id" jdbcType="BIGINT"/>
+        <result property="pickingStyleId" column="picking_style_id" jdbcType="BIGINT"/>
+        <result property="pickingStyleSort" column="picking_style_sort" jdbcType="INTEGER"/>
+        <result property="selectorId" column="selector_id" jdbcType="BIGINT"/>
+        <result property="selectorName" column="selector_name" jdbcType="VARCHAR"/>
+        <result property="selectionTime" column="selection_time" jdbcType="TIMESTAMP"/>
+        <result property="suggestedPrice" column="suggested_price" jdbcType="VARCHAR"/>
+        <result property="suggestedStyleCode" column="suggested_style_code" jdbcType="VARCHAR"/>
+        <result property="suggestedStyleName" column="suggested_style_name" jdbcType="VARCHAR"/>
+        <result property="suggestedCategoryCode" column="suggested_category_code" jdbcType="VARCHAR"/>
+        <result property="suggestedCategoryName" column="suggested_category_name" jdbcType="VARCHAR"/>
+        <result property="suggestedWaveBatchCode" column="suggested_wave_batch_code" jdbcType="VARCHAR"/>
+        <result property="suggestedShopId" column="suggested_shop_id" jdbcType="BIGINT"/>
+        <result property="suggestedShopCode" column="suggested_shop_code" jdbcType="VARCHAR"/>
+        <result property="suggestedShopName" column="suggested_shop_name" jdbcType="VARCHAR"/>
+        <result property="suggestedCountrySiteCode" column="suggested_country_site_code" jdbcType="VARCHAR"/>
+        <result property="suggestedCountrySiteName" column="suggested_country_site_name" jdbcType="VARCHAR"/>
+        <result property="suggestedPrintingCode" column="suggested_printing_code" jdbcType="VARCHAR"/>
+        <result property="cargoTrayCode" column="cargo_tray_code" jdbcType="VARCHAR"/>
+        <result property="attachments" column="attachments" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="pickingCreatorId" column="picking_creator_id" jdbcType="BIGINT"/>
+        <result property="pickingCreatorName" column="picking_creator_name" jdbcType="VARCHAR"/>
+        <result property="pickingCreatedTime" column="picking_created_time" jdbcType="TIMESTAMP"/>
+        <result property="openStyleState" column="open_style_state" jdbcType="INTEGER"/>
+        <result property="styleDesignDemandId" column="style_design_demand_id" jdbcType="BIGINT"/>
+        <result property="styleSourceBizId" column="style_source_biz_id" jdbcType="BIGINT"/>
+        <result property="styleSpuCode" column="style_spu_code" jdbcType="VARCHAR"/>
+        <result property="styleSkcCode" column="style_skc_code" jdbcType="VARCHAR"/>
+        <result property="styleSpuCreateTime" column="style_spu_create_time" jdbcType="TIMESTAMP"/>
+        <result property="styleEliminateReason" column="style_eliminate_reason" jdbcType="VARCHAR"/>
+        <result property="styleEliminateUserId" column="style_eliminate_user_id" jdbcType="BIGINT"/>
+        <result property="styleEliminateUserName" column="style_eliminate_user_name" jdbcType="VARCHAR"/>
+        <result property="styleEliminateTime" column="style_eliminate_time" jdbcType="TIMESTAMP"/>
+        <result property="resultImageInfo" column="result_image_info" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        picking_result_id
+        ,inspiration_id
+        ,design_task_id
+        ,design_task_code
+        ,picking_state
+        ,picking_id
+        ,picking_style_id
+        ,picking_style_sort
+        ,selector_id
+        ,selector_name
+        ,selection_time
+        ,suggested_price
+        ,suggested_style_code
+        ,suggested_style_name
+        ,suggested_category_code
+        ,suggested_category_name
+        ,suggested_wave_batch_code
+        ,suggested_shop_id
+        ,suggested_shop_code
+        ,suggested_shop_name
+        ,suggested_country_site_code
+        ,suggested_country_site_name
+        ,suggested_printing_code
+        ,cargo_tray_code
+        ,attachments
+        ,remark
+        ,picking_creator_id
+        ,picking_creator_name
+        ,picking_created_time
+        ,open_style_state
+        ,style_design_demand_id
+        ,style_source_biz_id
+        ,style_spu_code
+        ,style_skc_code
+        ,style_spu_create_time
+        ,style_eliminate_reason
+        ,style_eliminate_user_id
+        ,style_eliminate_user_name
+        ,style_eliminate_time
+        ,result_image_info
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+
+    <select id="selectListPage" resultType="tech.tiangong.sdp.dao.entity.PickingAiDesignResult">
+        select a.*
+        from picking_ai_design_result a left join picking_ai_design b on a.picking_id = b.picking_id
+        <where>
+            a.deleted = 0
+            <if test="req.suggestedCategoryCode != null and req.suggestedCategoryCode != ''">
+                and a.suggested_category_code = #{req.suggestedCategoryCode}
+            </if>
+            <if test="req.suggestedWaveBatchCode != null and req.suggestedWaveBatchCode != ''">
+                and a.suggested_wave_batch_code = #{req.suggestedWaveBatchCode}
+            </if>
+            <if test="req.origin != null and req.origin != ''">
+                and b.origin =#{req.origin}
+            </if>
+            <if test="req.suggestedCountrySiteCode != null and req.suggestedCountrySiteCode != ''">
+                and a.suggested_country_site_code = #{req.suggestedCountrySiteCode}
+            </if>
+            <if test="req.pickingCreatorName != null and req.pickingCreatorName != ''">
+                and a.creator_name like concat('%',#{req.pickingCreatorName},'%')
+            </if>
+            <if test="req.pickingStartTime != null and req.pickingEndTime != null">
+                and a.created_time between #{req.pickingStartTime} and #{req.pickingEndTime}
+            </if>
+            <if test="req.inspirationSource != null and req.inspirationSource != ''">
+                and b.inspiration_source_type = #{req.inspirationSource}
+            </if>
+            <if test="req.selectorId != null">
+                and a.selector_id = #{req.selectorId}
+            </if>
+            <if test="req.tenantId!=null">
+                AND a.tenant_id = #{req.tenantId}
+            </if>
+            <if test="req.selectorName != null and req.selectorName != ''">
+                and a.selector_name like concat('%',#{req.selectorName},'%')
+            </if>
+            <if test="req.imagePickingStartTime != null and req.imagePickingEndTime != null">
+                and a.selection_time between #{req.imagePickingStartTime} and #{req.imagePickingEndTime}
+            </if>
+            <if test="req.pickingState != null">
+                and a.picking_state = #{req.pickingState}
+            </if>
+            <if test="req.openStyleState != null">
+                and a.open_style_state = #{req.openStyleState}
+            </if>
+            <if test="req.fixImageType != null">
+                and JSON_CONTAINS(a.result_image_info, '{"fixImageType": 1}')
+            </if>
+            <if test="req.styleCode != null and req.styleCode.size() > 0">
+                and
+                <foreach item="code" collection="req.styleCode" open="(" separator="or" close=")">
+                    a.style_spu_code like concat('%',#{code},'%')
+                </foreach>
+            </if>
+        </where>
+        order by a.created_time desc
+    </select>
+</mapper>

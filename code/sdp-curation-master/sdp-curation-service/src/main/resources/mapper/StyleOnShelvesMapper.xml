@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.StyleOnShelvesMapper">
+
+    <select id="page" resultType="tech.tiangong.sdp.entity.StyleOnShelves">
+        select sos.*
+        from style_on_shelves sos
+        <if test="(query.designCodes!=null and query.designCodes.size() > 0)
+        or (query.preDisassemblyState != null)">
+            INNER JOIN skc_on_shelves skc on sos.style_id = skc.style_id
+        </if>
+        where sos.deleted = 0
+        <include refid="queryCondition"/>
+        ORDER BY sos.created_time DESC
+    </select>
+
+    <sql id="queryCondition">
+        <if test="query.tenantId!=null">
+            AND sos.tenant_id = #{query.tenantId}
+        </if>
+        <if test="query.styleCodes!=null and query.styleCodes.size() > 0" >
+            AND sos.style_code in
+            <foreach collection="query.styleCodes" item="styleCode" index="index" open="(" close=")" separator=",">
+                #{styleCode}
+            </foreach>
+        </if>
+        <if test="query.designCodes!=null and query.designCodes.size() > 0" >
+            AND skc.skc_code in
+            <foreach collection="query.designCodes" item="designCode" index="index" open="(" close=")" separator=",">
+                #{designCode}
+            </foreach>
+            and skc.show_detail = 1
+        </if>
+
+        <if test="query.preDisassemblyState!=null">
+            AND skc.pre_disassembly_state = #{query.preDisassemblyState}
+        </if>
+
+        <if test="query.designerId!=null">
+            AND sos.designer_id = #{query.designerId}
+        </if>
+        <if test="query.storeId!=null">
+            AND sos.store_id = #{query.storeId}
+        </if>
+        <if test="query.storeIdList!=null and query.storeIdList.size() > 0" >
+            AND sos.store_id in
+            <foreach collection="query.storeIdList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.reviewUserId!=null">
+            AND sos.review_user_id = #{query.reviewUserId}
+        </if>
+        <if test="query.createdStartTime != null">
+            AND sos.created_time &gt;= #{query.createdStartTime}
+        </if>
+        <if test="query.createdEndTime != null">
+            AND sos.created_time &lt;= #{query.createdEndTime}
+        </if>
+        <if test="query.reviewStartTime != null">
+            and sos.review_time <![CDATA[ >= ]]> #{query.reviewStartTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.reviewEndTime != null">
+            and sos.review_time <![CDATA[ <= ]]> #{query.reviewEndTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.waveBandCode != null and query.waveBandCode != ''">
+            and sos.wave_band_code = #{query.waveBandCode}
+        </if>
+        <if test="query.styleLabelCode != null and query.styleLabelCode != ''">
+            and sos.style_label_code = #{query.styleLabelCode}
+        </if>
+        <if test="query.reviewStatus!=null">
+            AND sos.review_status = #{query.reviewStatus}
+        </if>
+        <if test="query.shopReviewStatus!=null">
+            AND sos.shop_review_status = #{query.shopReviewStatus}
+        </if>
+        <if test="query.shopReviewUserId!=null">
+            AND sos.shop_review_user_id = #{query.shopReviewUserId}
+        </if>
+        <if test="query.shopReviewUserName != null and query.shopReviewUserName != ''">
+            and sos.shop_review_user_name LIKE CONCAT('%', #{query.shopReviewUserName}, '%')
+        </if>
+        <if test="query.shopReviewTimeStart!=null and query.shopReviewTimeEnd!=null">
+            AND sos.shop_review_time &gt;= #{query.shopReviewTimeStart}
+            AND sos.shop_review_time &lt;= #{query.shopReviewTimeEnd}
+        </if>
+        <if test="query.releaseStatus!=null">
+            AND sos.release_status = #{query.releaseStatus}
+        </if>
+        <if test="query.creatorId != null">
+            AND sos.creator_id = #{query.creatorId}
+        </if>
+        <if test="query.creatorName != null and query.creatorName != ''">
+            AND sos.creator_name LIKE CONCAT('%', #{query.creatorName}, '%')
+        </if>
+    </sql>
+
+    <select id="selectReviewStatus" resultType="tech.tiangong.sdp.vo.dto.GroupStatusDTO">
+        SELECT
+        review_status AS taskStatus,
+        COUNT(*) AS total
+        FROM style_on_shelves sos
+        <if test="(query.designCodes!=null and query.designCodes.size() > 0)
+        or (query.preDisassemblyState != null)">
+            INNER JOIN skc_on_shelves skc on sos.style_id = skc.style_id
+        </if>
+
+        WHERE
+        sos.deleted = 0
+        <include refid="queryCondition"/>
+        GROUP BY review_status
+    </select>
+
+    <select id="selectShopReviewStatus" resultType="tech.tiangong.sdp.vo.dto.GroupStatusDTO">
+        SELECT
+        shop_review_status AS taskStatus,
+        COUNT(*) AS total
+        FROM style_on_shelves sos
+        <if test="query.designCodes!=null and query.designCodes.size() > 0" >
+            INNER JOIN skc_on_shelves skc on sos.style_id = skc.style_id
+        </if>
+        WHERE
+        sos.deleted = 0
+        <include refid="queryCondition"/>
+        GROUP BY shop_review_status
+    </select>
+
+    <select id="selectReleaseStatus" resultType="tech.tiangong.sdp.vo.dto.GroupStatusDTO">
+        SELECT
+        release_status AS taskStatus,
+        COUNT(*) AS total
+        FROM style_on_shelves sos
+        <if test="(query.designCodes!=null and query.designCodes.size() > 0)
+        or (query.preDisassemblyState != null)">
+            INNER JOIN skc_on_shelves skc on sos.style_id = skc.style_id
+        </if>
+        WHERE
+        sos.deleted = 0
+        <include refid="queryCondition"/>
+        GROUP BY release_status
+    </select>
+
+</mapper>
+

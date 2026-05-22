@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.ProductSkcMapper">
+
+    <update id="editById" parameterType="tech.tiangong.sdp.entity.ProductSkc">
+        UPDATE product_skc
+        <set>
+            <include refid="updateSql"/>
+        </set>
+        WHERE product_skc_id = #{productSkcId}
+        AND deleted = 0
+    </update>
+    <update id="editByIdWithOptimisticLock" parameterType="tech.tiangong.sdp.entity.ProductSkc">
+        UPDATE product_skc
+        <set>
+            version = version + 1,
+            <include refid="updateSql"/>
+        </set>
+        WHERE product_skc_id = #{productSkcId}
+        AND version = #{version}
+        AND deleted = 0
+    </update>
+    <sql id="updateSql">
+        <if test="productId != null">product_id = #{productId},</if>
+        <if test="skcId != null">skc_id = #{skcId},</if>
+        <if test="skcCode != null">skc_code = #{skcCode},</if>
+        <if test="skcStatus != null">skc_status = #{skcStatus},</if>
+        <if test="platformSkcId != null">platform_skc_id = #{platformSkcId},</if>
+        <if test="orderTime != null">order_time = #{orderTime},</if>
+        <if test="salesDriving != null">sales_driving = #{salesDriving},</if>
+        <if test="carouselUrl != null">carousel_url = #{carouselUrl},</if>
+        <if test="message != null">message = #{message},</if>
+        <if test="reviserId != null">reviser_id = #{reviserId},</if>
+        <if test="reviserName != null">reviser_name = #{reviserName},</if>
+        <if test="color != null">color = #{color},</if>
+        <if test="platformColor != null">platform_color = #{platformColor},</if>
+        <if test="syncStatus != null">sync_status = #{syncStatus},</if>
+        <if test="syncTime != null">sync_time = #{syncTime},</if>
+        <if test="syncTimes != null">sync_times = #{syncTimes},</if>
+        <if test="shopId != null">shop_id = #{shopId},</if>
+        <if test="skcState != null">skc_state = #{skcState},</if>
+        revised_time = NOW()
+    </sql>
+</mapper>
+

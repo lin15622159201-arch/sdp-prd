@@ -1,0 +1,262 @@
+import { useTableColumns, ITableColumnsItem } from '@toy/business-components';
+import { resizeImgByWidth } from '@/core/utils/helper';
+import {
+  QC_CRAFT_LIST, REMARK_BIZ_TYPE_ENUMS, SAMPLE_TYPE_LIST, MAKE_CLOTHES_TYPE_LIST,
+} from '@/modules/clothes-center/constant';
+import { filters } from '@/core/plugins/filter';
+import { IPatternClothesQueryByPageResListItem, IAllocatePageReq } from '../../../api/types';
+import { remarkAdd } from '@/modules/clothes-center/api';
+import { PAGE_TYPE_STATUS_ENUM } from '../../../constant';
+import { Ref, computed } from 'vue';
+import { YES_NO_ENUM } from '@/constant';
+import { TABS_LIST } from '../constant';
+import { useTimerangeDistance } from '@/hooks-transfer/use-timerange-distance';
+
+interface IProps {
+  viewProcessOrder: (row: IPatternClothesQueryByPageResListItem) => void;
+  reloadFn: () => void;
+  params: Ref<IAllocatePageReq>;
+  handleOperateLog: (clothesId: string) => void;
+}
+
+export const useListColumns = ({ viewProcessOrder, reloadFn, params, handleOperateLog }: IProps) => {
+  const { handleCostTime } = useTimerangeDistance();
+
+  const roomCongig = computed(() => {
+    if (params.value.clothesStepNodeState === PAGE_TYPE_STATUS_ENUM.ORDER) {
+      return [{
+        label: '分单结果',
+        width: '120',
+        prop: 'roomName',
+      }];
+    }
+    return [];
+  });
+  // 添加备注
+  const handleCreateRecord = async (row: IPatternClothesQueryByPageResListItem, remark: string) => {
+    const remarkParams = {
+      bizId: row.clothesId as string,
+      bizType: REMARK_BIZ_TYPE_ENUMS.SAMPLE_CLOTHES,
+      remark,
+    };
+    await remarkAdd(remarkParams);
+    await reloadFn();
+  };
+  const { columns } = useTableColumns<IPatternClothesQueryByPageResListItem>(() => {
+    return [
+      {
+        type: 'selection',
+        width: 50,
+        align: 'center',
+        selectable: row => row.isCancel === YES_NO_ENUM.NO
+      },
+      {
+        label: '加工单号',
+        minWidth: '150',
+        render: (row) => {
+          return (
+            <>
+              <el-button type='primary' link onClick={() => viewProcessOrder(row)}>
+                {row.processCode}
+              </el-button>
+              <p>
+                {row.isAbnormal === YES_NO_ENUM.YES && (
+                  <el-tag type='danger'>
+                    异常
+                  </el-tag>
+                )}
+                {row.isCancel === YES_NO_ENUM.YES && (
+                  <el-tag type='danger'>
+                    取消
+                  </el-tag>
+                )}
+              </p>
+            </>
+          );
+        }
+      },
+      {
+        label: 'SKC',
+        minWidth: '180',
+        render: (row) => {
+          return (
+            <div class='tw-text-left'>
+              <div class='tw-flex'>
+                SKC：
+                <sc-copy-text text={row.designCode} />
+              </div>
+              <div class='tw-flex'>
+                SPU：
+                <sc-copy-text text={row.styleCode} />
+              </div>
+            </div>
+          );
+        }
+      },
+      {
+        label: '图片',
+        align: 'center',
+        minWidth: '120',
+        render(row) {
+          const spuShelvePictureList = (row.shelvePicture?.spuShelvePictureList || []);
+          const skcShelvePictureList = (row.shelvePicture?.skcShelvePictureList || []);
+          const images = [...skcShelvePictureList, ...spuShelvePictureList, ...(row.designPictureList || [])];
+          return (
+            <custom-image
+              src={resizeImgByWidth(images?.[0] || '', 192)}
+              class='img-thumbnail__table'
+              fit='cover'
+              preview-src-list={images}
+              preview-teleported
+            />
+          );
+        },
+      },
+      {
+        label: '打版信息',
+        width: '120',
+        render: (row) => {
+          return (
+            <div class='tw-text-left'>
+              <p>{filters.getEnumLabel(SAMPLE_TYPE_LIST, row.sampleType!)}</p>
+              <p>{filters.getEnumLabel(MAKE_CLOTHES_TYPE_LIST, row.makeClothesType!)}</p>
+            </div>
+          );
+        }
+      },
+      {
+        label: '分单状态',
+        width: '120',
+        prop: 'processNodeState',
+        type: 'enum',
+        options: TABS_LIST,
+      },
+      ...roomCongig.value.map<ITableColumnsItem<IPatternClothesQueryByPageResListItem>>((item: any) => ({ ...item })),
+      {
+        label: '二次工艺',
+        minWidth: '90',
+        render(row) {
+          return (
+            <div class='desc-lis'>
+              {row.craftList.map(item => (
+                <div class='tw-pd-5px'>
+                  { item.craftsProcessName || filters.getEnumLabel(QC_CRAFT_LIST, item.craftsRequire || '')}
+                  ：
+                  {(item.nameList || []).join(';')}
+                </div>
+              ))}
+              {row.cuttingMethod && (
+                <el-tag>
+                  { row.cuttingMethod }
+                </el-tag>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        label: '相关人员',
+        minWidth: '120',
+        render(row) {
+          return (
+            <div class='tw-text-left'>
+              <div>
+                设计师：
+                { row.designerName || '-' }
+              </div>
+              <div>
+                分单员：
+                {row.allocateeName || '-'}
+              </div>
+              <div>
+                审版工艺师：
+                {row.reviewCraftsmanName || '-'}
+              </div>
+            </div>
+          );
+        }
+      },
+      // {
+      //   label: '耗时',
+      //   minWidth: '120',
+      //   render: (row) => {
+      //     // 需要 row 、当前时间、创建时间
+      //     return (
+      //       <>
+      //         {/* 待分单耗时：当前时间-数据创建时间-异常时间 */}
+      //         {row.processNodeState === PAGE_TYPE_STATUS_ENUM.WAIT_ORDER && (
+      //           <span
+      //             v-html={handleCostTime({
+      //               row,
+      //               currentTimeKey: '',
+      //               stepCreatedTimeKey: 'seperateStartTime',
+      //               stepTimeConsuming: 'stepExceptionTimeConsuming',
+      //               hasMinus: true,
+      //               isBeforeStageTime: true
+      //             })}
+      //           />
+      //         )}
+      //         {/* 已分单耗时：首次完成分单的时间-数据创建时间-异常时间 */}
+      //         {row.processNodeState === PAGE_TYPE_STATUS_ENUM.ORDER && (
+      //           <span
+      //             v-html={handleCostTime({
+      //               row,
+      //               currentTimeKey: 'firstSeperateFinishTime',
+      //               stepCreatedTimeKey: 'seperateStartTime',
+      //               stepTimeConsuming: 'stepExceptionTimeConsuming',
+      //               hasMinus: true,
+      //               isBeforeStageTime: true
+      //             })}
+      //           />
+      //         )}
+      //       </>
+      //     );
+      //   }
+      // },
+      {
+        label: '创建时间',
+        minWidth: '120',
+        render(row) {
+          return filters.formatTime(row.seperateStartTime);
+        },
+      },
+      {
+        label: '提交时间',
+        minWidth: '120',
+        render(row) {
+          return filters.formatTime(row.seperateFinishTime);
+        },
+      },
+      {
+        label: '操作记录',
+        width: '180',
+        fixed: 'right',
+        render(row) {
+          return (
+            <remark-record
+              v-model={row.remark}
+              name-key='createdName'
+              time-key='createdTime'
+              desc-key='remark'
+              onCreate={(remark: string) => handleCreateRecord(row, remark)}
+              v-slots={{
+                append: () => (
+                  <el-button
+                    type='primary'
+                    text
+                    onClick={() => handleOperateLog(row.clothesId as string)}
+                  >
+                    操作日志
+                  </el-button>
+                )
+              }}
+            />
+          );
+        }
+      },
+    ];
+  });
+  return {
+    tableColumns: columns
+  };
+};

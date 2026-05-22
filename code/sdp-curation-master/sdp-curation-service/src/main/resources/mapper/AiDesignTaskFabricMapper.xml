@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.AiDesignTaskFabricMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.AiDesignTaskFabric" id="AiDesignTaskFabricMap">
+        <!--@mbg.generated-->
+        <!--@Table ai_design_task_fabric-->
+        <id property="fabricId" column="fabric_id" jdbcType="BIGINT"/>
+        <result property="taskId" column="task_id" jdbcType="BIGINT"/>
+        <result property="familyFabricCategory" column="family_fabric_category" jdbcType="VARCHAR"/>
+        <result property="sourceCommodityId" column="source_commodity_id" jdbcType="BIGINT"/>
+        <result property="commodityId" column="commodity_id" jdbcType="BIGINT"/>
+        <result property="commodityCode" column="commodity_code" jdbcType="VARCHAR"/>
+        <result property="commodityName" column="commodity_name" jdbcType="VARCHAR"/>
+        <result property="commodityPicture" column="commodity_picture" jdbcType="VARCHAR"/>
+        <result property="colorPicture" column="color_picture" jdbcType="VARCHAR"/>
+        <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+        <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
+        <result property="colorCode" column="color_code" jdbcType="VARCHAR"/>
+        <result property="rgb" column="rgb" jdbcType="VARCHAR"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        fabric_id
+        ,task_id
+        ,family_fabric_category
+        ,source_commodity_id
+        ,commodity_id
+        ,commodity_code
+        ,commodity_name
+        ,commodity_picture
+        ,color_picture
+        ,sku_id
+        ,sku_code
+        ,color_code
+        ,rgb
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+
+    <delete id="deleteByTaskId">
+        delete from ai_design_task_fabric where task_id = #{taskId}
+    </delete>
+</mapper>
+

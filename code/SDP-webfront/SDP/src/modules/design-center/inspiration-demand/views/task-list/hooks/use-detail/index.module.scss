@@ -1,0 +1,52 @@
+.container {
+  &_info {
+    padding: 10px;
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    &_header {
+      display: flex;
+      justify-content: space-between;
+      .left {
+        display: flex;
+        align-items: center;
+        .id {
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .tag {
+          margin-left: 10px;
+        }
+        .status {
+          margin-left: 20px;
+          color: var(--el-color-success)
+        }
+      }
+      // .right {}
+    }
+    &_main {
+      padding: 10px 0;
+      // .item {}
+    }
+  }
+  &_fabric {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    &_header {
+      display: flex;
+      padding-bottom: 10px;
+      align-items: flex-end;
+      .title {
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .sub {
+        margin-left: 20px;
+        color: var(--el-color-danger);
+        font-size: 12px;
+      }
+    }
+  }
+}

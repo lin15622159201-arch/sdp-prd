@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.DesignRemarksMapper">
+    <resultMap id="default" type="tech.tiangong.sdp.entity.DesignRemarks">
+        <id column="design_remarks_id" property="designRemarksId" jdbcType="BIGINT"/>
+        <result column="biz_id" property="bizId" jdbcType="BIGINT"/>
+        <result column="biz_child_id" property="bizChildId" jdbcType="BIGINT"/>
+        <result column="biz_type" property="bizType" jdbcType="VARCHAR"/>
+        <result column="prototype_id" property="prototypeId" jdbcType="BIGINT"/>
+        <result column="style_code" property="styleCode" jdbcType="VARCHAR"/>
+        <result column="design_code" property="designCode" jdbcType="VARCHAR"/>
+        <result column="version_num" property="versionNum" jdbcType="INTEGER"/>
+        <result column="biz_version_num" property="bizVersionNum" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="creator_id" property="creatorId" jdbcType="BIGINT"/>
+        <result column="created_name" property="createdName" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+    <sql id="biz_columns">
+    biz_id,
+    biz_child_id,
+    biz_type,
+    prototype_id,
+    style_code,
+    design_code,
+    version_num,
+    biz_version_num,
+    remark,
+    created_name
+    </sql>
+    <sql id="updateSet">
+        <set>
+            <if test="bean.bizId != null or nullNumber == true">
+                biz_id=#{bean.bizId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.bizChildId != null or nullNumber == true">
+                biz_child_id=#{bean.bizChildId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.bizType != null">
+                biz_type=#{bean.bizType,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.prototypeId != null">
+                prototype_id=#{bean.prototypeId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.styleCode != null">
+                style_code=#{bean.styleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.designCode != null">
+                design_code=#{bean.designCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.versionNum != null or nullNumber == true">
+                version_num=#{bean.versionNum,jdbcType=INTEGER},
+            </if>
+            <if test="bean.bizVersionNum != null or nullNumber == true">
+                biz_version_num=#{bean.bizVersionNum,jdbcType=INTEGER},
+            </if>
+            <if test="bean.remark != null">
+                remark=#{bean.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.createdName != null">
+                created_name=#{bean.createdName,jdbcType=VARCHAR},
+            </if>
+        </set>
+    </sql>
+
+    <sql id="whereSet">
+        <where>
+            <if test="designRemarksId != null and designRemarksId != ''">
+                and  design_remarks_id=#{designRemarksId,jdbcType=BIGINT}
+            </if>
+            <if test="bizId != null">
+                and  biz_id=#{bizId,jdbcType=BIGINT}
+            </if>
+            <if test="bizChildId != null">
+                and  biz_child_id=#{bizChildId,jdbcType=BIGINT}
+            </if>
+            <if test="bizType != null and bizType != ''">
+                and  biz_type=#{bizType,jdbcType=VARCHAR}
+            </if>
+            <if test="prototypeId != null">
+                and  prototype_id=#{prototypeId,jdbcType=BIGINT}
+            </if>
+            <if test="styleCode != null and styleCode != ''">
+                and  style_code=#{styleCode,jdbcType=VARCHAR}
+            </if>
+            <if test="designCode != null and designCode != ''">
+                and  design_code=#{designCode,jdbcType=VARCHAR}
+            </if>
+            <if test="versionNum != null">
+                and  version_num=#{versionNum,jdbcType=INTEGER}
+            </if>
+            <if test="bizVersionNum != null">
+                and  biz_version_num=#{bizVersionNum,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null and remark != ''">
+                and  remark=#{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="creatorId != null">
+                and  creator_id=#{creatorId,jdbcType=BIGINT}
+            </if>
+            <if test="createdName != null and createdName != ''">
+                and  created_name=#{createdName,jdbcType=VARCHAR}
+            </if>
+            <if test="createdTime != null">
+                and  created_time=#{createdTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="batchInsert">
+        <![CDATA[
+        insert into design_remarks (
+        design_remarks_id, created_time, creator_id,
+        ]]><include refid="biz_columns"/><![CDATA[
+        ) values ]]>
+        <foreach item="column" index="index" collection="list" separator=",">
+            <![CDATA[
+        (
+        #{column.designRemarksId,jdbcType=BIGINT}, now(), #{column.creatorId,jdbcType=VARCHAR},#{column.bizId,jdbcType=BIGINT},
+    #{column.bizChildId,jdbcType=BIGINT},
+    #{column.bizType,jdbcType=VARCHAR},
+    #{column.prototypeId,jdbcType=BIGINT},
+    #{column.styleCode,jdbcType=VARCHAR},
+    #{column.designCode,jdbcType=VARCHAR},
+    #{column.versionNum,jdbcType=INTEGER},
+    #{column.bizVersionNum,jdbcType=INTEGER},
+    #{column.remark,jdbcType=VARCHAR},
+    #{column.createdName,jdbcType=VARCHAR}
+        )
+        ]]>
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteByKeys">
+        <![CDATA[
+        delete from design_remarks where design_remarks_id in
+        ]]>
+        <foreach item="pk" index="index" collection="list" open="(" separator="," close=")">
+            <![CDATA[#{pk,jdbcType=BIGINT}]]>
+        </foreach>
+    </delete>
+
+    <select id="findDataList" resultType="tech.tiangong.sdp.entity.DesignRemarks">
+        select * from design_remarks <include refid="whereSet"/>
+    </select>
+    <select id="findDataCount" resultType="java.lang.Integer">
+        select count(*) from design_remarks <include refid="whereSet"/>
+    </select>
+
+</mapper>

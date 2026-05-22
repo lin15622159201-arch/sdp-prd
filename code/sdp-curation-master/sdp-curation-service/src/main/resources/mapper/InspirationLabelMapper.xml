@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.InspirationLabelMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.InspirationLabel" id="InspirationLabelMap">
+        <!--@mbg.generated-->
+        <!--@Table inspiration_label-->
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="identifiedId" column="identified_id" jdbcType="BIGINT"/>
+        <result property="inspirationId" column="inspiration_id" jdbcType="BIGINT"/>
+        <result property="labelName" column="label_name" jdbcType="VARCHAR"/>
+        <result property="labelCode" column="label_code" jdbcType="VARCHAR"/>
+        <result property="labelValueName" column="label_value_name" jdbcType="VARCHAR"/>
+        <result property="labelValueCode" column="label_value_code" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id
+        ,identified_id
+        ,inspiration_id
+        ,label_name
+        ,label_code
+        ,label_value_name
+        ,label_value_code
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+
+    <delete id="deleteByInspirationId">
+        delete from inspiration_label where inspiration_id = #{inspirationId}
+    </delete>
+</mapper>
+

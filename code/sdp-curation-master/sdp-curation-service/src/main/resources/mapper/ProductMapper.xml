@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.ProductMapper">
+    <sql id="commonWhereCondition">
+        <where>
+            <!-- 商品ID -->
+            <if test="query.productIds != null and query.productIds.size() > 0">
+                AND p.product_id IN
+                <foreach collection="query.productIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 平台商品ID -->
+            <if test="query.platformProductIds != null and query.platformProductIds.size() > 0">
+                AND p.platform_product_id IN
+                <foreach collection="query.platformProductIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 款号 -->
+            <if test="query.styleCodes != null and query.styleCodes.size() > 0">
+                AND p.style_code IN
+                <foreach collection="query.styleCodes" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 平台SKC ID -->
+            <if test="query.platformSkcIds != null and query.platformSkcIds.size() > 0">
+                AND ps.platform_skc_id IN
+                <foreach collection="query.platformSkcIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- SKC编码 -->
+            <if test="query.skcCodes != null and query.skcCodes.size() > 0">
+                AND ps.skc_code IN
+                <foreach collection="query.skcCodes" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 平台SKU ID -->
+
+            <if test="query.platformSkuIds != null and query.platformSkuIds.size() > 0">
+                AND psku.platform_sku_id IN
+                <foreach collection="query.platformSkuIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- SKU编码 -->
+            <if test="query.skuCodes != null and query.skuCodes.size() > 0">
+                AND psku.sku_code IN
+                <foreach collection="query.skuCodes" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 运营人员ID
+            <if test="query.businessOperatorId != null">
+                AND p.business_operator_id = #{query.businessOperatorId}
+            </if>
+ -->
+            <!-- 店铺ID
+            <if test="query.shopId != null">
+                AND p.shop_id = #{query.shopId}
+            </if>
+            -->
+            <if test="query.shopIds != null and query.shopIds.size() > 0">
+                AND p.shop_id IN
+                <foreach collection="query.shopIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 设计师ID -->
+            <if test="query.designerId != null">
+                AND p.designer_id = #{query.designerId}
+            </if>
+            <!-- 上架人ID -->
+            <if test="query.onShelvesId != null">
+                AND p.on_shelver_id = #{query.onShelvesId}
+            </if>
+            <!-- 波段编码 -->
+            <if test="query.waveBandCode != null and query.waveBandCode != ''">
+                AND p.waveband_code = #{query.waveBandCode}
+            </if>
+            <!-- 款式标签编码 -->
+            <if test="query.styleLabelCode != null and query.styleLabelCode != ''">
+                AND p.style_label_code = #{query.styleLabelCode}
+            </if>
+            <!-- SKC状态 -->
+            <if test="query.skcStatus != null">
+                AND ps.skc_status = #{query.skcStatus}
+            </if>
+            <!-- 创建时间范围 -->
+            <if test="query.createdStartTime != null">
+                AND p.created_time >= #{query.createdStartTime}
+            </if>
+            <if test="query.createdEndTime != null">
+                AND p.created_time &lt;= #{query.createdEndTime}
+            </if>
+            <!-- 创建人ID -->
+            <if test="query.creatorId != null">
+                AND p.creator_id = #{query.creatorId}
+            </if>
+            <!-- 创建人姓名 -->
+            <if test="query.creatorName != null and query.creatorName != ''">
+                AND p.creator_name LIKE CONCAT('%', #{query.creatorName}, '%')
+            </if>
+            <!-- 商品标签查询（JSON数组查询） -->
+            <if test="query.labels != null and query.labels.size() > 0">
+                <foreach collection="query.labels" item="label">
+                    AND JSON_CONTAINS(p.product_tag, JSON_QUOTE(#{label}))
+                </foreach>
+            </if>
+            <!-- 租户ID -->
+            <if test="query.tenantId != null">
+                AND p.tenant_id = #{query.tenantId}
+            </if>
+            <!-- 是否删除 -->
+            <if test="query.deleted != null">
+                AND p.deleted = #{query.deleted}
+            </if>
+            <!-- 是否隐藏 -->
+            <if test="query.hidden != null">
+                AND p.hidden = #{query.hidden}
+            </if>
+        </where>
+    </sql>
+    <select id="stateTotal" resultType="tech.tiangong.sdp.vo.dto.ProductStateGroupDTO"
+            parameterType="tech.tiangong.sdp.vo.query.ProductQuery">
+        SELECT
+        ps.skc_status AS taskStatus,
+        COUNT(DISTINCT ps.product_skc_id) AS total
+        FROM product_skc ps
+        INNER JOIN product p ON ps.product_id = p.product_id
+        LEFT JOIN product_sku psku ON ps.product_skc_id = psku.product_skc_id
+        <include refid="commonWhereCondition"/>
+        GROUP BY ps.skc_status
+    </select>
+    <select id="toBeUpdatedTotal" resultType="java.lang.Long"
+            parameterType="tech.tiangong.sdp.vo.query.ProductQuery">
+        SELECT COUNT(DISTINCT p.product_id) AS total
+        FROM product p
+        LEFT JOIN product_skc ps ON p.product_id = ps.product_id AND ps.deleted = 0
+        LEFT JOIN product_sku psku ON p.product_id = psku.product_id AND psku.deleted = 0
+        <include refid="commonWhereCondition"/>
+    </select>
+    <select id="page" resultType="tech.tiangong.sdp.entity.Product"
+            parameterType="tech.tiangong.sdp.vo.query.ProductQuery">
+        SELECT p.*
+        FROM product p
+        LEFT JOIN product_skc ps ON p.product_id = ps.product_id AND ps.deleted = 0
+        LEFT JOIN product_sku psku ON p.product_id = psku.product_id AND psku.deleted = 0
+        <include refid="commonWhereCondition"/>
+        GROUP BY p.product_id
+        ORDER BY p.created_time DESC
+    </select>
+    <!-- 查询不包含"动销款"的商品 -->
+    <select id="selectWithoutSalesDriving" resultType="tech.tiangong.sdp.entity.Product"
+            parameterType="java.lang.Integer">
+        SELECT *
+        FROM product
+        WHERE hidden = 0
+          AND deleted = 0
+          AND (product_tag IS NULL OR NOT JSON_CONTAINS(product_tag, '"动销款"'))
+        ORDER BY created_time ASC
+            LIMIT #{page}, 512
+    </select>
+    <update id="editById" parameterType="tech.tiangong.sdp.entity.Product">
+        UPDATE product
+        <set>
+            <include refid="updateSql"/>
+        </set>
+        WHERE product_id = #{productId}
+        AND deleted = 0
+    </update>
+    <update id="editByIdWithOptimisticLock" parameterType="tech.tiangong.sdp.entity.Product">
+        UPDATE product
+        <set>
+            version = version + 1,
+            <include refid="updateSql"/>
+        </set>
+        WHERE product_id = #{productId}
+        AND version = #{version}
+        AND deleted = 0
+    </update>
+    <sql id="updateSql">
+        <if test="platformProductId != null">platform_product_id = #{platformProductId},</if>
+        <if test="shopId != null">shop_id = #{shopId},</if>
+        <if test="styleId != null">style_id = #{styleId},</if>
+        <if test="styleCode != null">style_code = #{styleCode},</if>
+        <if test="groupId != null">group_id = #{groupId},</if>
+        <if test="productStatus != null">product_status = #{productStatus},</if>
+        <if test="productName != null">product_name = #{productName},</if>
+        <if test="productEnName != null">product_en_name = #{productEnName},</if>
+        <if test="platformCategoryCode != null">platform_category_code = #{platformCategoryCode},</if>
+        <if test="platformCategoryName != null">platform_category_name = #{platformCategoryName},</if>
+        <if test="size != null">size = #{size},</if>
+        <if test="part != null">part = #{part},</if>
+        <if test="productTag != null">product_tag = #{productTag},</if>
+        <if test="promisedDeliveryDay != null">promised_delivery_day = #{promisedDeliveryDay},</if>
+        <if test="freightTemplateId != null">freight_template_id = #{freightTemplateId},</if>
+        <if test="siteId != null">site_id = #{siteId},</if>
+        <if test="sizeTemplateId != null">size_template_id = #{sizeTemplateId},</if>
+        <if test="showSizeTemplateId != null">show_size_template_id = #{showSizeTemplateId},</if>
+        <if test="materialImgUrl != null">material_img_url = #{materialImgUrl},</if>
+        <if test="styleImgUrl != null">style_img_url = #{styleImgUrl},</if>
+        <if test="videoUrl != null">video_url = #{videoUrl},</if>
+        <if test="sizeUrl != null">size_url = #{sizeUrl},</if>
+        <if test="styleLabelCode != null">style_label_code = #{styleLabelCode},</if>
+        <if test="styleLabelName != null">style_label_name = #{styleLabelName},</if>
+        <if test="wavebandCode != null">waveband_code = #{wavebandCode},</if>
+        <if test="wavebandName != null">waveband_name = #{wavebandName},</if>
+        <if test="designerId != null">designer_id = #{designerId},</if>
+        <if test="designerName != null">designer_name = #{designerName},</if>
+        <if test="onShelverId != null">on_shelver_id = #{onShelverId},</if>
+        <if test="onShelverName != null">on_shelver_name = #{onShelverName},</if>
+        <if test="hidden != null">hidden = #{hidden},</if>
+        <if test="message != null">message = #{message},</if>
+        <if test="failMessage != null">fail_message = #{failMessage},</if>
+        <if test="reviserId != null">reviser_id = #{reviserId},</if>
+        <if test="reviserName != null">reviser_name = #{reviserName},</if>
+        <if test="styleType != null">style_type = #{styleType},</if>
+        <if test="onShelvesTime != null">on_shelves_time = #{onShelvesTime},</if>
+        revised_time = NOW()
+    </sql>
+</mapper>
+

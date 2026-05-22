@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.SpotStyleTaskMapper">
+    <select id="page" resultType="tech.tiangong.sdp.entity.SpotStyleTask"
+            parameterType="tech.tiangong.sdp.vo.query.SpotStyleTaskQuery">
+        SELECT t.* FROM spot_style_task AS t
+        <where>
+            <if test="req.tenantId!=null">
+                AND t.tenant_id = #{req.tenantId}
+            </if>
+            <if test="req.deleted!=null">
+                AND t.deleted = #{req.deleted}
+            </if>
+            <!-- 包含任意状态查询 -->
+            <if test="req.spuAnyStatus != null and req.spuAnyStatus.size() > 0">
+                AND (
+                <foreach collection="req.spuAnyStatus" item="status" separator=" OR ">
+                    t.task_status &amp; #{status} != 0
+                </foreach>
+                )
+            </if>
+            <!-- 必须包含所有状态查询 -->
+            <if test="req.spuAllStatus != null and req.spuAllStatus.size() > 0">
+                <foreach collection="req.spuAllStatus" item="status" separator=" ">
+                    AND t.task_status &amp; #{status} != 0
+                </foreach>
+            </if>
+            <!-- 排除状态查询 -->
+            <if test="req.spuExcludeStatus != null and req.spuExcludeStatus.size() > 0">
+                AND (
+                <foreach collection="req.spuExcludeStatus" item="status" separator=" AND ">
+                    t.task_status &amp; #{status} = 0
+                </foreach>
+                )
+            </if>
+            <if test="req.imageUpdateStatus != null">
+                AND t.image_update_status = #{req.imageUpdateStatus}
+            </if>
+            <if test="req.createdStartTime != null">
+                AND t.created_time &gt;= #{req.createdStartTime}
+            </if>
+            <if test="req.createdEndTime != null">
+                AND t.created_time &lt;= #{req.createdEndTime}
+            </if>
+            <if test="req.creatorName != null and req.creatorName != ''">
+                AND t.creator_name LIKE CONCAT('%', #{req.creatorName}, '%')
+            </if>
+            <if test="req.categoryCodes != null and req.categoryCodes.size() > 0">
+                AND
+                <foreach collection="req.categoryCodes" item="code" open="(" close=")" separator="OR">
+                    t.category_code LIKE CONCAT('%',#{code}, '%')
+                </foreach>
+            </if>
+            <if test="req.supplyModeCodes != null and req.supplyModeCodes.size() > 0">
+                AND t.supply_mode_code IN
+                <foreach collection="req.supplyModeCodes" item="code" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="req.styleLabelCodes != null and req.styleLabelCodes.size() > 0">
+                AND t.style_label_code IN
+                <foreach collection="req.styleLabelCodes" item="code" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="req.creatorIds != null and req.creatorIds.size() > 0">
+                AND t.designer_id IN
+                <foreach collection="req.creatorIds" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="req.taskCodes != null and req.taskCodes.size() > 0">
+                AND
+                <foreach collection="req.taskCodes" item="code" open="(" close=")" separator="OR">
+                    t.task_code LIKE CONCAT('%',#{code}, '%')
+                </foreach>
+               <!-- t.task_code IN
+                <foreach collection="req.taskCodes" item="code" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>-->
+            </if>
+            <if test="req.joinSkc!=null ">
+                AND t.task_id IN (
+                SELECT task_id FROM spot_style_skc AS c WHERE c.deleted = 0
+                <if test="req.skcStatus!=null and req.skcStatus>0">
+                    <![CDATA[
+                            AND c.skc_status > #{req.skcStatus}
+                        ]]>
+                </if>
+                <if test="req.skcCodes != null and req.skcCodes.size() > 0">
+                    AND
+                    <foreach collection="req.skcCodes" item="code" open="(" close=")" separator="OR">
+                        c.skc_code LIKE CONCAT('%',#{code}, '%')
+                    </foreach>
+                    <!--c.skc_code IN
+                    <foreach collection="req.skcCodes" item="code" open="(" close=")" separator=",">
+                        #{code}
+                    </foreach>-->
+                </if>
+                <!-- 包含任意状态查询 -->
+                <if test="req.skcAnyStatus != null and req.skcAnyStatus.size() > 0">
+                    AND (
+                    <foreach collection="req.skcAnyStatus" item="status" separator=" OR ">
+                        c.skc_status &amp; #{status} != 0
+                    </foreach>
+                    )
+                </if>
+                <!-- 必须包含所有状态查询 -->
+                <if test="req.skcAllStatus != null and req.skcAllStatus.size() > 0">
+                    <foreach collection="req.skcAllStatus" item="status" separator=" ">
+                        AND c.skc_status &amp; #{status} != 0
+                    </foreach>
+                </if>
+                <!-- 排除状态查询 -->
+                <if test="req.skcExcludeStatus != null and req.skcExcludeStatus.size() > 0">
+                    AND (
+                    <foreach collection="req.skcExcludeStatus" item="status" separator=" AND ">
+                        c.skc_status &amp; #{status} = 0
+                    </foreach>
+                    )
+                </if>
+                GROUP BY task_id
+                )
+            </if>
+            <if test="req.joinSupplier!=null">
+                AND t.task_id IN (
+                SELECT task_id FROM spot_style_supplier AS s WHERE s.deleted = 0
+                <if test="req.supplierName != null and req.supplierName != ''">
+                    AND s.supplier_name LIKE CONCAT('%', #{req.supplierName}, '%')
+                </if>
+                <if test="req.supplierStyleCode != null and req.supplierStyleCode != ''">
+                    AND s.supplier_style_code LIKE CONCAT('%', #{req.supplierStyleCode}, '%')
+                </if>
+                GROUP BY task_id
+                )
+            </if>
+        </where>
+        ORDER BY t.created_time DESC
+    </select>
+</mapper>
+

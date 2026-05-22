@@ -1,0 +1,19 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+export default defineComponent({
+  setup() {
+    const $route = useRoute();
+    const $router = useRouter();
+    const { params, query } = $route;
+    const { path } = params;
+    const _path = Array.isArray(path) ? path.join('/') : path;
+    $router.replace({ path: `/${_path}`, query });
+  },
+});
+</script>
+
+<template>
+  <span />
+</template>

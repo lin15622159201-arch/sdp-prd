@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: sdp-curation
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      config:
+        username: ${nacos.username}
+        password: ${nacos.password}
+        namespace: ${nacos.registry-namespace}
+        server-addr: ${nacos.registry-server}
+        group: ${nacos.group}
+        file-extension: yml
+
+  config:
+    import:
+      - optional:nacos:blade-config
+      - optional:file:./bootstrap.yml
+      - optional:classpath:versions.properties
+      - optional:nacos:nacos-register.yml
+      - optional:nacos:common-configuration.yml
+      - optional:nacos:fashion-auth-permission
+      - optional:nacos:jackson-config
+      - optional:nacos:mq-config
+#      - optional:nacos:jimmer-conf
+#      - optional:nacos:oplog-conf
+      - optional:nacos:${spring.application.name}

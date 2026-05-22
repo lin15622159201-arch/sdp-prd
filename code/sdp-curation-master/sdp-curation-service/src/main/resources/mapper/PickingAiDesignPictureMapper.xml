@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.PickingAiDesignPictureMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.PickingAiDesignPicture" id="PickingAiDesignPictureMap">
+        <!--@mbg.generated-->
+        <!--@Table picking_ai_design_picture-->
+        <id property="pickingPictureId" column="picking_picture_id" jdbcType="BIGINT"/>
+        <result property="pickingId" column="picking_id" jdbcType="BIGINT"/>
+        <result property="pickingStyleId" column="picking_style_id" jdbcType="BIGINT"/>
+        <result property="pictureUrl" column="picture_url" jdbcType="VARCHAR"/>
+        <result property="sourceUrl" column="source_url" jdbcType="VARCHAR"/>
+        <result property="repairImgUrl" column="repair_img_url" jdbcType="VARCHAR"/>
+        <result property="groupNum" column="group_num" jdbcType="INTEGER"/>
+        <result property="serialNum" column="serial_num" jdbcType="INTEGER"/>
+        <result property="mainImageType" column="main_image_type" jdbcType="INTEGER"/>
+        <result property="fixImageType" column="fix_image_type" jdbcType="INTEGER"/>
+        <result property="eliminateType" column="eliminate_type" jdbcType="INTEGER"/>
+        <result property="eliminateReason" column="eliminate_reason" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        picking_picture_id
+        ,picking_id
+        ,picking_style_id
+        ,picture_url
+        ,source_url
+        ,repair_img_url
+        ,group_num
+        ,serial_num
+        ,main_image_type
+        ,fix_image_type
+        ,eliminate_type
+        ,eliminate_reason
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+</mapper>
+

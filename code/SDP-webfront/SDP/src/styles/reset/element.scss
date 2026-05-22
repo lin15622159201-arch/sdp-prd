@@ -1,0 +1,390 @@
+@use '../theme/default' as *;
+:root {
+  // 输入框
+  .el-input {
+    --el-input-border-radius: 2px;
+    --el-input-hover-border: var(--el-color-primary);
+    --el-input-hover-border-color: var(--el-color-primary);
+  }
+  .el-cascader__dropdown {
+    --el-cascader-menu-border: none;
+    --el-cascader-menu-radius: 4px;
+    --el-cascader-menu-shadow: 0 9px 28px 8px rgba(92, 107, 153, 0.05),
+      0 6px 16px 0 rgba(92, 107, 153, 0.08),
+      0 3px 6px -4px rgba(92, 107, 153, 0.12);
+  }
+  .el-cascader-panel {
+    --el-cascader-menu-border: 1px solid #ebedf5;
+  }
+  .el-tag {
+    --el-tag-border-radius: 4px;
+  }
+  .el-tag.el-tag--info {
+    --el-tag-text-color: #606166;
+  }
+  .el-dialog {
+    --el-dialog-bg-color: #fff;
+  }
+}
+/* 重置element-ui 样式 */
+/* 全局 icon 样式 */
+.el-icon {
+  width: auto;
+  svg[class='icon'] {
+    margin-left: 0;
+  }
+}
+.el-form-item__content{
+  word-break: break-word;
+}
+.el-popper{
+  max-width: 80vw;
+}
+
+// el-drawer
+.el-drawer {
+  width: 20%;
+  min-width: 300px !important;
+}
+/* select */
+.select-full {
+  &.el-select {
+    width: 100%;
+  }
+  &.el-date-editor{
+    width: 100%;
+  }
+  &.el-cascader{
+    width: 100%;
+  }
+  .el-cascader,
+  .el-autocomplete {
+    width: 100%;
+  }
+}
+/* el-timeline */
+.el-timeline {
+  padding: 0;
+  list-style: none;
+  // 处理时间为空时样式问题 
+  .el-timeline-item__timestamp.is-top:empty {
+    display: none;
+  }
+  .el-timeline-item__wrapper {
+    top: 0;
+  }
+}
+.el-drawer__body {
+  overflow: auto;
+}
+
+// loading 遮罩层 背景颜色
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.el-table .el-select .el-input.el-input--suffix {
+  padding: 0;
+}
+.el-dialog-inner-scroll {
+  margin-bottom: 5vh;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .el-dialog__footer {
+    position: relative;
+    height: auto;
+    z-index: 10;
+  }
+  .el-dialog__header.box-shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .el-dialog__body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+.el-image__error-slot {
+  display: flex;
+  height: 100%;
+  border: 1px solid #eee;
+  justify-content: center;
+  align-items: center;
+}
+.el-container {
+  height: 100%;
+}
+.el-main {
+  padding: 0;
+}
+.el-header,.el-footer {
+  height: auto;
+  padding: 0;
+}
+.el-button.is-text {
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: normal;
+}
+.el-message-box {
+  background-color: #fff;
+  padding: 0;
+  &__header {
+    position: relative;
+    padding: var(--el-messagebox-padding-primary);
+    .el-message-box__title {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 24px;
+      & span::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 1px solid #EFF0F5;
+      }
+      & span:empty::after{
+        display: none;
+      }
+    }
+    .el-message-box__headerbtn {
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+      // transform: translate(calc(var(--el-dialog-padding-primary)), calc(0px - var(--el-dialog-padding-primary)));
+    }
+  }
+  &__content {
+    padding: 12px 12px 8px;
+    min-height: 90px;
+    color: #48494D;
+  }
+  .el-message-box__btns {
+    padding: 5px var(--el-messagebox-padding-primary) var(--el-messagebox-padding-primary);
+  }
+  // 用于取消messageBox的宽度限制
+  &:has(.clear_width_restrict) {
+    max-width: 80vw;
+    width: auto;
+    min-width: 400px;
+  }
+}
+// 处理tag无法换行问题
+.el-tag {
+  white-space: break-spaces;
+  height: auto;
+  line-height: 16px;
+  padding: 7px;
+  border: none;
+  &--small {
+   padding: 4px;
+   font-size: 11px; 
+  }
+  .el-tag__content {
+    word-break: break-all;
+  }
+}
+// 兼容el-select tag高度问题
+.el-select .el-tag {
+  height: 18px;
+}
+// 处理dialog标题下划线
+.el-dialog {
+  border-radius: 4px;
+  padding: 0;
+  &__header {
+    position: relative;
+    // padding: calc(var(--el-dialog-padding-primary) / 2) var(--el-dialog-padding-primary);
+    padding: 15px var(--el-dialog-padding-primary);
+    margin-right: 0;
+    &:has(.el-dialog__headerbtn) {
+      padding-right: 54px;
+    }
+    &:not(:has(.el-dialog__headerbtn)):has(.el-dialog__title:empty){
+      padding: 0;
+    }
+    .el-dialog__headerbtn {
+      top: 0;
+      right: 0;
+      // transform: translate(calc(var(--el-dialog-padding-primary)), calc(0px - var(--el-dialog-padding-primary)));
+    }
+  }
+  &__title {
+    font-weight: 500;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      border-bottom: 1px solid #EFF0F5;
+    }
+    &:empty {
+      display: none;
+    }
+  }
+  &__body {
+    padding: 18px 18px 10px;
+  }
+  &__footer {
+    padding: var(--el-dialog-padding-primary);
+  }
+}
+.el-table {
+  --el-table-tr-bg-color: #fff;
+  --el-table-header-text-color: #18181A;
+  tbody {
+    font-size: 12px;
+  }
+  // 处理border为false时外边框
+  &:not(.el-table--border) {
+    &::after,
+    &::before,
+    .el-table__inner-wrapper::after,
+    .el-table__inner-wrapper::before {
+      content: '';
+      position: absolute;
+      background-color: var(--el-table-border-color);
+      z-index: 3;
+    }
+    &::before {
+      left: 0;
+      top: -1px;
+      width: 1px;
+      height: 100%;
+    }
+    .el-table__inner-wrapper::before {
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+    }
+    &::after {
+      top: -1px;
+      right: 0;
+      width: 1px;
+      height: 100%;
+    }
+    .el-table__inner-wrapper::after {
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1px;
+    }
+  }
+  thead th {
+    font-weight: 500;
+  }
+  .el-table__body-wrapper tr:not(.hover-row) td.el-table-fixed-column--right {
+    background: inherit;
+  }
+  // START 重置表格边框 原本组件库使用width和height在浏览器缩小比例的情况 会出现1px边框消失的问题
+  .el-table__inner-wrapper::before {
+    height: 0;
+    border-bottom: 1px solid var(--el-table-border-color);
+  }
+  &.el-table--border::before {
+    width: 0;
+    border-left: 1px solid var(--el-table-border-color);
+  }
+  &.el-table--border .el-table__inner-wrapper::after {
+    height: 0;
+    border-top: 1px solid var(--el-table-border-color);
+  }
+  &.el-table--border::after {
+    width: 0;
+    border-right: 1px solid var(--el-table-border-color);
+  }
+  // END 重置表格边框 原本组件库使用width和height在浏览器缩小比例的情况 会出现1px边框消失的问题
+}
+// 处理下拉列表圆角和外边距
+.el-select__popper {
+  .el-select-dropdown__list {
+    padding: 0 !important;
+    margin: 4px !important;
+    .el-select-dropdown__item {
+      margin-bottom: 4px;
+      border-radius: 4px;
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+.el-button {
+  font-weight: normal;
+}
+.el-button--primary {
+  --el-button-hover-bg-color: #707AF2;
+  --el-button-hover-border-color: #707AF2;
+  --el-button-active-bg-color: #28319C;
+  --el-button-active-border-color: #28319C;
+  --el-button-disabled-bg-color: #B6B9DE;
+  --el-button-disabled-border-color: #B6B9DE;
+}
+.el-select,.el-cascader {
+  .is-focus .el-input__suffix-inner .el-icon{
+    color: var(--el-color-primary);
+  }
+}
+.clear-form-margin .el-form-item{
+  margin-bottom: 0;
+}
+.table-form {
+  .el-form-item {
+    margin-top: 18px;
+  }
+}
+/* 
+  Descriptions 描述列表
+ */
+ .el-descriptions {
+  .el-descriptions__body {
+    background: none;
+  }
+  .el-descriptions__label {
+    text-align: right;
+  }
+}
+.el-descriptions.label-width-80 {
+  .el-descriptions__label {
+    display: inline-block;
+    width: 80px;
+  }
+}
+.el-descriptions.label-width-100 {
+  .el-descriptions__label {
+    display: inline-block;
+    width: 100px;
+  }
+}
+.el-descriptions.label-width-120 {
+  .el-descriptions__label {
+    display: inline-block;
+    width: 120px;
+  }
+}
+.el-descriptions.column-width-2 {
+  td {
+    width: 50%;
+  }
+}
+.el-descriptions.column-width-3 {
+  td {
+    width: 33%;
+  }
+}
+.el-descriptions.column-width-4 {
+  td {
+    width: 25%;
+  }
+}
+.el-table--small {
+  .el-link {
+    --el-link-font-size: var(--el-font-size-extra-small);
+  }
+}

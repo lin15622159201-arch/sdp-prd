@@ -1,0 +1,13 @@
+stages:
+  - lint
+代码检测:
+  stage: lint
+  image: node:16.1.0
+  before_script:
+    - npm config set registry https://registry.npmmirror.com/
+    - npm i pnpm@7 -g
+    - pnpm i
+  script:
+    - pnpm run lint & pnpm run stylelint & pnpm run tsc
+  rules:
+    - if: $CI_MERGE_REQUEST_ID

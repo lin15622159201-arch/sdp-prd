@@ -1,0 +1,14 @@
+.img-look-eith-box {
+  position: relative;
+  .bth-pro {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+  }
+  &:hover .bth-pro {
+    display: block;
+  }
+}
+

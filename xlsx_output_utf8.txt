@@ -1,0 +1,195 @@
+ID=序号|Module=所属模块|Func=所属环节|Desc=需求描述|Pri=优先级|Status=需求状态|Iter=推动节奏|Type=附件|ReqBy=提出人|Dept=需求方部门|Date=提出时间|Expected=预计上线时间|Actual=上线完成时间|PM=需求记录人|BA=跟进产品经理|Dev=需求跟进人|Note=备注|Pri1=优先级1|Status1=需求状态1
+ID=2|Module=商品开发|Func=款式管理|Desc=导入外部款式需要支持链接导入（年后版本）|Pri=P3|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P3|Status1=待处理
+ID=5|Module=商品开发|Func=款式管理|Desc=非前置拆版的不支持运营手工推到plm拆版建bom，系统需校验，动销后自动推送PLM|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=8|Module=商品开发|Func=修图审核|Desc=修图任务处理人增加美工角色，字段和筛选项，筛选自己领取的任务|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=9|Module=商品开发|Func=款式管理|Desc=增加修图结果的版本记录|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=12|Module=商品开发|Func=款式管理|Desc=增加款式资料更新日志（记录操作内容、时间和操作人）|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=13|Module=商品开发|Func=款式管理|Desc=需要有款式进度管理，展示款式目前的状态（例如：待上架-待拆版-待上架-待更新图片--已上架--在售等）|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=14|Module=商品上架|Func=商品管理|Desc=商品列表的需要补充字段【生命周期】，【平台测价】，【供应链价格】，【利润】等|Pri=P1|Status=进行中|Iter=自动上架二期，4月初，预计下周一27号|Type=|ReqBy=李祈伟/孙士杰|Dept=时装运营组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=陈雨|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P1|Status1=进行中
+ID=15|Module=商品上架|Func=商品管理|Desc=现货款增加一个标签（是否样衣采买），自动触发采购单到多维表发起样衣采买任务|Pri=P3|Status=待处理|Iter=待定，走线下|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P3|Status1=待处理
+ID=16|Module=商品上架|Func=商品管理|Desc=一阶段利润判断靠运营人工判断是否通过，二阶段获取预估核价根据利润判断规则，不通过的列表，运营再次判断是否做成本优化（价格申诉/换链接）|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=17|Module=商品上架|Func=商品管理|Desc=目前发布商品无需通过第三方平台操作（开发中），自动发布商品预计年后规划，需自动判断规则（平台测价，款式利润，供应商核算价格等因子）|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=18|Module=商品开发|Func=款式管理|Desc=动销后的样衣（产前样）联合审版，需要商品组确认|Pri=P3|Status=待处理|Iter=待定，需沟通业务细节|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P3|Status1=待处理
+ID=19|Module=商品开发|Func=款式管理|Desc=非商品组发起的修图任务，需要商品组审核（通过/驳回），通过后美工才能进行修图|Pri=P2|Status=待处理|Iter=待定|Type=|ReqBy=黄桂芬|Dept=商品开发部|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=吴凡/健军|Note=|Pri1=P2|Status1=待处理
+ID=20|Module=运营下单|Func=自动下单|Desc=生产需求列表页：首单翻单需要区分大小单的且需要给到运营下单列表看到，用字段展示|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=李祈伟/孙士杰|Dept=时装运营组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=陈雨|BA=陈健伟|Dev=陈雨/一琦|Note=|Pri1=P2|Status1=待处理
+ID=21|Module=运营下单|Func=自动下单|Desc=备货计划列表页先默认呈现欠货数且支持导出数据保留支持筛选查看所有订单数的功能|Pri=P3|Status=待处理|Iter=待定，先用龙祥推送数据|Type=|ReqBy=李祈伟/孙士杰|Dept=时装运营组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=陈雨|BA=陈健伟|Dev=陈雨/一琦|Note=|Pri1=P3|Status1=待处理
+ID=22|Module=运营下单|Func=自动下单|Desc=支持根据筛选进行页面中操作备货下单计划，如：订单占有数，现有库存，日销量，季节性，利润，运营策略，质量，售后率等等标签|Pri=P3|Status=待处理|Iter=待定|Type=|ReqBy=李祈伟/孙士杰|Dept=时装运营组|Date=2026-01-09 00:00:00|Expected=|Actual=|PM=颜一琦|BA=陈健伟|Dev=陈雨/一琦|Note=|Pri1=P3|Status1=待处理
+ID=35|Module=运营下单|Func=信息展示|Desc=在生产需求列表增加系统任务和人工导入的标签以及筛选项|Pri=P2|Status=待处理|Iter=自动下单的功能，区分系统下还是人下|Type=|ReqBy=颜一琦|Dept=运营管理部|Date=2026-01-28 00:00:00|Expected=|Actual=|PM=颜一琦|BA=陈健伟|Dev=陈雨/一琦|Note=|Pri1=P2|Status1=待处理
+ID=39|Module=运营下单|Func=下单|Desc=建议备货列表页：同一个SKC在N个店铺售卖，自动下单后数量是累加，需要展示多个店铺与对应的小单数量|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-01-28 00:00:00|Expected=|Actual=|PM=孙士杰|BA=陈健伟|Dev=陈雨/一琦|Note=|Pri1=P3|Status1=待处理
+ID=45|Module=商品上架|Func=生图|Desc=滞销款商品需要快速更换视觉图后，更新至平台商品信息中重新上架|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=吴凡|Dept=运营管理部|Date=2026-01-30 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=46|Module=商品开发|Func=开款|Desc=款式管理中需要可以发送到“局部改款”|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=莫耀文|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=47|Module=商品开发|Func=开款|Desc=款式标签->映射款式级别（需获取映射关系）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=48|Module=商品开发|Func=开款|Desc=款式颜色自动新增（款式开发平台->PLM新增）/统一标准，品类也一样|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=吴凡|Dept=运营管理部|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=52|Module=商品上架|Func=审款|Desc=店铺管理：新增上架人员配置，用于商品审核提交结果后跳转下一条时，识别属于该上架人员的商品，而不是按自然顺序跳转|Pri=P2|Status=待处理|Iter=通过其他方式已实现|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=53|Module=商品上架|Func=审款|Desc=店铺配置时，选择店铺后可以默认带出对应的运营人员|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=54|Module=商品开发|Func=选款|Desc=AIGC选款不流畅，建议可以点开大图后可以通过→快速查看上下图，大图也可以直接选中|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=55|Module=商品开发|Func=开款|Desc=取消的款后续能继续使用吗？若需要，则增加款式资料复用功能|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=刘健军|Dept=运营管理部|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=56|Module=商品开发|Func=款式管理|Desc=任务关键节点飞书消息通知，例如测价通过后通知开发组做拆板|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=莫耀文|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=57|Module=商品上架|Func=开款|Desc=更改商品名称后，英文标题也需要支持重新翻译|Pri=P2|Status=待处理|Iter=|Type=商品审核页面字段调整方案|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=59|Module=商品开发|Func=审款|Desc=审款页面显示备注信息|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=柯梓丽|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=62|Module=商品开发|Func=开款|Desc=建款填信息时支持复制其他信息粘贴过去（先支持模糊搜索）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=63|Module=商品开发|Func=推送PLM|Desc=款式管理模块：套版款式有引用同一个套版款号资料的需求（技术资料带到打版环节），一期内容不含|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=谭康健|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=64|Module=商品上架|Func=信息展示|Desc=自动上架模块：有版有样的款式需要等样衣收货再加站，需要从PLM系统获取skc样衣的签收状态/打版进度，便于查看加站在售|Pri=P2|Status=待处理|Iter=P2优先|Type=|ReqBy=黄乔霜|Dept=商品上架组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=65|Module=商品开发|Func=开款|Desc=从款式管理带过来的姿势裂变增加勾选，可以直接把选中的图带回原款号里面|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=67|Module=商品开发|Func=开款|Desc=需要维护店铺对应风格：开款时选择店铺后自动对应风格|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=莫耀文|Dept=商品开发组|Date=2026-02-02 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=72|Module=商品开发|Func=修图审核|Desc=已完成的图可不可以改成一直保持编辑|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=73|Module=商品开发|Func=修图审核|Desc=可不可以单独直接替换要p的图片，并保留原图的历史记录|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=74|Module=商品开发|Func=开款|Desc=需要支持修改款式类型|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=莫耀文|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=75|Module=商品开发|Func=修图审核|Desc=款式管理的修图任务编号点进去就可以直接审核修好的图片|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=76|Module=商品开发|Func=修图审核|Desc=可不可以更新成已修好的图（已完成页面需要展示修图结果，此处展示信息错误）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=77|Module=商品开发|Func=修图审核|Desc=当针对款式中单张图片发起修图，审核结果更新图片后，款式信息会仅保留更新后的单张图片，而非只替换修图目标|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=吴凡|Dept=运营管理部|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=80|Module=商品上架|Func=发布|Desc=商品信息填错后是否可以重新在线编辑？
+发布后都需要编辑，包括属性和图片|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=82|Module=商品开发|Func=修图审核|Desc=修图任务备注目前只显示总备注，不显示备注1备注2备注3...|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=吴凡|Dept=运营管理部|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=83|Module=商品上架|Func=测价通过|Desc=需要增加商品列表数据导出功能|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=86|Module=商品开发|Func=修图审核|Desc=修图任务列表：备注信息需要展示备注的图片信息（需单独下载此备注图片）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=商品开发组|Date=2026-02-03 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=87|Module=商品开发|Func=开款|Desc=开款任务，创建款式时的字段调整：
+1）衣服上有多个颜色时，颜色识别只需要识别主色|Pri=P2|Status=待处理|Iter=|Type=商品审核页面字段调整方案|ReqBy=莫耀文|Dept=商品开发组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=88|Module=商品上架|Func=发布|Desc=待上架&商品列表页增加筛选字段：季节、运营人、运营组、设计组、上架人|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=89|Module=商品上架|Func=发布|Desc=AI生成商品标题功能需优化：或需增加爆款关键词作为提示词（可与上架组沟通详细逻辑)|Pri=P2|Status=待处理|Iter=|Type=商品审核页面字段调整方案|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=90|Module=商品上架|Func=发布|Desc=商详信息双向更新（TEMU平台&款式开发平台）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=91|Module=商品上架|Func=发布|Desc=PLM的bom单面料信息和打版放码后的正式尺码表需要回传到商品详情|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=92|Module=商品上架|Func=发布|Desc=不同店铺重复款校验（目前图片识别），其他店铺存在同款式时不允许发布|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=93|Module=商品上架|Func=发布|Desc=商品审核：
+1）产品信息部分字段可跟款式信息建立关联
+2）包装尺寸信息设置默认值|Pri=P2|Status=待处理|Iter=|Type=商品审核页面字段调整方案|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=96|Module=商品上架|Func=发布|Desc=商品审核：颜色填写时需支持模糊搜索|Pri=P2|Status=待处理|Iter=|Type=商品审核页面字段调整方案|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=99|Module=商品上架|Func=测价通过|Desc=测价通过的款式需要展示核价价格|Pri=P2|Status=进行中|Iter=自动上架二期，4月初|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=进行中
+ID=100|Module=商品上架|Func=测价通过|Desc=生成内部SKU后（商品审核&测价通过），需要推送聚水潭创建商品并设置虚拟库存|Pri=P1|Status=进行中|Iter=自动上架二期，4月初，还没排期|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-02-04 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=102|Module=运营下单|Func=自动下单|Desc=moken自动下单配置项：下单主体支持模糊搜索|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=陈雨|Dept=运营管理部|Date=2026-02-05 00:00:00|Expected=|Actual=|PM=刘健军|BA=陈健伟|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=103|Module=运营下单|Func=自动下单|Desc=问题：自动下单，店铺名称不一样会不能自动下单
+每个店铺有固定且唯一id为标识（已有），TEMU更改店铺名称后无需再人工配置任务重新触发
+方案：店铺信息-从SDP同步店铺信息|Pri=P1|Status=待处理|Iter=给庭威提需求：API同步店铺信息，系统内部统一用店铺ID
+纳入权限改造需求|Type=|ReqBy=陈雨|Dept=运营管理部|Date=2026-02-05 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=104|Module=运营下单|Func=自动下单|Desc=①需要将截止目前为止Y2多维表格已经下单的数据刷数到moken系统（导入后才能识别历史下单数量解决翻单小小单自动下单）
+②将Y2多维表的数据刷到现在判断首翻单的宽表中，可以先试用这份宽表判断
+全量切换到SDP开款后，再刷数
+表的字段发群里|Pri=P1|Status=待处理|Iter=刷到宽表|Type=|ReqBy=陈雨|Dept=运营管理部|Date=2026-02-26 00:00:00|Expected=|Actual=|PM=陈雨|BA=陈健伟|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=109|Module=运营下单|Func=下单|Desc=moken 订单，取消的时候简单点，目前要填好几个东西、只保留终止原因、去掉费用归属和取消凭证（需要识别字段是否关联财务付款）
+3月19日：
+moken取消单先将取消凭证改成支持可以拖拉，粘贴上传
+pims确认订单也支持运营发起但是需要跟单确认，且此取消状态会回传至MOKEN（搁置）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-03-04 00:00:00|Expected=|Actual=|PM=颜一琦|BA=陈健伟|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=114|Module=商品开发|Func=开款|Desc=任务列表的任务进度状态采用不同颜色标识，方便识别异常任务：待出方案|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=曾睿|Dept=商品开发组|Date=2026-03-05 00:00:00|Expected=|Actual=|PM=吴凡|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=119|Module=商品上架|Func=上架|Desc=新增复色款需要补充从SDP直接推送到temu后台上架的路径，由于temu未提供接口，先做以下优化：
+支持待发布的操作推送上架到【待上架】列表给 上架组审核；已发布的推送到【商品列表】给运营操作|Pri=P1|Status=进行中|Iter=预计下周一27号|Type=|ReqBy=黄乔霜|Dept=时装上架组|Date=2026-03-06 00:00:00|Expected=|Actual=|PM=招婉君|BA=林廷威|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=122|Module=商品开发|Func=开款|Desc=需求-局部改款直联姿势裂变，同步进行：待出方案（路径待整合）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=万慧玲|Dept=商品开发组|Date=2026-03-06 00:00:00|Expected=|Actual=|PM=吴凡|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=125|Module=商品开发|Func=开款|Desc=需求-批量导入款式后需要单独编辑款式店铺：待出方案|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=商品开发组|Date=2026-03-09 00:00:00|Expected=|Actual=|PM=吴凡|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=126|Module=商品开发|Func=开款|Desc=需求-开款时可选择姿势裂变&局部改款结果图片维护营销图：待出方案|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=莫耀文|Dept=商品开发组|Date=2026-03-09 00:00:00|Expected=|Actual=|PM=吴凡|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=137|Module=运营下单|Func=下单|Desc=组合装SKU问题|Pri=P1|Status=进行中|Iter=预计五一后，uat验收|Type=|ReqBy=孙士杰|Dept=时装运营组|Date=2026-03-16 00:00:00|Expected=2026-04-30 00:00:00|Actual=|PM=颜一琦|BA=陈健伟|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=138|Module=商品开发|Func=款式管理|Desc=建款时，如果项目类型选的是无版无样，制作方式默认3D样|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=设计师|Dept=商品开发组|Date=2026-03-17 00:00:00|Expected=|Actual=|PM=谢可|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=140|Module=商品上架|Func=发布|Desc=商品管理页面，上新总数在商品状态栏显示|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-03-24 00:00:00|Expected=|Actual=|PM=吴凡|BA=|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=141|Module=商品开发|Func=款式管理|Desc=款式营销图也需要支持设计师自由裁剪（类似商品上架时那个缩放裁剪）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=|Date=2026-03-27 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=142|Module=商品开发|Func=开款|Desc=开款页面：
+1）需要对创建的款式进行信息备注，以供组长审款时参考
+2）批量导入款式时，每个款式都需要有非必填的备注框
+审款页面：
+1）显示开款时备注信息|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=巫常雨|Dept=|Date=2026-03-30 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=143|Module=商品开发|Func=修图审核|Desc=图片更新任务页面：
+1）需要展示任务款式对应店铺名称和SKC（目前只有SPU）
+2）发起图片更新任务时（直接创建&款式管理发送），增加【指定美工】选择项（关联美工权限用户），任务页面增加信息展示（任务处理人：美工）
+3）图片更新任务列表增加<上传图片人>字段，并提供筛选项
+4）发起修图任务时以SKC维度（当前以SPU发起）|Pri=P1|Status=待处理|Iter=6|Type=|ReqBy=金芊慧|Dept=|Date=2026-03-30 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=144|Module=商品开发|Func=开款|Desc=批量开款需要增加【面料池类型】——【极致单品】、【以料开款】、【外匹-趋势面料】字段（字段已新增），关联面料匹配任务（PLM）|Pri=P1|Status=待处理|Iter=8|Type=|ReqBy=范思慧|Dept=|Date=2026-03-30 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=145|Module=商品开发|Func=开款|Desc=开款任务填写的字段做映射关系（映射关系表待定）
+1）店铺->风格
+2）款式标签->款式级别
+3）开款时选择套装品类，2/3件套自动映射填写SKU分类套装件数为2/3|Pri=P1|Status=待处理|Iter=3|Type=|ReqBy=范思慧|Dept=|Date=2026-03-30 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=146|Module=商品开发|Func=开款|Desc=功能需求：
+1）款式管理可发送至局部改款进行任务；
+2）局部改款结果同步AIGC选款，可进行①选款开款 或者 ②覆盖原款式营销图|Pri=P1|Status=待处理|Iter=4|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=147|Module=商品开发|Func=开款|Desc=交互优化：AIGC选款保存结果后返回选款前页面，不要跳转回第一页|Pri=P1|Status=待处理|Iter=10|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=148|Module=商品开发|Func=开款|Desc=交互优化：款式管理页面编辑SPU信息后，不要清空之前填写的营销图和开发信息（已编辑的信息需暂存）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=150|Module=商品开发|Func=开款|Desc=功能需求：AIGC选款标记页面，点开大图时需要可直接标记，不需要返回页面再找到图片进行标记|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=151|Module=商品上架|Func=信息展示|Desc=功能需求：
+款式制作方式（项目类型）和在PLM的建bom和拆版完成状态要回显给商品列表，并提供筛选项，以判断前置拆版款是否可加站在售|Pri=P1|Status=进行中|Iter=4月26日前上线，筛选项五一前上线|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=152|Module=商品开发|Func=通知中心|Desc=功能需求：通知中心增加PLM推送失败，推送上架失败，发布失败、测价通过的通知|Pri=P1|Status=待处理|Iter=1|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=153|Module=商品开发|Func=开款|Desc=交互优化：批量创建款式时，如果有某个款式缺少必填信息，自动滑动至该款式位置，避免自行查找|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=万慧玲|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=154|Module=商品开发|Func=开款|Desc=交互优化：批量创建款式后，清除初始生成的空白款式，否则需要手动删除后才可提交|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=植嘉丽|Dept=|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=156|Module=商品开发|Func=开款|Desc=项目类型需要改为必填下游版房按照标签作业：当前仅在款式管理向下流转时校验，建议在开款页面必填（可批量填写）|Pri=P1|Status=待处理|Iter=已加上校验|Type=|ReqBy=颜一琦|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=158|Module=商品开发|Func=开款|Desc=在SDP修改生产渠道时，若选定为OEM，必填字段“是否需要里布”，本字段在PLM内带出|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=李嘉雯|Dept=运营管理部|Date=2026-03-31 00:00:00|Expected=|Actual=|PM=李嘉雯|BA=陈建伟|Dev=|Note=|Pri1=|Status1=
+ID=159|Module=商品开发|Func=修图审核|Desc=批量上传图片时多图片的任务的备注显示有点问题，单张图片的任务可以显示|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=金芊慧|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=160|Module=商品开发|Func=开款|Desc=款式查重的功能：在款式批量导入和创建任务界面也需要部署（是否会拖慢导入速度？）|Pri=P1|Status=待处理|Iter=5|Type=|ReqBy=张晓慧|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=161|Module=商品开发|Func=开款|Desc=局部改款：中自由选择图片元素组合，并可批量创建任务：可以参考图1背景，图2模特综合到一张图，或者多张图统一换背景|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=王艺宁|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=162|Module=商品开发|Func=开款|Desc=现货管理：SPU有图SKC页面可以直接带图过来（避免重复操作）|Pri=P1|Status=待处理|Iter=2|Type=|ReqBy=王艺宁|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=163|Module=商品开发|Func=开款|Desc=交互优化：开款导入页面图片粘贴拖入方式|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=王艺宁|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=164|Module=商品开发|Func=信息展示|Desc=信息展示：
+1）款式管理目前不能预览所有图片，只能点进编辑查看图片查看细节，需要增加所有营销图预览展示
+2）款式管理缩略图右上角可标记当前营销图数量，方便快速检查营销图数量是否满足上架条件
+3）SPU处增加第一个SKC的第一张图，用于复色款识别|Pri=P1|Status=待处理|Iter=7|Type=|ReqBy=张晓慧|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=165|Module=商品开发|Func=开款|Desc=款式成分填写（非必填）：用于商品上架价格预估计算|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=张晓慧|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=166|Module=商品开发|Func=开款|Desc=AIGC选款页面：可选图片需要加上原上传图|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=王艺宁|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=167|Module=商品开发|Func=开款|Desc=姿势裂变：AIGC重新生成图片时，需要可重新编辑提示词（可延展至其他功能？）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=王艺宁|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=168|Module=商品开发|Func=修图审核|Desc=图片更新任务需要返修时，批量处理时需要增加展示返修原因|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=金芊慧|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=169|Module=商品开发|Func=信息展示|Desc=款式编码相关的筛选栏：需要加上清空内容快捷键|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=万慧玲|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=170|Module=商品上架|Func=发布|Desc=现货款根据商品链接,提取到:价格,重量,成分,尺码,尺寸（如能实现，现货开款成分等相关必填项可取消必填）|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=171|Module=商品上架|Func=发布|Desc=批量导出增加:
+1）复制平台SPU+平台SKC
+2）复制SPU+平台SPU+平台SKC
+3）复制SPU+平台SPU+平台SKC+平台价格
+4）复制SPU+平台SPU+平台SKC+平台价格+内部FOB价|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-01 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=172|Module=商品上架|Func=发布|Desc=增加商品审核任务领取机制：
+增加“领取”操作&“审核中”状态 or 进入审核时自动校验是否有用户正在操作中？|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=173|Module=商品开发|Func=开款|Desc=局部改款：生成失败的任务可批量选择重新生成任务|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=植嘉丽|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=175|Module=商品开发|Func=开款|Desc=必填的开发信息前置到开款页面填写（可批量填写）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=白浩辉|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=176|Module=商品开发|Func=信息展示|Desc=店铺列表分组展示：
+运营配置店铺时选择设计组，该项目组只能在开款时店铺选项看到属于自己组别的店铺|Pri=P2|Status=待处理|Iter=P2优先|Type=|ReqBy=范思慧|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=177|Module=商品开发|Func=修图审核|Desc=图片更新任务上传时，需要支持自由修改图片顺序，避免后续还需调整主图选择|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=|Date=2026-04-02 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=179|Module=商品上架|Func=发布|Desc=待上架页面：
+1）待审核排序:按远到近,把最新创建的款排到后面
+2）可多选店铺|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-03 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=180|Module=商品上架|Func=发布|Desc=商品审核界面，尺寸包装信息批量填写处设置默认值（类似需求93第2点），SKU根据图片品类做映射（AI识别？）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-04 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=181|Module=商品开发|Func=信息展示|Desc=交互优化：图片浏览点击空白处可退出浏览|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=罗敏|Dept=|Date=2026-04-07 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=182|Module=运营下单|Func=下单|Desc=通过API获取temu平台订单数据，替换目前通过爬虫取数导致数据不稳定|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=梁溢芙|Dept=数据部|Date=2026-03-25 00:00:00|Expected=|Actual=|PM=招婉君|BA=林廷威|Dev=招婉君|Note=|Pri1=P2|Status1=待处理
+ID=183|Module=商品开发|Func=开款|Desc=复色款波段优化：不要跟随首款创建时间和波段，要支持修改（现在是默认跟随原款的波段，且不能单独修改，修改后原款的波段也变了）|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=范思慧|Dept=|Date=2026-04-07 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=184|Module=商品开发|Func=信息展示|Desc=现货管理波段显示|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=钟雨晴|Dept=|Date=2026-04-07 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=185|Module=商品开发|Func=开款|Desc=待开款任务支持删除|Pri=P1|Status=待处理|Iter=重复款的任务堆积，优先级提高|Type=|ReqBy=林文杰|Dept=|Date=2026-04-08 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=187|Module=商品开发|Func=信息展示|Desc=AIGC选款和AIGC选款结果页面增加SKC搜索|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄旭|Dept=|Date=2026-04-09 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=188|Module=商品开发|Func=信息展示|Desc=图片更新任务交互优化：目前任务详情中点击任何一张图都是先显示第一张，改成单击哪张图就显示哪张图|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=苏嘉艳|Dept=|Date=2026-04-09 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=189|Module=商品开发|Func=信息展示|Desc=开发信息颜色选项：支持模糊搜索|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=植嘉丽|Dept=|Date=2026-04-09 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=191|Module=商品开发|Func=开款|Desc=虚拟换衣等AI功能素材图上传：上传图片的地方都要支持复制粘贴上传|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=李梦|Dept=|Date=2026-04-10 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=192|Module=商品上架|Func=上架|Desc=非套装商品，取消面料纹理2&面料克重2必填：目前重复删除，比较耗时，影响上架时效|Pri=P2|Status=待处理|Iter=必填项是平台返回的，待产研评估|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=193|Module=商品上架|Func=上架|Desc=单个款式做商品回捞，需要多次上架进行价格申报，提高测价通过率|Pri=P1|Status=进行中|Iter=预计4月底上线|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=194|Module=商品上架|Func=上架|Desc=复色款需要支持人工添加“已发布”状态，以标记已经发布过的复色款商品（能自动回捞平台状态更好），设计和上架组都需要看到这个状态|Pri=P1|Status=进行中|Iter=和需求119一起做，商品状态同步优先查新增的skc|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=进行中
+ID=195|Module=商品上架|Func=上架|Desc=审核排序，由推送时间从远到近倒序展示，便于先推送的先审核|Pri=P2|Status=待处理|Iter=P2优先|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=196|Module=商品上架|Func=上架|Desc=目前复色款会推到待更新或者待审核位置，且有些无复色标签，区分复色比较复杂且耗时，优化一下复色推到上架的位置（统一到待更新或者复色款区）|Pri=P2|Status=待处理|Iter=P2优先|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=197|Module=商品上架|Func=上架|Desc=优化映射关系跟固定值，还有自动生成标题|Pri=P2|Status=待处理|Iter=P2优先|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=198|Module=商品开发|Func=信息展示|Desc=款式管理页面状态栏同一维度需支持多项同时筛选，便于统计|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=199|Module=商品上架|Func=信息展示|Desc=商品列表页面状态栏同一维度支持多项同时筛选，便于查看单月数据|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=200|Module=商品上架|Func=上架|Desc=需要增加导出营销图功能，便于复色款人工上架|Pri=P2|Status=进行中|Iter=|Type=|ReqBy=陈思华|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=进行中
+ID=201|Module=商品上架|Func=上架|Desc=部分款可能需要重新确认信息才能审核，批量审核时需要增加跳过，跳转下一个商品审核|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=钟蕊|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=202|Module=商品上架|Func=上架|Desc=可选择多店审核&可分品类批量审核|Pri=P3|Status=待处理|Iter=P3优先|Type=|ReqBy=|Dept=黄乔霜|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=203|Module=商品上架|Func=上架|Desc=数据导出：可批量导出明细（里面有平台SPU+平台SPU+平台SKC+图片+品类+店铺+设计师等）|Pri=P3|Status=待处理|Iter=P3优先|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=204|Module=商品上架|Func=上架|Desc=修图功能，审核时可去水印（对接AI一键去水印？）|Pri=P3|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P3|Status1=待处理
+ID=206|Module=商品开发|Func=信息展示|Desc=已上架款式的文本型字段信息更新，需要将信息同步给运营进行修改|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=巫常雨|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=207|Module=商品开发|Func=开款|Desc=批量创建款式时，批量填写需要过滤已填充内容的款式，只批量填写空白字段，否则手动调整过的信息会被覆盖|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=康灶香|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=208|Module=商品开发|Func=开款|Desc=服装换色：颜色选择处增加颜色提取功能|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=蔡俊敏|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=209|Module=商品开发|Func=信息展示|Desc=开款任务左侧增加序列号|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=罗爽|Dept=|Date=2026-04-14 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=210|Module=商品开发|Func=信息展示|Desc=现货管理：增加开发波段和上架波段显示，增加波段&店铺的筛选项|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=谭康健|Dept=|Date=2026-04-15 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=211|Module=商品开发|Func=款式管理|Desc=在售跟卖款因无法做货需要转现货款，需要款式类型转换，并对商品列表及店铺后台更新对应天工SKC|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=黄石兰|Dept=|Date=2026-04-15 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=212|Module=商品开发|Func=信息展示|Desc=UI优化：现货管理SKC维度信息不要隐藏，很难每条展开进行查阅|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=谭康建|Dept=|Date=2026-04-16 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=213|Module=商品开发|Func=信息展示|Desc=增加面料池使用范围筛选项，用于实时查看数量|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=植嘉丽|Dept=|Date=2026-04-17 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=214|Module=商品开发|Func=开款|Desc=制作方式：3D/实物样可前置到开款&款式创建时填写（目前开款完成后需补填开发信息）|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=叶思彤|Dept=|Date=2026-04-17 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=217|Module=商品上架|Func=测价环节|Desc=sdp商品列表页面展示PLM预估价格和精准价格：①预估价格和精准价格都需要在页面里分别展示；②页面能够展示预估价格和精准价格相差20%以上的款，同时支持筛选；③可以根据预估和精准的差值百分比进行筛选|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=张嘉炜|Dept=A项目运营|Date=2026-03-24 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=219|Module=商品上架|Func=商品管理|Desc=增加商品信息的查询功能，可以查询样衣尺码表和成分（中英文），用于更新平台商品信息|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=孙士杰|Dept=运营上架组|Date=2026-04-17 00:00:00|Expected=|Actual=|PM=招婉君|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=220|Module=商品开发|Func=修图审核|Desc=图片更新任务：修图备注中需要允许添加多张图片备注|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=周筱璇|Dept=商品开发组|Date=2026-04-17 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=221|Module=商品开发|Func=款式管理|Desc=SDP款式管理新增字段&调整字段：
+①【项目来源】：必填，根据用户所属的租户默认填充，不允许手动修改
+枚举值：X项目-时装、A项目-时装
+②原来【款式级别】同步到PLM新字段【款式级别】，枚举值：S级、A级、B级、C级|Pri=P1|Status=待处理|Iter=|Type=|ReqBy=周小楠/柯梓丽|Dept=商品开发组|Date=2026-04-20 00:00:00|Expected=|Actual=|PM=刘健军|BA=林廷威|Dev=|Note=|Pri1=P1|Status1=待处理
+ID=222|Module=商品上架|Func=商品管理|Desc=商品列表---增加是否测价通过的筛选项、是否完成拆版的筛选项|Pri=P2|Status=进行中|Iter=|Type=|ReqBy=|Dept=运营上架组|Date=2026-04-23 00:00:00|Expected=|Actual=|PM=招婉君|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=进行中
+ID=223|Module=商品上架|Func=商品管理|Desc=测价通过的状态自动更新：状态=已发布到站点 （或者按照确认价格的时间点）|Pri=P2|Status=待处理|Iter=待定，单独拉会|Type=|ReqBy=|Dept=运营上架组|Date=2026-04-23 00:00:00|Expected=|Actual=|PM=招婉君|BA=林廷威|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=224|Module=商品开发|Func=款式管理|Desc=款式管理+现货管理：图片更新提醒，飞书通知运营（上架+店铺运营）进行店铺图片更换|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=林坤|Dept=|Date=2026-04-24 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=P2|Status1=待处理
+ID=225|Module=商品开发|Func=信息展示|Desc=增加路径：款式管理中点击款号生成新页面，不在当前页面跳转|Pri=P2|Status=待处理|Iter=|Type=|ReqBy=林坤|Dept=|Date=2026-04-27 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=
+ID=226|Module=商品开发|Func=信息展示|Desc=数据看板：
+1）设计师（个人&组内）待办任务列表（前置款，有版有样款，动销款测价通过设计待拆版/测价通过设计待建bom的待办数量）+点击款号跳转任务页面
+2）有版有样&买手定向类型的款式：需要在SDP同步PLM打版环节的进度，以便跟进样衣开发情况
+3）已测价通过待加站商品等任务列表|Pri=P2|Status=待处理|Iter=|Type=待办任务实时看板需求|ReqBy=陈曼莉
+范思慧
+黄乔霜|Dept=|Date=2026-04-28 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=
+ID=227|Module=商品开发|Func=审款|Desc=组长审款页面
+1）AI查重同款数字标识改强调显示（UI优化）
+2）查重增加尺码组区分（标码同款/标码相似款，大码同款/大码相似款）
+3）增加批量淘汰同款快捷键，自动将存在同款的待审款变更为淘汰（支持修正），提交结果时增加确认提交警示|Pri=|Status=待处理|Iter=|Type=|ReqBy=陈曼莉|Dept=|Date=2026-05-07 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=
+ID=228|Module=商品上架|Func=待上架|Desc=商品审核时支持批量按 3:4 比例扩图 / 补白，适配 Temu 平台要求（类似店小秘 ERP「小秘美图」）|Pri=|Status=待处理|Iter=|Type=|ReqBy=黄乔霜|Dept=|Date=2026-05-07 00:00:00|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=
+ID=229|Module=|Func=|Desc=|Pri=|Status=|Iter=|Type=|ReqBy=|Dept=|Date=|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=
+ID=230|Module=|Func=|Desc=|Pri=|Status=|Iter=|Type=|ReqBy=|Dept=|Date=|Expected=|Actual=|PM=|BA=|Dev=|Note=|Pri1=|Status1=

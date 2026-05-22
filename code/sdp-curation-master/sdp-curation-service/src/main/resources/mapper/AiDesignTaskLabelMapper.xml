@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.AiDesignTaskLabelMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.AiDesignTaskLabel" id="AiDesignTaskLabelMap">
+        <!--@mbg.generated-->
+        <!--@Table ai_design_task_label-->
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="taskId" column="task_id" jdbcType="BIGINT"/>
+        <result property="labelName" column="label_name" jdbcType="VARCHAR"/>
+        <result property="labelCode" column="label_code" jdbcType="VARCHAR"/>
+        <result property="labelValueName" column="label_value_name" jdbcType="VARCHAR"/>
+        <result property="labelValueCode" column="label_value_code" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id
+        ,task_id
+        ,label_name
+        ,label_code
+        ,label_value_name
+        ,label_value_code
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+
+    <delete id="deleteByTaskId">
+        delete from ai_design_task_label where task_id = #{taskId}
+    </delete>
+</mapper>
+

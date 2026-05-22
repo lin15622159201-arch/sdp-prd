@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.ImageUpdateTaskMapper">
+
+
+    <select id="page" resultType="tech.tiangong.sdp.entity.ImageUpdateTask">
+        select * from image_update_task
+        WHERE deleted=0
+        <include refid="queryCondition"/>
+        order by created_time desc
+    </select>
+
+    <select id="selectGroupByTaskStatus" resultType="tech.tiangong.sdp.vo.dto.ImageUpdateTaskGroupDTO">
+        SELECT
+            task_status AS taskStatus,
+            COUNT(*) AS total
+        FROM image_update_task WHERE deleted=0
+        <include refid="queryCondition"/>
+        GROUP BY task_status
+    </select>
+
+    <sql id="queryCondition">
+        <if test="req.tenantId != null">
+            AND tenant_id = #{req.tenantId}
+        </if>
+        <if test="req.taskStatus != null">
+            AND task_status = #{req.taskStatus}
+        </if>
+        <if test="req.wavebandCodes != null and req.wavebandCodes.size() > 0">
+            AND wave_band_code IN
+            <foreach collection="req.wavebandCodes" item="code" open="(" close=")" separator=",">
+                #{code}
+            </foreach>
+        </if>
+        <if test="req.creatorIds != null and req.creatorIds.size() > 0">
+            AND creator_id IN
+            <foreach collection="req.creatorIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="req.createdStartTime != null">
+            AND created_time &gt;= #{req.createdStartTime}
+        </if>
+        <if test="req.createdEndTime != null">
+            AND created_time &lt;= #{req.createdEndTime}
+        </if>
+        <if test="req.storeIds != null and req.storeIds.size() > 0">
+            AND store_id IN
+            <foreach collection="req.storeIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="req.designerIds != null and req.designerIds.size() > 0">
+            AND designer_id IN
+            <foreach collection="req.designerIds" item="designerId" open="(" close=")" separator=",">
+                #{designerId}
+            </foreach>
+        </if>
+        <if test="req.taskType != null">
+            AND task_type = #{req.taskType}
+        </if>
+
+        <if test="req.spuCodes != null and req.spuCodes.size() > 0">
+            AND
+            <foreach collection="req.spuCodes" item="spuCode" open="(" close=")" separator="OR">
+                spu_code LIKE CONCAT('%',#{spuCode}, '%')
+            </foreach>
+        </if>
+        <!--<if test="req.spuCodes != null and req.spuCodes.size() > 0">
+            AND spu_code IN
+            <foreach collection="req.spuCodes" item="code" open="(" close=")" separator=",">
+                #{code}
+            </foreach>
+        </if>-->
+        <if test="req.taskCodes != null and req.taskCodes.size() > 0">
+            AND
+            <foreach collection="req.taskCodes" item="taskCode" open="(" close=")" separator="OR">
+                task_code LIKE CONCAT('%',#{taskCode}, '%')
+            </foreach>
+        </if>
+        <!--<if test="req.taskCodes != null and req.taskCodes.size() > 0">
+            AND task_code IN
+            <foreach collection="req.taskCodes" item="code" open="(" close=")" separator=",">
+                #{code}
+            </foreach>
+        </if>-->
+    </sql>
+</mapper>
+

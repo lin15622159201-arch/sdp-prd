@@ -1,0 +1,21 @@
+.detection-dialog {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background-color: #fff;
+  .detection-dialog-main {
+    flex: 1;
+    display: flex;
+  }
+  .tips {
+    .step-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      border: 1px solid #000;
+      border-radius: 50%;
+    }
+  }
+}

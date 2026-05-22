@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.AiDesignTaskPictureMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.AiDesignTaskPicture" id="AiDesignTaskPictureMap">
+        <!--@mbg.generated-->
+        <!--@Table ai_design_task_picture-->
+        <id property="pictureId" column="picture_id" jdbcType="BIGINT"/>
+        <result property="taskId" column="task_id" jdbcType="BIGINT"/>
+        <result property="pictureUrl" column="picture_url" jdbcType="VARCHAR"/>
+        <result property="repairImgUrl" column="repair_img_url" jdbcType="VARCHAR"/>
+        <result property="groupNum" column="group_num" jdbcType="INTEGER"/>
+        <result property="serialNum" column="serial_num" jdbcType="INTEGER"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        picture_id
+        ,task_id
+        ,picture_url
+        ,repair_img_url
+        ,group_num
+        ,serial_num
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+
+    <delete id="deleteByTaskId">
+        delete from ai_design_task_picture where task_id = #{taskId}
+    </delete>
+</mapper>
+

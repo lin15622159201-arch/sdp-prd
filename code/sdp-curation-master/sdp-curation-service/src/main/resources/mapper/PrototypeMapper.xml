@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.PrototypeMapper">
+
+    <sql id="list_column_base">
+        select p.style_code,
+               p.design_style_id,
+               p.prototype_id,
+               p.design_code,
+               p.version_num,
+               p.color,
+               p.is_make_more,
+               p.is_urgent,
+               p.is_canceled,
+               p.skc_type,
+               p.is_on_sale,
+               p.prototype_status,
+               p.created_time as skc_created_time,
+               p.spu_created_time,
+               p.creator_id,
+               p.creator_name,
+               p.cancel_time,
+               p.designer_id,
+               p.designer_code,
+               p.designer_name,
+               p.category_code,
+               p.category_name,
+               p.listing_status,
+               p.push_plm_status,
+               p.push_plm_result_message,
+               p.listing_fail_reason,
+               p.pre_disassembly_state,
+               p.price_passed_state,
+               p.price_passed_time,
+               p.disassembly_finished,
+               p.disassembly_finished_time,
+               p.price_passed_time,
+               pd.design_picture,
+               pd.size_standard,
+               pd.size_standard_code,
+               pd.sample_size,
+               pd.cancel_reason,
+               pd.cancel_user_id,
+               pd.cancel_user_name,
+               pd.cancel_remark,
+               pd.check_price_state,
+               pd.check_price_id,
+               pd.predict_check_price_id,
+               pd.predict_check_price_status,
+               ds.image_update_status,
+               ds.image_update_task_code
+    </sql>
+
+    <sql id="list_where_if_base">
+        AND p.deleted = 0
+        <if test="query.tenantId!=null">
+            AND p.tenant_id = #{query.tenantId}
+        </if>
+        <if test="query.preDisassemblyState!=null">
+            AND p.pre_disassembly_state = #{query.preDisassemblyState}
+        </if>
+        <if test="query.pricePassedState!=null and query.pricePassedState == 0">
+            AND (p.price_passed_state is null or p.price_passed_state =0)
+        </if>
+        <if test="query.pricePassedState!=null and query.pricePassedState == 1">
+            AND p.price_passed_state = 1
+        </if>
+        <if test="query.disassemblyFinished!=null">
+            AND p.disassembly_finished = #{query.disassemblyFinished}
+        </if>
+
+        <if test="query.pushPlmStatus!=null">
+            AND p.push_plm_status = #{query.pushPlmStatus}
+        </if>
+        <if test="query.designerIds!=null and query.designerIds.size() > 0">
+            AND p.designer_id in
+            <foreach collection="query.designerIds" item="designerId" index="index" open="(" close=")" separator=",">
+                #{designerId}
+            </foreach>
+        </if>
+        <if test="query.designCodeList!=null and query.designCodeList.size() > 0">
+            AND p.design_code REGEXP
+            CONCAT_WS('|',
+            <foreach collection="query.designCodeList" item="item" index="index" open="" close="" separator=",">
+                '${item}'
+            </foreach>
+            )
+        </if>
+        <if test="query.styleCodeList!=null and query.styleCodeList.size() > 0">
+            AND p.style_code REGEXP
+            CONCAT_WS('|',
+            <foreach collection="query.styleCodeList" item="item" index="index" open="" close="" separator=",">
+                '${item}'
+            </foreach>
+            )
+        </if>
+
+        <if test="query.categoryNameList!=null and query.categoryNameList.size() > 0 ">
+            AND p.category_name in
+            <foreach collection="query.categoryNameList" item="categoryName" index="index" open="(" close=")"
+                     separator=",">
+                #{categoryName}
+            </foreach>
+        </if>
+
+        <if test="query.waveBandCodeList!=null and query.waveBandCodeList.size() > 0 ">
+            AND ds.wave_band_code in
+            <foreach collection="query.waveBandCodeList" item="waveBandCode" index="index" open="(" close=")"
+                     separator=",">
+                #{waveBandCode}
+            </foreach>
+        </if>
+        <if test="query.designerIdList != null and query.designerIdList.size > 0">
+            AND p.designer_id in
+            <foreach item="item" collection="query.designerIdList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.storeIdList!=null and query.storeIdList.size() > 0">
+            AND ds.store_id in
+            <foreach collection="query.storeIdList" item="storeId" index="index" open="(" close=")" separator=",">
+                #{storeId}
+            </foreach>
+        </if>
+        <if test="query.styleLabelCodeList!=null and query.styleLabelCodeList.size() > 0">
+            AND ds.style_label_code in
+            <foreach collection="query.styleLabelCodeList" item="styleLabelCode" index="index" open="(" close=")"
+                     separator=",">
+                #{styleLabelCode}
+            </foreach>
+        </if>
+        <if test="query.styleLevelCodeList!=null and query.styleLevelCodeList.size() > 0">
+            AND ds.style_level_code in
+            <foreach collection="query.styleLevelCodeList" item="styleLevelCode" index="index" open="(" close=")"
+                     separator=",">
+                #{styleLevelCode}
+            </foreach>
+        </if>
+        <if test="query.spuCreatedTimeStart != null">
+            and p.spu_created_time <![CDATA[ >= ]]> #{query.spuCreatedTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.spuCreatedTimeEnd != null">
+            and p.spu_created_time <![CDATA[ <= ]]> #{query.spuCreatedTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.skcCreatedTimeStart != null">
+            and p.created_time <![CDATA[ >= ]]> #{query.skcCreatedTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.skcCreatedTimeEnd != null">
+            and p.created_time <![CDATA[ <= ]]> #{query.skcCreatedTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.imageUpdateStatus != null">
+            <choose>
+                <when test="query.imageUpdateStatus == -1">
+                    AND ds.image_update_status IS NULL
+                </when>
+                <otherwise>
+                    AND ds.image_update_status = #{query.imageUpdateStatus}
+                </otherwise>
+            </choose>
+        </if>
+
+        <if test="query.prototypeStatus!=null">
+            AND p.prototype_status = #{query.prototypeStatus}
+        </if>
+        <if test="query.isMakeMore!=null">
+            AND p.is_make_more = #{query.isMakeMore}
+        </if>
+        <if test="query.isCanceled!=null">
+            AND p.is_canceled = #{query.isCanceled}
+        </if>
+        <if test="query.isOnSale != null">
+            and p.is_on_sale=#{query.isOnSale,jdbcType=INTEGER}
+        </if>
+        <if test="query.skcType != null">
+            and p.skc_type=#{query.skcType,jdbcType=INTEGER}
+        </if>
+        <if test="query.listingStatus != null">
+            and p.listing_status=#{query.listingStatus,jdbcType=INTEGER}
+        </if>
+
+        <if test="query.checkPriceState == 0">
+            and ( ( pd.check_price_state != 2 or pd.check_price_state is null) and (pd.predict_check_price_status != 2
+            or pd.predict_check_price_status is null ))
+        </if>
+
+        <if test="query.checkPriceState == 1">
+            and (pd.check_price_state = 2 or pd.predict_check_price_status = 2)
+        </if>
+        <if test="query.materialSearchState != null and query.materialSearchState == 1">
+        </if>
+        <if test="query.materialSearchState != null and query.materialSearchState == 0">
+        </if>
+        <if test="query.materialSearchState != null and query.materialSearchState == 0">
+        </if>
+    </sql>
+
+    <sql id="if_isChange">
+        <!--  是否改款 -->
+        <if test="query.isChange == 1">
+            and ${sourceTypeColumn} IN (110, 120) and ${sampleTypeColumn} IN (2, 4)
+        </if>
+        <if test="query.isChange == 0">
+            and !( ${sourceTypeColumn} IN (110, 120) and ${sampleTypeColumn} IN (2, 4) )
+        </if>
+    </sql>
+    <sql id="if_isChange_other">
+        <!--  是否改款 -->
+        <if test="query.isChange == 1">
+            and ${sourceTypeColumn} IN (110, 120) and ${sampleTypeColumn} IN (2, 4)
+        </if>
+        <if test="query.isChange == 0">
+            and ( !(${sourceTypeColumn} IN (110, 120) and ${sampleTypeColumn} IN (2, 4)) OR ${sourceTypeColumn} IS NULL
+            )
+        </if>
+    </sql>
+
+    <select id="listQuery" resultType="tech.tiangong.sdp.vo.resp.PrototypeQueryResp">
+        <include refid="list_column_base"/>
+        from prototype p
+        left join prototype_detail pd on p.prototype_id = pd.prototype_id
+        left join design_style ds on p.style_code = ds.style_code
+        <where>
+            <include refid="list_where_if_base"/>
+        </where>
+        ORDER BY p.created_time DESC, p.prototype_id DESC
+    </select>
+
+    <select id="listExcel" resultType="tech.tiangong.sdp.vo.resp.PrototypeExcelResp">
+        SELECT
+        p.style_code,
+        p.design_code,
+        ds.category_name,
+        ds.store_name storeName,
+        ds.wave_band_name waveBandName,
+        ds.style_label_name styleLabelName,
+        CASE
+        WHEN p.skc_type = 1 THEN '正常款'
+        WHEN p.skc_type = 2 THEN '复色款'
+        ELSE '数据异常'
+        END skc_type,
+        ds.visual_form_name visualFormName,
+        ds.style_level_name styleLevelName,
+        ds.clothing_style_name clothingStyleName,
+        ds.scene_name sceneName,
+        ds.gala_name galaName,
+        ds.printing_name printingName,
+        ds.weave_mode_name weaveModeName,
+        ds.quality_level_name qualityLevelName,
+        ds.season_name seasonName,
+        p.color,
+        ds.size_standard_name sizeStandardName,
+        ds.pattern_name patternName,
+        ds.elastic_name elasticName,
+        ds.designer_name designerName,
+        p.skc_created_time skcCreatedTime
+
+        from prototype p
+        left join prototype_detail pd on p.prototype_id = pd.prototype_id
+        left join design_style ds on p.style_code = ds.style_code
+        <where>
+            <include refid="list_where_if_base"/>
+        </where>
+        ORDER BY p.created_time DESC, p.prototype_id DESC
+        limit #{query.pageSize}
+    </select>
+
+    <select id="refreshSkcSku" resultType="tech.tiangong.sdp.entity.Prototype">
+        SELECT pp.prototype_id,pp.design_code
+        FROM
+        prototype pp
+        INNER JOIN design_style dd ON dd.style_code = pp.style_code
+        WHERE
+        pp.deleted = 0
+        AND dd.message = '导入旧的PLM款式操作'
+        <if test="skcCodes!=null and skcCodes.size() > 0">
+            AND pp.design_code in
+            <foreach collection="skcCodes" item="skcCode" index="index" open="(" close=")" separator=",">
+                #{skcCode}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="listMoreQuery" resultType="tech.tiangong.sdp.vo.resp.PrototypeQueryResp">
+        <include refid="list_column_base"/>,
+        bom.bom_id,bom.submit_time,bom.craft_demand_id,p.created_time as prototypeRedoRecordTime,
+        bom.material_search_state
+        from prototype p left join prototype_detail pd on p.prototype_id = pd.prototype_id
+        left join (
+        select a.bom_id,a.prototype_id,c.craft_demand_id,a.submit_time,a.material_search_state from bom_order a
+        right join (SELECT prototype_id, MAX(version_num) version_num FROM bom_order GROUP BY prototype_id ) b
+        on a.prototype_id = b.prototype_id and a.version_num = b.version_num
+        left join craft_demand_info c on a.bom_id = c.bom_id and a.prototype_id = c.prototype_id
+        where c.state = 100
+        group by a.prototype_id
+        ) bom on p.prototype_id = bom.prototype_id
+        left join design_style ds on p.style_code = ds.style_code
+        -- left join design_demand dd on ds.design_demand_id = dd.design_demand_id
+        <where>
+            <include refid="list_where_if_base"/>
+            <if test="query.isCraft == 1">
+                AND bom.craft_demand_id is not null
+            </if>
+            <if test="query.isCraft == 0">
+                AND bom.craft_demand_id is null
+            </if>
+        </where>
+        ORDER BY p.created_time DESC, p.prototype_id DESC
+
+    </select>
+
+    <update id="updateIdAndPrototype">
+        update prototype
+        <include refid="updateSet"/>
+        where prototype_id = #{prototypeId}
+    </update>
+
+    <sql id="updateSet">
+
+        <set>
+            <if test="bean.prototypeId != null">
+                prototype_id=#{bean.prototypeId,jdbcType=BIGINT},
+            </if>
+
+            <if test="bean.versionNum != null">
+                version_num=#{bean.versionNum,jdbcType=INTEGER},
+            </if>
+            <if test="bean.latestPrototypeId != null">
+                latest_prototype_id=#{bean.latestPrototypeId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.latestVersionNum != null">
+                latest_version_num=#{bean.latestVersionNum,jdbcType=INTEGER},
+            </if>
+            <if test="bean.styleCode != null">
+                style_code=#{bean.styleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.designCode != null">
+                design_code=#{bean.designCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.categoryCode != null">
+                category_code=#{bean.categoryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.categoryName != null">
+                category_name=#{bean.categoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.makeSameDesignCode != null">
+                make_same_design_code=#{bean.makeSameDesignCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.color != null">
+                color=#{bean.color,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.isMakeMore != null">
+                is_make_more=#{bean.isMakeMore,jdbcType=INTEGER},
+            </if>
+            <if test="bean.designerId != null">
+                designer_id=#{bean.designerId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.designerCode != null">
+                designer_code=#{bean.designerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.designerName != null">
+                designer_name=#{bean.designerName,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.isDoneVersion != null">
+                is_done_version=#{bean.isDoneVersion,jdbcType=INTEGER},
+            </if>
+            <if test="bean.submitTime != null">
+                submit_time=#{bean.submitTime},
+            </if>
+            <if test="bean.isUrgent != null ">
+                is_urgent=#{bean.isUrgent,jdbcType=INTEGER},
+            </if>
+            <if test="bean.prototypeStatus != null ">
+                prototype_status=#{bean.prototypeStatus,jdbcType=INTEGER},
+            </if>
+            <if test="bean.isCanceled != null">
+                is_canceled=#{bean.isCanceled,jdbcType=INTEGER},
+            </if>
+            <if test="bean.cancelTime != null">
+                cancel_time=#{bean.cancelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bean.skcCreatedTime != null">
+                skc_created_time=#{bean.skcCreatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bean.spuCreatedTime != null">
+                spu_created_time=#{bean.spuCreatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bean.reviserId != null ">
+                reviser_id=#{bean.reviserId,jdbcType=BIGINT},
+            </if>
+            <if test="bean.reviserName != null">
+                reviser_name=#{bean.reviserName,jdbcType=VARCHAR},
+            </if>
+            <if test="bean.revisedTime != null">
+                revised_time=#{bean.revisedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bean.deleted != null">
+                deleted=#{bean.deleted,jdbcType=INTEGER},
+            </if>
+            <if test="bean.makeMoreLatestTime != null">
+                make_more_latest_time=#{bean.makeMoreLatestTime,jdbcType=TIMESTAMP},
+            </if>
+            reference_design_code=#{bean.referenceDesignCode,jdbcType=VARCHAR},
+        </set>
+    </sql>
+    <update id="editById" parameterType="tech.tiangong.sdp.entity.Prototype">
+        UPDATE prototype
+        <set>
+            <include refid="updateSql"/>
+        </set>
+        WHERE prototype_id = #{prototypeId}
+        AND deleted = 0
+    </update>
+    <update id="editByIdWithOptimisticLock" parameterType="tech.tiangong.sdp.entity.Prototype">
+        UPDATE prototype
+        <set>
+            version = version + 1,
+            <include refid="updateSql"/>
+        </set>
+        WHERE prototype_id = #{prototypeId}
+        AND version = #{version}
+        AND deleted = 0
+    </update>
+    <sql id="updateSql">
+        <if test="versionNum != null">version_num = #{versionNum},</if>
+        <if test="latestPrototypeId != null">latest_prototype_id = #{latestPrototypeId},</if>
+        <if test="latestVersionNum != null">latest_version_num = #{latestVersionNum},</if>
+        <if test="designStyleVersionId != null">design_style_version_id = #{designStyleVersionId},</if>
+        <if test="designStyleId != null">design_style_id = #{designStyleId},</if>
+        <if test="styleCode != null">style_code = #{styleCode},</if>
+        <if test="designCode != null">design_code = #{designCode},</if>
+        <if test="taskSource != null">task_source = #{taskSource},</if>
+        <if test="listingStatus != null">listing_status = #{listingStatus},</if>
+        <if test="skcType != null">skc_type = #{skcType},</if>
+        <if test="prototypeStatus != null">prototype_status = #{prototypeStatus},</if>
+        <if test="isMakeMore != null">is_make_more = #{isMakeMore},</if>
+        <if test="makeMoreLatestTime != null">make_more_latest_time = #{makeMoreLatestTime},</if>
+        <if test="isCanceled != null">is_canceled = #{isCanceled},</if>
+        <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+        <if test="isOnSale != null">is_on_sale = #{isOnSale},</if>
+        <if test="saleTime != null">sale_time = #{saleTime},</if>
+        <if test="categoryCode != null">category_code = #{categoryCode},</if>
+        <if test="categoryName != null">category_name = #{categoryName},</if>
+        <if test="makeSameDesignCode != null">make_same_design_code = #{makeSameDesignCode},</if>
+        <if test="referenceDesignCode != null">reference_design_code = #{referenceDesignCode},</if>
+        <if test="color != null">color = #{color},</if>
+        <if test="pricePassedTime != null">price_passed_time = #{pricePassedTime},</if>
+        <if test="makeClothesType != null">make_clothes_type = #{makeClothesType},</if>
+        <if test="preDisassemblyState != null">pre_disassembly_state = #{preDisassemblyState},</if>
+        <if test="pricePassedState != null">price_passed_state = #{pricePassedState},</if>
+        <if test="listingFailReason != null">listing_fail_reason = #{listingFailReason},</if>
+        <if test="disassemblyFinished != null">disassembly_finished = #{disassemblyFinished},</if>
+        <if test="orderNumber != null">order_number = #{orderNumber},</if>
+        <if test="commodityAttr != null">commodity_attr = #{commodityAttr},</if>
+        <if test="orderCode != null">order_code = #{orderCode},</if>
+        <if test="plmDesignerId != null">plm_designer_id = #{plmDesignerId},</if>
+        <if test="plmDesignerName != null">plm_designer_name = #{plmDesignerName},</if>
+        <if test="designerId != null">designer_id = #{designerId},</if>
+        <if test="designerCode != null">designer_code = #{designerCode},</if>
+        <if test="designerName != null">designer_name = #{designerName},</if>
+        <if test="isDoneVersion != null">is_done_version = #{isDoneVersion},</if>
+        <if test="submitTime != null">submit_time = #{submitTime},</if>
+        <if test="isUrgent != null">is_urgent = #{isUrgent},</if>
+        <if test="skcCreatedTime != null">skc_created_time = #{skcCreatedTime},</if>
+        <if test="spuCreatedTime != null">spu_created_time = #{spuCreatedTime},</if>
+        <if test="firstVersionDoneTime != null">first_version_done_time = #{firstVersionDoneTime},</if>
+        <if test="disassemblyFinishedTime != null">disassembly_finished_time = #{disassemblyFinishedTime},</if>
+        <if test="bizChannel != null">biz_channel = #{bizChannel},</if>
+        <if test="pushPlmStatus != null">push_plm_status = #{pushPlmStatus},</if>
+        <if test="pushPlmResultMessage != null">push_plm_result_message = #{pushPlmResultMessage},</if>
+        <if test="plmCancelTime != null">plm_cancel_time = #{plmCancelTime},</if>
+        <if test="operatorDone != null">operator_done = #{operatorDone},</if>
+        <if test="reviserId != null">reviser_id = #{reviserId},</if>
+        <if test="reviserName != null">reviser_name = #{reviserName},</if>
+        revised_time = NOW()
+    </sql>
+
+</mapper>

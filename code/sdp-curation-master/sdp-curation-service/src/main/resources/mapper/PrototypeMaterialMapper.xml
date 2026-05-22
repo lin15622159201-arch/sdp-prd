@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.mapper.PrototypeMaterialMapper">
+
+
+    <delete id="deletedBySkcIdsAndType">
+        DELETE FROM prototype_material
+        WHERE deleted = 0 and material_type =#{materialType}
+        <choose>
+            <when test="skcIds != null and skcIds.size > 0">
+                AND prototype_id IN
+                <foreach collection="skcIds" item="skcId" open="(" close=")" separator=",">
+                    #{skcId}
+                </foreach>
+            </when>
+            <otherwise>
+                AND 1 = 0
+            </otherwise>
+        </choose>
+    </delete>
+
+    <delete id="deletedByStyleCodesAndType">
+        DELETE FROM prototype_material
+        WHERE deleted = 0 and material_type =#{materialType}
+        <choose>
+            <when test="styleCodes != null and styleCodes.size > 0">
+                AND style_code IN
+                <foreach collection="styleCodes" item="styleCode" open="(" close=")" separator=",">
+                    #{styleCode}
+                </foreach>
+            </when>
+            <otherwise>
+                AND 1 = 0
+            </otherwise>
+        </choose>
+    </delete>
+
+    <delete id="deletedBySkcIds">
+        DELETE FROM prototype_material
+        WHERE deleted = 0
+        <choose>
+            <when test="skcIds != null and skcIds.size > 0">
+                AND prototype_id IN
+                <foreach collection="skcIds" item="skcId" open="(" close=")" separator=",">
+                    #{skcId}
+                </foreach>
+            </when>
+            <otherwise>
+                AND 1 = 0
+            </otherwise>
+        </choose>
+    </delete>
+
+
+</mapper>
+

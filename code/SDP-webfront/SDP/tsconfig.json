@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    // "noImplicitThis": true,
+    // "isolatedModules": true,
+    // "preserveValueImports": true,
+    // "importsNotUsedAsValues": "remove",
+    // "forceConsistentCasingInFileNames": true,
+    // "resolveJsonModule": true,
+    // "useDefineForClassFields": true,
+    // "composite": true,
+    // "declarationMap": true,
+    // "declaration": true,
+    "disableSizeLimit": true,
+    "exactOptionalPropertyTypes": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "importHelpers": true,
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    // "types": [
+    //   "node"
+    // ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@root/*": [
+        "./*"
+      ]
+    },
+    "lib": [
+      "ESNEXT",
+      "DOM",
+      "DOM.ITERABLE",
+      "SCRIPTHOST"
+    ],
+    "types": [
+      "vue/jsx",
+      "element-plus/global",
+      "@toy/business-components/global",
+      // "./src/shims-tsx.d.ts"
+    ]
+  },
+  "include": [
+    "./src/**/*",
+  ],
+  "exclude": ["node_modules", "dist"],
+}

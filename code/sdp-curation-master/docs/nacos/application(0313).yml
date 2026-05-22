@@ -1,0 +1,2 @@
+domain:
+  fashion-api: ${domain.nest-api} # 修改

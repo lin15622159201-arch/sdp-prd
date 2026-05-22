@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.tiangong.sdp.dao.mapper.PickingAiDesignStyleMapper">
+
+    <resultMap type="tech.tiangong.sdp.dao.entity.PickingAiDesignStyle" id="PickingAiDesignStyleMap">
+        <!--@mbg.generated-->
+        <!--@Table picking_ai_design_style-->
+        <id property="pickingStyleId" column="picking_style_id" jdbcType="BIGINT"/>
+        <result property="pickingId" column="picking_id" jdbcType="BIGINT"/>
+        <result property="pickingState" column="picking_state" jdbcType="INTEGER"/>
+        <result property="styleName" column="style_name" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="suggestedPrice" column="suggested_price" jdbcType="VARCHAR"/>
+        <result property="suggestedStyleCode" column="suggested_style_code" jdbcType="VARCHAR"/>
+        <result property="suggestedStyleName" column="suggested_style_name" jdbcType="VARCHAR"/>
+        <result property="suggestedCategoryCode" column="suggested_category_code" jdbcType="VARCHAR"/>
+        <result property="suggestedCategoryName" column="suggested_category_name" jdbcType="VARCHAR"/>
+        <result property="suggestedWaveBatchCode" column="suggested_wave_batch_code" jdbcType="VARCHAR"/>
+        <result property="suggestedShopId" column="suggested_shop_id" jdbcType="BIGINT"/>
+        <result property="suggestedShopShortCode" column="suggested_shop_short_code" jdbcType="VARCHAR"/>
+        <result property="suggestedShopName" column="suggested_shop_name" jdbcType="VARCHAR"/>
+        <result property="suggestedPrintingCode" column="suggested_printing_code" jdbcType="VARCHAR"/>
+        <result property="suggestedCountrySiteCode" column="suggested_country_site_code" jdbcType="VARCHAR"/>
+        <result property="suggestedCountrySiteName" column="suggested_country_site_name" jdbcType="VARCHAR"/>
+        <result property="cargoTrayCode" column="cargo_tray_code" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="attachments" column="attachments" jdbcType="VARCHAR"/>
+        <result property="runningProblemCode" column="running_problem_code" jdbcType="VARCHAR"/>
+        <result property="runningProblemName" column="running_problem_name" jdbcType="VARCHAR"/>
+        <result property="updateVersion" column="update_version" jdbcType="BIGINT"/>
+        <result property="selectorId" column="selector_id" jdbcType="BIGINT"/>
+        <result property="selectorName" column="selector_name" jdbcType="VARCHAR"/>
+        <result property="selectionTime" column="selection_time" jdbcType="TIMESTAMP"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="reviserId" column="reviser_id" jdbcType="BIGINT"/>
+        <result property="reviserName" column="reviser_name" jdbcType="VARCHAR"/>
+        <result property="revisedTime" column="revised_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        picking_style_id
+        ,picking_id
+        ,picking_state
+        ,style_name
+        ,sort
+        ,suggested_price
+        ,suggested_style_code
+        ,suggested_style_name
+        ,suggested_category_code
+        ,suggested_category_name
+        ,suggested_wave_batch_code
+        ,suggested_shop_id
+        ,suggested_shop_short_code
+        ,suggested_shop_name
+        ,suggested_printing_code
+        ,suggested_country_site_code
+        ,suggested_country_site_name
+        ,cargo_tray_code
+        ,remark
+        ,attachments
+        ,running_problem_code
+        ,running_problem_name
+        ,update_version
+        ,selector_id
+        ,selector_name
+        ,selection_time
+        ,tenant_id
+        ,creator_id
+        ,creator_name
+        ,created_time
+        ,reviser_id
+        ,reviser_name
+        ,revised_time
+        ,deleted
+    </sql>
+</mapper>
+
