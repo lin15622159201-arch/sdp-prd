@@ -1,0 +1,94 @@
+<h2>原型阅读器 — 整体布局方案</h2>
+<p class="subtitle">选择最符合你预期的布局结构</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f9fa;padding:12px;border-radius:6px;font-size:11px;line-height:1.6">
+      <div style="display:flex;gap:6px;height:160px">
+        <div style="width:140px;background:#e3e8f0;border-radius:4px;padding:8px;font-size:10px">
+          <div style="background:#4a6fa5;color:#fff;padding:3px 6px;border-radius:3px;margin-bottom:6px;font-size:9px">SDP 系统</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;margin-bottom:3px;font-size:9px;border-left:2px solid #4a6fa5">现货管理</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;margin-bottom:3px;font-size:9px">选款中心</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;margin-bottom:3px;font-size:9px">款式管理</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;font-size:9px">Temu商品</div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:4px;padding:8px;border:1px solid #e0e0e0;font-size:9px">
+          <div style="background:#f5f5f5;padding:4px 6px;border-radius:3px;margin-bottom:6px;font-size:9px;color:#666">现货管理 / SKC列表</div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="background:#e8f0fe;padding:2px 6px;border-radius:10px;font-size:8px;color:#1a73e8">新增</div>
+            <div style="background:#f5f5f5;padding:2px 6px;border-radius:10px;font-size:8px">筛选</div>
+          </div>
+          <div style="background:#f8f9fa;padding:4px;border-radius:3px;font-size:8px;color:#999">表格列表区域...</div>
+        </div>
+        <div style="width:160px;background:#fffbf0;border-radius:4px;padding:8px;border:1px solid #ffe082;font-size:9px">
+          <div style="background:#ff9800;color:#fff;padding:2px 6px;border-radius:3px;margin-bottom:6px;font-size:8px">📄 模块文档</div>
+          <div style="font-size:8px;color:#666;line-height:1.5">
+            <div style="margin-bottom:3px"><span style="background:#fff3e0;padding:1px 4px;border-radius:2px">#列表页</span></div>
+            <div style="color:#333;font-size:8px">现货管理负责SPU/SKC全生命周期管理...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — 左侧导航 + 中间页面 + 右侧文档</h3>
+      <p>三栏布局。左侧固定模块菜单，中间是系统页面，右侧是联动文档面板。文档面板可折叠。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f9fa;padding:12px;border-radius:6px;font-size:11px;line-height:1.6">
+      <div style="height:160px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:#4a6fa5;color:#fff;padding:5px 10px;border-radius:4px;display:flex;gap:8px;align-items:center;font-size:9px">
+          <span style="font-weight:bold">SDP</span>
+          <span style="background:rgba(255,255,255,0.3);padding:2px 8px;border-radius:10px">现货管理</span>
+          <span style="padding:2px 8px;border-radius:10px">选款中心</span>
+          <span style="padding:2px 8px;border-radius:10px">款式管理</span>
+          <span style="margin-left:auto;background:#ff9800;padding:2px 8px;border-radius:10px;font-size:8px">📄 文档</span>
+        </div>
+        <div style="flex:1;display:flex;gap:6px">
+          <div style="flex:1;background:#fff;border-radius:4px;padding:8px;border:1px solid #e0e0e0;font-size:9px">
+            <div style="font-size:9px;color:#666;margin-bottom:5px">SKC列表</div>
+            <div style="background:#f8f9fa;padding:4px;border-radius:3px;font-size:8px;color:#999">表格内容...</div>
+          </div>
+          <div style="width:180px;background:#fffbf0;border-radius:4px;padding:8px;border:1px solid #ffe082;font-size:9px">
+            <div style="font-size:8px;color:#666">文档面板（右侧抽屉）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — 顶部导航 + 右侧文档抽屉</h3>
+      <p>顶部 Tab 切换模块，系统页面占满主区域，文档以右侧抽屉形式按需展开，不占用常驻空间。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f9fa;padding:12px;border-radius:6px;font-size:11px;line-height:1.6">
+      <div style="display:flex;gap:6px;height:160px">
+        <div style="width:130px;background:#e3e8f0;border-radius:4px;padding:8px;font-size:10px">
+          <div style="background:#4a6fa5;color:#fff;padding:3px 6px;border-radius:3px;margin-bottom:6px;font-size:9px">SDP 系统</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;margin-bottom:3px;font-size:9px;border-left:2px solid #4a6fa5">现货管理</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;margin-bottom:3px;font-size:9px">选款中心</div>
+          <div style="background:#fff;padding:3px 5px;border-radius:2px;font-size:9px">款式管理</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+          <div style="flex:1;background:#fff;border-radius:4px;padding:8px;border:1px solid #e0e0e0;font-size:9px">
+            <div style="font-size:9px;color:#666;margin-bottom:5px">系统页面（全高）</div>
+            <div style="background:#f8f9fa;padding:4px;border-radius:3px;font-size:8px;color:#999">表格内容...</div>
+          </div>
+          <div style="height:60px;background:#fffbf0;border-radius:4px;padding:6px;border:1px solid #ffe082;font-size:8px;color:#666">
+            📄 文档面板（底部，可上拉展开）— 默认折叠为一行
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — 左侧导航 + 底部文档面板</h3>
+      <p>左侧菜单 + 主区域全宽，文档面板在底部，默认折叠，点击/交互时上拉展开。适合宽屏不够的场景。</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px">点击选择你倾向的布局，或在终端告诉我你的想法</p>
