@@ -3,3 +3,5 @@ server.js
 updata.md
 node_modules/
 *.log
+.superpowers/
+.claude/
