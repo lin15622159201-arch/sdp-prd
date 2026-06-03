@@ -331,6 +331,17 @@
       content.innerHTML = '<pre style="white-space:pre-wrap">' + escHtml(md) + '</pre>';
     }
 
+    // Render mermaid diagrams
+    if (window.mermaid) {
+      content.querySelectorAll('code.language-mermaid').forEach(code => {
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = code.textContent;
+        code.parentElement.replaceWith(div);
+      });
+      mermaid.run({ nodes: content.querySelectorAll('.mermaid') });
+    }
+
     // Add IDs to headings for anchor linking
     content.querySelectorAll('h1,h2,h3,h4').forEach(h => {
       const id = h.textContent.trim().replace(/\s+/g, '-').replace(/[^\w一-龥-]/g, '');
