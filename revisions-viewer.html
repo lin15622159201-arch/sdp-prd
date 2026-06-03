@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SDP 规划文档</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: false, theme: 'neutral' });</script>
 <style>
 :root {
   --nav-width: 200px;
@@ -468,6 +470,7 @@ async function selectRevision(rev) {
       .replace(/!\[([^\]]*)\]\((?!https?:\/\/|\/|data:)([^)]+)\)/g, (_, alt, src) => `![${alt}](${mdDir}${src})`);
     body.innerHTML = `<div class="markdown-body">${marked.parse(clean)}</div>`;
     enhanceModuleLinks(body);
+    renderMermaid(body.querySelector('.markdown-body'));
 
     setContentHeader(rev.title, `${rev.version} · ${rev.status}`);
     buildTOC();
@@ -717,6 +720,7 @@ async function openModule(moduleKey) {
       md = md.replace(/^---[\s\S]*?---\n*/, '');
       body.innerHTML = `<div class="markdown-body">${marked.parse(md)}</div>`;
       enhanceModuleLinks(body);
+      renderMermaid(body.querySelector('.markdown-body'));
       const sourceLabel = p.includes(`/${version}/`) ? '版本快照' : '基线文档';
       setContentHeader(mod ? mod.module_name : moduleKey, p.includes(`/${version}/`) ? `${version} 版本快照` : '已上线基线');
       loaded = true;
@@ -842,6 +846,18 @@ function setContentHeader(title, type) {
     if (e.target.matches('.markdown-body img')) open(e.target.src);
   });
 })();
+
+// ═══ Mermaid ═══
+function renderMermaid(container) {
+  if (!window.mermaid) return;
+  container.querySelectorAll('code.language-mermaid').forEach(code => {
+    const div = document.createElement('div');
+    div.className = 'mermaid';
+    div.textContent = code.textContent;
+    code.parentElement.replaceWith(div);
+  });
+  mermaid.run({ nodes: container.querySelectorAll('.mermaid') });
+}
 
 // ═══ Module chips ═══
 function enhanceModuleLinks(container) {
