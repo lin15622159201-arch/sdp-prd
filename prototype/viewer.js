@@ -278,6 +278,16 @@
 
   // ─── Doc panel ────────────────────────────────────────────────────────────
 
+  // Resolve versioned doc path: try ../modules/{version}/{file} first, fallback to ../modules/{file}
+  function resolveDocPath(docFile) {
+    // docFile is like '../modules/design-task.md'
+    const filename = docFile.replace(/^.*\//, ''); // 'design-task.md'
+    return [
+      '../modules/' + state.version + '/' + filename,
+      docFile,
+    ];
+  }
+
   async function loadDoc(docFile, moduleName) {
     const loading = els.docLoading();
     const content = els.docContent();
@@ -289,9 +299,13 @@
     if (els.docTitle()) els.docTitle().textContent = moduleName;
 
     try {
-      const res = await fetch(docFile);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      let md = await res.text();
+      const candidates = resolveDocPath(docFile);
+      let md = null;
+      for (const path of candidates) {
+        const res = await fetch(path);
+        if (res.ok) { md = await res.text(); break; }
+      }
+      if (md === null) throw new Error('文档不存在');
 
       // Strip YAML front-matter
       md = md.replace(/^---[\s\S]*?---\n/, '');
