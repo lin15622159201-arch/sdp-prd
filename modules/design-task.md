@@ -1,10 +1,10 @@
 ---
 module_id: design-task
 module_name: 开款任务管理
-version: 2.6.0
+version: 2.6.2
 status: draft
 owner: _待填写_
-last_updated: '2026-06-02'
+last_updated: '2026-06-03'
 depends_on:
 - module: style-management
   type: hard
@@ -182,7 +182,7 @@ erDiagram
 | 属性 | 类型 | 必填 | 默认值 | 长度/范围 | 说明 |
 |------|------|------|--------|----------|------|
 | styleCode | 短文本 | 自动 | — | ≤32字符 | 款号（2年+2月+2日+4流水+2版号） |
-| taskSource | 枚举 | 是 | — | — | 来源：USER_UPLOAD / AIGC / STUDIO / UNKNOWN |
+| taskSource | 枚举 | 是 | — | — | 来源：USER_UPLOAD / AIGC / STUDIO / AGENT_DEVELOP(智能开款，v2.6.2 将 MATERIAL_DEVELOP 重命名) / UNKNOWN |
 | styleType | 枚举 | 是 | — | — | 开款类型：SPOT_STYLE / AI_STYLE / SHARED_LISTING |
 | styleStatus | 整数 | 是 | 0 | 见状态机 | 任务状态 |
 | categoryCode | 短文本 | 自动 | — | ≤64字符 | 品类编码（code1-code2-code3），取值来源：NEST字典 pims_category |
@@ -300,6 +300,7 @@ erDiagram
 | 款式标签 | 单选 | 取值来源：NEST字典 product_tag |
 | 审款人 | 搜索选择 | 取值来源：SSO 系统 |
 | 审款时间 | 日期范围选择 | 起止日期 |
+| 任务来源 | 多选 | 手动创建/AIGC选款/智能开款/… (v2.6.2 新增) |
 
 ### 显示字段
 
@@ -393,6 +394,7 @@ erDiagram
 | v2.4.1 | 状态筛选改为多选 | (v2.4.1 变更) 状态筛选由单选标签改为多选下拉，支持同时筛选多个状态 |
 | v2.4.1 | 待开款支持删除 | (v2.4.1 变更) 删除任务支持待开款状态，统一为逻辑删除 |
 | v2.4.1 | 款式识别查重 | (v2.4.1 新增) 列表新增重复款标识，支持款式识别向量匹配查重 |
+| v2.6.2 | Agent智能编辑接入 | (v2.6.2 新增) 列表新增任务来源多选筛选；taskSource 枚举 MATERIAL_DEVELOP 重命名为 AGENT_DEVELOP(智能开款) |
 
 ---
 
@@ -715,3 +717,4 @@ erDiagram
 | 关联版本 | 更新内容 | 具体说明 |
 |------|------|------|
 | v2.4.1 | 批量开款序号+待开款删除+多选筛选+重复款标识+审款标签修正+AI识别向量匹配 | 来自规划文档 v2.4.1：批量开款列表新增序号列；待开款状态支持逻辑删除；状态筛选改为多选；列表新增款式识别查重与重复款标识；审款界面标签文案/颜色修正；数据模型新增 duplicateFlag 与 deleted 字段；状态机新增待开款→已删除路径；depends_on 新增 AI识别服务(向量匹配) |
+| v2.6.2 | Agent智能编辑接入 | (v2.6.2 变更) taskSource 枚举 MATERIAL_DEVELOP 重命名为 AGENT_DEVELOP；(v2.6.2 新增) 开款任务列表新增任务来源多选筛选 |
