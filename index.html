@@ -488,7 +488,8 @@ function extractModuleRefs(md) {
   // ── Primary: Parse Section 6 "变更汇总" table ──
   // Table format: | 模块 | 变更前版本 | 变更后版本 | 变更类型 | 状态 |
   // 变更类型 explicit values: 功能优化 / 新增模块 / 新增 → mapped to changeType
-  const sec6Start = md.indexOf('## 6. 变更汇总');
+  const sec6Match = md.match(/^## \d+\. 变更汇总/m);
+  const sec6Start = sec6Match ? md.indexOf(sec6Match[0]) : -1;
   if (sec6Start !== -1) {
     const sec6 = md.slice(sec6Start, md.indexOf('\n---\n', sec6Start) !== -1 ? md.indexOf('\n---\n', sec6Start) : md.length);
     // Match: | 模块名称 | oldVer | newVer | 变更类型 | status |

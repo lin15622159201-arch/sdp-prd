@@ -61,5 +61,12 @@
     "file": "modules/shop-management.md",
     "page_count": 5,
     "version": "2.6.0"
+  },
+  {
+    "module_key": "style-log-center",
+    "module_name": "款式日志中心",
+    "file": "modules/v2.8.0/style-log-center.md",
+    "page_count": 0,
+    "version": "1.0.0"
   }
 ]
