@@ -185,7 +185,7 @@ erDiagram
 | 字段名 | 中文名 | 分类 | 类型 | 必填 | 说明 |
 |-------|-------|------|------|------|------|
 | action_type | 操作类型 | 业务 | 枚举 | 是 | 见操作类型枚举 |
-| action_category | 操作大类 | 业务 | 枚举 | 是 | FIELD_CHANGE（字段变更）/ MEDIA_CHANGE（素材变更）/ INTEGRATION_EVENT（集成事件）/ ACCESS_EVENT（访问操作） |
+| action_category | 操作大类 | 业务 | 枚举 | 是 | FIELD_CHANGE（字段变更）/ MEDIA_CHANGE（素材变更）/ INTEGRATION_EVENT（集成事件） |
 | operator_id | 操作人 ID | 管理 | 引用 | 是 | 人工操作取登录用户 ID；系统自动操作填 0 |
 | operator_name | 操作人姓名 | 管理 | 短文本 | 是 | 冗余存储 |
 | operated_at | 操作时间 | 管理 | 日期时间 | 是 | 业务操作发生时间（非日志写入时间） |
@@ -208,13 +208,11 @@ erDiagram
 | 枚举值 | 中文名 | action_category | 适用实体 |
 |-------|-------|----------------|---------|
 | `SPU_EDIT` | 编辑 SPU 基本信息 | FIELD_CHANGE | SPU |
-| `SPU_SUBMIT` | 提交款式资料（待提交→已提交） | FIELD_CHANGE | SPU |
+| `SPU_SUBMIT` | 提交款式资料 | FIELD_CHANGE | SPU |
 | `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SPU |
 | `SKC_CREATE` | 创建 SKC | FIELD_CHANGE | SKC |
 | `SKC_EDIT` | 编辑 SKC 信息 | FIELD_CHANGE | SKC |
 | `SKC_CANCEL` | 取消 SKC | FIELD_CHANGE | SKC |
-| `SKC_FIRST_SALE` | 首次动销（is_on_sale: false→true） | FIELD_CHANGE | SKC |
-| `MEDIA_PIC_DOWNLOAD` | 下载图片 | ACCESS_EVENT | SKC |
 | `MEDIA_MARKETING_PIC` | 营销图变更 | MEDIA_CHANGE | SKC |
 | `MEDIA_VIDEO` | 视频变更 | MEDIA_CHANGE | SPU |
 | `PLM_PUSH` | 推送 PLM | INTEGRATION_EVENT | SKC |
@@ -277,7 +275,7 @@ erDiagram
 |-------|------|------|
 | 款式编号/名称 | 文本搜索 | 模糊匹配 style_code、entity_code |
 | 实体类型 | 单选 | 全部 / SPU / SKC |
-| 操作大类 | 多选 | 字段变更 / 素材变更 / 集成事件 / 访问操作 |
+| 操作大类 | 多选 | 字段变更 / 素材变更 / 集成事件 |
 | 操作类型 | 多选 | 根据操作大类联动展示枚举 |
 | 操作人 | 下拉搜索 | 按操作人筛选 |
 | 操作时间 | 日期范围 | 最大范围 90 天 |
@@ -330,7 +328,7 @@ erDiagram
 
 | 筛选项 | 类型 | 说明 |
 |-------|------|------|
-| 操作大类 | 单选 Tab | 全部 / 字段变更 / 素材变更 / 集成事件 / 访问操作 |
+| 操作大类 | 单选 Tab | 全部 / 字段变更 / 素材变更 / 集成事件 |
 | 时间范围 | 日期范围 | 默认最近 30 天 |
 
 ### 列表展示字段
@@ -489,4 +487,3 @@ event_detail 存储内容：
 | 变更时间 | 变更版本 | 变更类型 | 变更内容 | 涉及章节 |
 |---------|---------|---------|---------|---------|
 | 2026-06-29 | v1.0.0 | 新增 | 款式日志中心模块初始版本，支持 SPU/SKC 字段级变更追踪、素材前后对比、集成事件记录；提供独立日志中心页和详情页内嵌 Tab 两级入口 | 全部 |
-| 2026-06-29 | v1.0.0 | 变更 | 新增 TASK_SUBMIT 操作类型枚举，记录开款任务提交（待提交→待审核）操作日志 | 第 5 章 |
