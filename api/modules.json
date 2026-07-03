@@ -67,6 +67,7 @@
     "module_name": "款式日志中心",
     "file": "modules/v2.8.0/style-log-center.md",
     "page_count": 0,
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "mockupFile": "mockups/log-center-styles.html"
   }
 ]

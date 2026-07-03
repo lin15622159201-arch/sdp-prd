@@ -71,10 +71,12 @@
   </div>
 </div>
 
-<!-- marked.js for md rendering -->
+<!-- marked.js for md rendering (CDN with local fallback) -->
 <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
-<!-- mermaid.js for sequence/flow diagrams -->
+<script>if (typeof marked === 'undefined') { document.write('<script src="vendor/marked.min.js"><\/script>'); }</script>
+<!-- mermaid.js for sequence/flow diagrams (CDN with local fallback) -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>if (typeof mermaid === 'undefined') { document.write('<script src="vendor/mermaid.min.js"><\/script>'); }</script>
 <script>mermaid.initialize({ startOnLoad: false, theme: 'neutral' });</script>
 <script src="viewer.js"></script>
 </body>

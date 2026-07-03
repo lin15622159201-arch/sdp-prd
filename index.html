@@ -133,6 +133,14 @@ body {
   font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500;
   background: var(--primary-light); color: var(--primary);
 }
+.content-header .mockup-btn {
+  margin-left: auto;
+  padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500;
+  border: 1px solid var(--primary); background: var(--primary-light); color: var(--primary);
+  cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+}
+.content-header .mockup-btn:hover { background: var(--primary); color: #fff; }
 .content-body {
   flex: 1; overflow-y: auto; padding: 20px 28px 48px; scroll-behavior: smooth;
 }
@@ -472,7 +480,7 @@ async function selectRevision(rev) {
     enhanceModuleLinks(body);
     renderMermaid(body.querySelector('.markdown-body'));
 
-    setContentHeader(rev.title, `${rev.version} · ${rev.status}`);
+    setContentHeader(rev.title, `${rev.version} · ${rev.status}`, null);
     buildTOC();
     renderNavPanel();
   } catch (e) {
@@ -723,7 +731,11 @@ async function openModule(moduleKey) {
       enhanceModuleLinks(body);
       renderMermaid(body.querySelector('.markdown-body'));
       const sourceLabel = p.includes(`/${version}/`) ? '版本快照' : '基线文档';
-      setContentHeader(mod ? mod.module_name : moduleKey, p.includes(`/${version}/`) ? `${version} 版本快照` : '已上线基线');
+      setContentHeader(
+        mod ? mod.module_name : moduleKey,
+        p.includes(`/${version}/`) ? `${version} 版本快照` : '已上线基线',
+        mod ? (mod.mockupFile || null) : null
+      );
       loaded = true;
       break;
     } catch (e) { /* try next */ }
@@ -819,12 +831,31 @@ function scrollToHeading(id) {
 }
 
 // ═══ Content header ═══
-function setContentHeader(title, type) {
+function setContentHeader(title, type, mockupFile) {
   document.getElementById('doc-title').textContent = title;
   const hdr = document.getElementById('content-header');
+
+  // Badge
   let badge = hdr.querySelector('.doc-badge');
   if (!badge) { badge = document.createElement('span'); badge.className = 'doc-badge'; hdr.appendChild(badge); }
   badge.textContent = type;
+
+  // Mockup button
+  let btn = hdr.querySelector('.mockup-btn');
+  if (mockupFile) {
+    if (!btn) {
+      btn = document.createElement('a');
+      btn.className = 'mockup-btn';
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+      btn.innerHTML = '&#x1F517; 原型';
+      hdr.appendChild(btn);
+    }
+    btn.href = mockupFile;
+    btn.style.display = '';
+  } else if (btn) {
+    btn.style.display = 'none';
+  }
 }
 
 // ═══ Lightbox ═══

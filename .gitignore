@@ -7,3 +7,7 @@ node_modules/
 .claude/
 todo/
 draft/
+SDP-PRD/
+SDP-PRD/prototype-viewer/index.html
+SDP-PRD/prototype-viewer/viewer.css
+SDP-PRD/prototype-viewer/viewer.js

@@ -7,12 +7,13 @@
 
   const VERSIONS = ['v2.6.0', 'v2.4.1'];
 
-  // Module registry: id → { name, docFile, pages[] }
+  // Module registry: id → { name, docFile, mockupFile?, pages[] }
   const MODULES = [
     {
       id: 'design-task',
       name: '开款任务管理',
       docFile: 'modules/design-task.md',
+      mockupFile: null, // 暂无原型
       pages: [
         { id: 'list',        label: '任务列表',     file: 'pages/design-task/list.html' },
         { id: 'create',      label: '创建开款任务', file: 'pages/design-task/create.html' },
@@ -24,6 +25,7 @@
       id: 'spot-goods',
       name: '现货管理',
       docFile: 'modules/spot-goods.md',
+      mockupFile: null,
       pages: [
         { id: 'list',        label: '列表页',       file: 'pages/spot-goods/list.html' },
         { id: 'create-spu',  label: '创建 SPU',     file: 'pages/spot-goods/create-spu.html' },
@@ -34,6 +36,7 @@
       id: 'style-management',
       name: '款式管理',
       docFile: 'modules/style-management.md',
+      mockupFile: '../../mockups/log-center-styles.html',
       pages: [
         { id: 'list',        label: '款式列表',     file: 'pages/style-management/list.html' },
       ],
@@ -42,6 +45,7 @@
       id: 'temu-product',
       name: '商品管理',
       docFile: 'modules/temu-product.md',
+      mockupFile: null,
       pages: [
         { id: 'list',        label: '商品列表',     file: 'pages/temu-product/list.html' },
       ],
@@ -50,6 +54,7 @@
       id: 'image-update',
       name: '图片更新任务',
       docFile: 'modules/image-update.md',
+      mockupFile: null,
       pages: [
         { id: 'list',        label: '任务列表',     file: 'pages/image-update/list.html' },
       ],
@@ -58,6 +63,7 @@
       id: 'shop-management',
       name: '店铺管理',
       docFile: 'modules/shop-management.md',
+      mockupFile: null,
       pages: [
         { id: 'list',        label: '店铺列表',     file: 'pages/shop-management/list.html' },
       ],
@@ -66,6 +72,7 @@
       id: 'notification-center',
       name: '通知中心',
       docFile: 'modules/notification-center.md',
+      mockupFile: null,
       pages: [
         { id: 'list',        label: '通知列表',     file: 'pages/notification-center/list.html' },
       ],
@@ -298,6 +305,10 @@
     toc.innerHTML = '';
     if (els.docTitle()) els.docTitle().textContent = moduleName;
 
+    // Show / hide mockup button
+    const mod = MODULES.find(m => m.docFile === docFile);
+    updateMockupBtn(mod ? mod.mockupFile : null);
+
     try {
       const candidates = resolveDocPath(docFile);
       let md = null;
@@ -528,6 +539,29 @@
         }
       }
     });
+  }
+
+  // ─── Mockup button ────────────────────────────────────────────────────────
+
+  function updateMockupBtn(mockupFile) {
+    let btn = $('doc-mockup-btn');
+    if (!mockupFile) {
+      if (btn) btn.style.display = 'none';
+      return;
+    }
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'doc-mockup-btn';
+      btn.title = '在新标签页中打开原型';
+      // Insert after doc-panel-title
+      const header = $('doc-panel-header');
+      // Insert before collapse button
+      const collapseBtn = $('doc-collapse-btn');
+      header.insertBefore(btn, collapseBtn);
+    }
+    btn.textContent = '原型';
+    btn.style.display = '';
+    btn.onclick = () => window.open(mockupFile, '_blank');
   }
 
   // ─── Doc panel collapse / resize ──────────────────────────────────────────
