@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>款式日志中心 - 样式预览</title>
+  <style>
+    :root {
+      --primary: #1677ff; --primary-hover: #4096ff; --primary-light: #e6f4ff;
+      --success: #52c41a; --success-bg: #f6ffed; --success-border: #b7eb8f;
+      --error: #ff4d4f;   --error-bg: #fff2f0;   --error-border: #ffccc7;
+      --warning: #faad14; --warning-bg: #fffbe6; --warning-border: #ffe58f;
+      --text: rgba(0,0,0,.88); --text-sec: rgba(0,0,0,.45); --text-ter: rgba(0,0,0,.25);
+      --border: #d9d9d9; --border-light: #f0f0f0;
+      --bg: #f0f2f5; --bg-light: #fafafa; --white: #fff;
+      --radius: 6px; --radius-sm: 4px;
+      --shadow: 0 2px 8px rgba(0,0,0,.15); --shadow-lg: 0 6px 16px rgba(0,0,0,.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+           background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5714; }
+
+    /* ── Top nav ── */
+    .top-nav { background: #001529; padding: 0 24px; display: flex; align-items: center; gap: 4px; }
+    .top-nav .logo { color: #fff; font-size: 16px; font-weight: 600; padding: 14px 16px 14px 0; margin-right: 8px; border-right: 1px solid rgba(255,255,255,.15); }
+    .top-nav button { background: none; border: none; color: rgba(255,255,255,.65);
+      padding: 12px 16px; cursor: pointer; font-size: 14px; border-bottom: 3px solid transparent; }
+    .top-nav button.active { color: #fff; border-bottom-color: var(--primary); }
+    .top-nav button:hover:not(.active) { color: rgba(255,255,255,.85); }
+
+    /* ── View container ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Page layout ── */
+    .page { padding: 24px; min-height: calc(100vh - 48px); }
+    .page-header { margin-bottom: 16px; }
+    .breadcrumb { font-size: 14px; color: var(--text-sec); margin-bottom: 8px; }
+    .breadcrumb b { color: var(--text); font-weight: 400; }
+    .page-title { font-size: 20px; font-weight: 600; color: var(--text); }
+
+    /* ── Card ── */
+    .card { background: var(--white); border-radius: var(--radius); padding: 24px; }
+    .card + .card { margin-top: 16px; }
+
+    /* ── Form controls ── */
+    .filter-row { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-end; margin-bottom: 16px; }
+    .filter-group { display: flex; flex-direction: column; gap: 4px; }
+    .filter-group label { font-size: 12px; color: var(--text-sec); }
+    .input, .select { height: 32px; padding: 4px 11px; border: 1px solid var(--border);
+      border-radius: var(--radius); font-size: 14px; color: var(--text); outline: none;
+      background: var(--white); transition: border-color .2s, box-shadow .2s; }
+    .input:focus, .select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(22,119,255,.1); }
+    .input { min-width: 180px; }
+    .select { min-width: 120px; padding-right: 28px; appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bfbfbf'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; }
+    .date-range { display: flex; align-items: center; gap: 6px; }
+    .date-range .sep { color: var(--text-sec); }
+
+    /* ── Buttons ── */
+    .btn { height: 32px; padding: 4px 15px; border-radius: var(--radius); font-size: 14px;
+      cursor: pointer; border: 1px solid var(--border); background: var(--white); color: var(--text);
+      display: inline-flex; align-items: center; gap: 4px; transition: all .2s; white-space: nowrap; }
+    .btn:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: var(--white); }
+    .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); color: var(--white); }
+    .btn-link { border: none; background: none; color: var(--primary); height: auto; padding: 0; }
+    .btn-link:hover { color: var(--primary-hover); }
+    .btn-group { display: flex; gap: 8px; }
+
+    /* ── Tags / Badges ── */
+    .tag { display: inline-flex; align-items: center; padding: 0 8px; height: 22px;
+      border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; border: 1px solid; white-space: nowrap; }
+    .tag-spu    { background: var(--primary-light); color: var(--primary);    border-color: #91caff; }
+    .tag-skc    { background: #f0f9eb;               color: #389e0d;           border-color: #b7eb8f; }
+    .tag-field  { background: #f5f0ff;               color: #7b00d4;           border-color: #d3adf7; }
+    .tag-media  { background: #fff0f6;               color: #c41d7f;           border-color: #ffadd2; }
+    .tag-event  { background: #e6fffb;               color: #08979c;           border-color: #87e8de; }
+    .tag-access { background: #fff7e6;               color: #d46b08;           border-color: #ffd591; }
+    .tag-success{ background: var(--success-bg);     color: var(--success);    border-color: var(--success-border); }
+    .tag-error  { background: var(--error-bg);       color: var(--error);      border-color: var(--error-border); }
+    .tag-warning{ background: var(--warning-bg);     color: #d48806;           border-color: var(--warning-border); }
+    .tag-default{ background: var(--bg-light);       color: #595959;           border-color: var(--border); }
+
+    /* ── Table ── */
+    .table-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .table-total { color: var(--text-sec); font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--bg-light); }
+    th { padding: 12px 16px; text-align: left; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--border-light); font-size: 14px; white-space: nowrap; }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .code-link { color: var(--primary); cursor: pointer; text-decoration: none; }
+    .code-link:hover { color: var(--primary-hover); text-decoration: underline; }
+    .summary-text { color: var(--text-sec); font-size: 13px; }
+
+    /* ── Pagination ── */
+    .pagination { display: flex; align-items: center; justify-content: flex-end; padding: 16px 0 0; gap: 4px; }
+    .page-btn { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      background: var(--white); color: var(--text); font-size: 14px; }
+    .page-btn.active { background: var(--primary); border-color: var(--primary); color: var(--white); }
+    .page-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+    .page-info { color: var(--text-sec); font-size: 14px; padding: 0 8px; }
+
+    /* ── Empty state ── */
+    .empty { text-align: center; padding: 48px 24px; color: var(--text-sec); }
+    .empty svg { margin-bottom: 16px; opacity: .3; }
+    .empty p { font-size: 14px; }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border-light); margin: 16px 0; }
+
+    /* ── Tabs (inline) ── */
+    .tabs-bar { display: flex; border-bottom: 1px solid var(--border-light); margin-bottom: 16px; gap: 0; }
+    .tab-item { padding: 8px 16px; cursor: pointer; color: var(--text-sec); font-size: 14px;
+      border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .2s; user-select: none; }
+    .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 500; }
+    .tab-item:hover:not(.active) { color: var(--text); }
+
+    /* ── Drawer ── */
+    .drawer-scene { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; height: 680px; }
+    .drawer-mask { flex: 1; background: rgba(0,0,0,.45); position: relative; cursor: pointer; }
+    .drawer-mask-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.5); font-size: 13px; }
+    .drawer { width: 560px; background: var(--white); display: flex; flex-direction: column; box-shadow: -6px 0 16px rgba(0,0,0,.12); }
+    .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border-light); flex-shrink: 0; }
+    .drawer-head-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .drawer-head-close { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text-sec); padding: 4px; border-radius: 4px; }
+    .drawer-head-close:hover { background: var(--bg-light); }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 0 24px 16px; }
+    .drawer-filter { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+
+    /* ── Log entry timeline ── */
+    .log-list { display: flex; flex-direction: column; }
+    .log-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+    .log-item:last-child { border-bottom: none; }
+    .log-meta { width: 90px; flex-shrink: 0; text-align: right; padding-top: 2px; }
+    .log-date { font-size: 12px; color: var(--text-sec); }
+    .log-time { font-size: 12px; color: var(--text-sec); }
+    .log-main { flex: 1; }
+    .log-row1 { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; flex-wrap: wrap; }
+    .log-action { font-size: 13px; font-weight: 500; color: var(--text); }
+    .log-operator { font-size: 12px; color: var(--text-sec); }
+    .log-summary { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
+    .log-op { flex-shrink: 0; padding-top: 2px; }
+
+    /* ── Modal ── */
+    .modal-scene { background: rgba(0,0,0,.45); display: flex; align-items: flex-start; justify-content: center; padding: 60px 40px; border-radius: var(--radius); }
+    .modal { background: var(--white); border-radius: var(--radius); width: 680px; box-shadow: var(--shadow-lg); overflow: hidden; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border-light); }
+    .modal-head-title { font-size: 16px; font-weight: 600; }
+    .modal-head-close { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text-sec); padding: 4px; border-radius: 4px; }
+    .modal-head-close:hover { background: var(--bg-light); }
+    .modal-body { padding: 20px 24px; }
+    .modal-foot { padding: 12px 24px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* ── Meta block inside modal ── */
+    .meta-strip { display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light); }
+    .meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 12px; color: var(--text-sec); }
+    .meta-value { font-size: 14px; color: var(--text); font-weight: 500; }
+
+    /* ── Diff table inside modal ── */
+    .diff-section-title { font-size: 13px; font-weight: 500; color: var(--text-sec); margin-bottom: 8px; }
+    .diff-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border-light); border-radius: var(--radius); overflow: hidden; }
+    .diff-table th { background: var(--bg-light); padding: 10px 14px; font-size: 13px; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--border-light); }
+    .diff-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+    .diff-table tr:last-child td { border-bottom: none; }
+    .diff-table .col-field { width: 120px; font-weight: 500; color: var(--text); }
+    .diff-before { color: #cf1322; background: #fff2f0; padding: 2px 6px; border-radius: 3px; }
+    .diff-after  { color: #237804; background: #f6ffed; padding: 2px 6px; border-radius: 3px; }
+    .diff-empty  { color: var(--text-ter); }
+    .diff-arrow  { color: var(--text-ter); padding: 0 4px; }
+
+    /* ── Status diff badge ── */
+    .status-pill { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 500; }
+    .status-red   { background: var(--error-bg);   color: var(--error);   border: 1px solid var(--error-border); }
+    .status-green { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+
+    /* ── Media compare ── */
+    .media-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .media-col-title { font-size: 13px; color: var(--text-sec); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .media-grid { display: flex; flex-wrap: wrap; gap: 8px; min-height: 80px; }
+    .thumb { width: 76px; height: 76px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-light); position: relative; flex-shrink: 0; }
+    .thumb-img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-name { font-size: 10px; color: var(--text-sec); text-align: center; padding: 2px 3px; line-height: 1.3; }
+    .thumb-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 100%; color: var(--text-ter); }
+    .thumb-placeholder svg { width: 24px; height: 24px; }
+    .media-empty-hint { color: var(--text-ter); font-size: 20px; display: flex; align-items: center; height: 76px; }
+
+    /* ── Integration event detail ── */
+    .event-banner { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: var(--radius); margin-bottom: 16px; }
+    .event-banner.success { background: var(--success-bg); border: 1px solid var(--success-border); }
+    .event-banner.error   { background: var(--error-bg);   border: 1px solid var(--error-border); }
+    .event-banner.pending { background: var(--warning-bg); border: 1px solid var(--warning-border); }
+    .event-icon { font-size: 28px; }
+    .event-info-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    .event-info-sub { font-size: 13px; color: var(--text-sec); }
+    .event-message-box { border-radius: var(--radius); padding: 12px 16px; font-size: 13px; line-height: 1.6; margin-top: 4px; }
+    .event-message-box.error   { background: var(--error-bg);   border: 1px solid var(--error-border);   color: #a8071a; }
+    .event-message-box.success { background: var(--success-bg); border: 1px solid var(--success-border); color: #237804; }
+    .event-message-box.pending { background: var(--warning-bg); border: 1px solid var(--warning-border); color: #874d00; }
+
+    /* ── Permission denied ── */
+    .no-permission { text-align: center; padding: 80px 24px; }
+    .no-permission .icon { font-size: 48px; margin-bottom: 16px; }
+    .no-permission h3 { font-size: 16px; color: var(--text); margin-bottom: 8px; }
+    .no-permission p  { font-size: 14px; color: var(--text-sec); }
+
+    /* ── Timeout / Error state ── */
+    .error-state { text-align: center; padding: 48px 24px; }
+    .error-state .icon { font-size: 40px; margin-bottom: 12px; }
+    .error-state p { color: var(--text-sec); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- ════════ TOP NAVIGATION ════════ -->
+<nav class="top-nav">
+  <span class="logo">设计中心</span>
+  <button data-view="v1" class="active" onclick="showView('v1')">📋 日志中心（主页面）</button>
+  <button data-view="v2" onclick="showView('v2')">📂 操作日志抽屉</button>
+  <button data-view="v4" onclick="showView('v4')">🔍 变更详情 · 字段变更</button>
+  <button data-view="v5" onclick="showView('v5')">🖼 变更详情 · 素材变更</button>
+  <button data-view="v6" onclick="showView('v6')">🔗 变更详情 · 集成事件</button>
+  <button data-view="v7" onclick="showView('v7')">⚠️ 异常状态</button>
+</nav>
+
+<!-- ════════════════════════════════════════
+     VIEW 1: 日志中心主页面（全局审计）
+════════════════════════════════════════ -->
+<div id="v1" class="view active">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">设计中心 / <b>日志中心</b></div>
+      <div class="page-title">日志中心</div>
+    </div>
+
+    <!-- 筛选区 -->
+    <div class="card">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>款式编号 / 名称</label>
+          <input class="input" type="text" placeholder="输入款式编号或名称" value="SS2024-0023">
+        </div>
+        <div class="filter-group">
+          <label>实体类型</label>
+          <select class="select">
+            <option>全部</option>
+            <option>SPU</option>
+            <option selected>SKC</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>操作大类</label>
+          <select class="select" style="min-width:140px">
+            <option>全部</option>
+            <option selected>字段变更</option>
+            <option>素材变更</option>
+            <option>集成事件</option>
+            <option>访问操作</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>操作类型</label>
+          <select class="select" style="min-width:140px">
+            <option>全部</option>
+            <option>编辑SPU信息</option>
+            <option>编辑SKC信息</option>
+            <option selected>创建SKC</option>
+            <option>取消SKC</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>操作人</label>
+          <select class="select">
+            <option>全部</option>
+            <option>王小明</option>
+            <option selected>李设计</option>
+            <option>张跟单</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>操作时间</label>
+          <div class="date-range">
+            <input class="input" type="date" value="2026-06-01" style="min-width:150px">
+            <span class="sep">~</span>
+            <input class="input" type="date" value="2026-06-30" style="min-width:150px">
+          </div>
+        </div>
+        <div class="filter-group" style="flex-direction:row; align-items:flex-end;">
+          <button class="btn btn-primary">查询</button>
+          <button class="btn">重置</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据表格 -->
+    <div class="card">
+      <div class="table-toolbar">
+        <span class="table-total">共 <b>127</b> 条记录</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:80px">维度</th>
+            <th style="width:160px">款式/SKC编码</th>
+            <th style="width:140px">操作时间</th>
+            <th style="width:100px">操作人</th>
+            <th>操作内容</th>
+            <th style="width:100px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td><a href="#" class="code-link">SS2024-0023-BL</a></td>
+            <td>2026-06-27 09:15</td>
+            <td>李设计</td>
+            <td>
+              <span class="tag tag-event">集成事件</span>
+              <span class="tag tag-error" style="margin-left:6px">失败</span>
+              <span class="summary-text" style="margin-left:6px">PLM推送 · BOM资料不完整，缺少面料成分</span>
+            </td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td><a href="#" class="code-link">SS2024-0023-RD</a></td>
+            <td>2026-06-26 16:45</td>
+            <td>张跟单</td>
+            <td>
+              <span class="tag tag-media">素材变更</span>
+              <span class="summary-text">替换了营销图</span>
+            </td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-spu">SPU</span></td>
+            <td><a href="#" class="code-link">SS2024-0023</a></td>
+            <td>2026-06-25 11:02</td>
+            <td>王小明</td>
+            <td>
+              <span class="tag tag-field">字段变更</span>
+              <span class="summary-text">修改了 责任设计师</span>
+            </td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td><a href="#" class="code-link">SS2024-0019-WH</a></td>
+            <td>2026-06-24 17:30</td>
+            <td>系统</td>
+            <td>
+              <span class="tag tag-event">集成事件</span>
+              <span class="summary-text">测价审核通过</span>
+            </td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td><a href="#" class="code-link">SS2024-0017-GN</a></td>
+            <td>2026-06-24 10:18</td>
+            <td>张跟单</td>
+            <td>
+              <span class="tag tag-access">访问操作</span>
+              <span class="summary-text">下载图片</span>
+            </td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 分页 -->
+      <div class="pagination">
+        <span class="page-info">共 127 条</span>
+        <div class="page-btn">‹</div>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+        <div class="page-btn">…</div>
+        <div class="page-btn">7</div>
+        <div class="page-btn">›</div>
+        <span class="page-info">20条/页</span>
+      </div>
+    </div><!-- /card -->
+  </div><!-- /page -->
+</div><!-- /v1 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 2: 操作日志抽屉
+════════════════════════════════════════ -->
+<div id="v2" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">款式列表 → 「操作日志」</div>
+      <div class="page-title">操作日志抽屉</div>
+    </div>
+    <div class="card" style="padding:0">
+      <div class="drawer-scene">
+        <div class="drawer-mask">
+          <div class="drawer-mask-hint">← 点击遮罩关闭</div>
+        </div>
+        <div class="drawer">
+          <div class="drawer-head">
+            <span class="drawer-head-title">操作日志 · SS2024-0023-BL</span>
+            <button class="drawer-head-close">✕</button>
+          </div>
+          <div class="drawer-body">
+            <!-- 操作大类 Tab -->
+            <div class="tabs-bar" style="margin-top:12px">
+              <div class="tab-item active">全部</div>
+              <div class="tab-item">字段变更</div>
+              <div class="tab-item">素材变更</div>
+              <div class="tab-item">集成事件</div>
+              <div class="tab-item">访问操作</div>
+            </div>
+            <!-- 时间筛选 -->
+            <div class="drawer-filter">
+              <span style="color:var(--text-sec);font-size:13px">时间范围：</span>
+              <div class="date-range">
+                <input class="input" type="date" value="2026-06-01" style="height:28px;font-size:12px;min-width:130px">
+                <span class="sep">~</span>
+                <input class="input" type="date" value="2026-06-30" style="height:28px;font-size:12px;min-width:130px">
+              </div>
+              <button class="btn" style="height:28px;font-size:12px;padding:0 12px;margin-left:8px">查询</button>
+            </div>
+            <div class="divider" style="margin:0 0 8px"></div>
+
+            <!-- 日志条目列表 -->
+            <div class="log-list">
+              <div class="log-item">
+                <div class="log-meta"><div class="log-date">06-28</div><div class="log-time">14:32</div></div>
+                <div class="log-main">
+                  <div class="log-row1">
+                    <span class="tag tag-spu">SPU</span>
+                    <span class="tag tag-field">字段变更</span>
+                    <span class="log-action">编辑SPU基本信息</span>
+                    <span class="log-operator">王小明</span>
+                  </div>
+                  <div class="log-summary">修改了 销售季、款式等级，共 2 个字段</div>
+                </div>
+                <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
+              </div>
+              <div class="log-item">
+                <div class="log-meta"><div class="log-date">06-27</div><div class="log-time">09:15</div></div>
+                <div class="log-main">
+                  <div class="log-row1">
+                    <span class="tag tag-skc">SKC</span>
+                    <span class="tag tag-event">集成事件</span>
+                    <span class="tag tag-error">失败</span>
+                    <span class="log-action">推送PLM</span>
+                    <span class="log-operator">李设计</span>
+                  </div>
+                  <div class="log-summary">PLM推送失败 · BOM资料不完整，缺少面料成分</div>
+                </div>
+                <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
+              </div>
+              <div class="log-item">
+                <div class="log-meta"><div class="log-date">06-26</div><div class="log-time">16:45</div></div>
+                <div class="log-main">
+                  <div class="log-row1">
+                    <span class="tag tag-skc">SKC</span>
+                    <span class="tag tag-media">素材变更</span>
+                    <span class="log-action">营销图变更</span>
+                    <span class="log-operator">张跟单</span>
+                  </div>
+                  <div class="log-summary">替换了营销图</div>
+                </div>
+                <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
+              </div>
+              <div class="log-item">
+                <div class="log-meta"><div class="log-date">06-24</div><div class="log-time">10:18</div></div>
+                <div class="log-main">
+                  <div class="log-row1">
+                    <span class="tag tag-skc">SKC</span>
+                    <span class="tag tag-access">访问操作</span>
+                    <span class="log-action">下载图片</span>
+                    <span class="log-operator">张跟单</span>
+                  </div>
+                  <div class="log-summary">下载了款式图片</div>
+                </div>
+                <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
+              </div>
+              <div class="log-item">
+                <div class="log-meta"><div class="log-date">06-20</div><div class="log-time">15:33</div></div>
+                <div class="log-main">
+                  <div class="log-row1">
+                    <span class="tag tag-skc">SKC</span>
+                    <span class="tag tag-field">字段变更</span>
+                    <span class="log-action">创建SKC</span>
+                    <span class="log-operator">王小明</span>
+                  </div>
+                  <div class="log-summary">新建 SKC SS2024-0023-BL（颜色：深蓝）</div>
+                </div>
+                <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
+              </div>
+            </div>
+            <!-- 分页 -->
+            <div class="pagination" style="padding-top:12px">
+              <span class="page-info">共 12 条</span>
+              <div class="page-btn active">1</div>
+              <div class="page-btn">2</div>
+              <div class="page-btn">›</div>
+            </div>
+          </div><!-- /drawer-body -->
+        </div><!-- /drawer -->
+      </div><!-- /drawer-scene -->
+    </div><!-- /card -->
+  </div><!-- /page -->
+</div><!-- /v2 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 3: 变更日志 Tab（SKC 详情页内嵌）
+════════════════════════════════════════ -->
+<div id="v3" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">设计中心 / 款式管理 / <b>SKC 详情</b></div>
+      <div class="page-title">SS2024-0023-BL · 深蓝牛仔裤</div>
+    </div>
+    <div class="card" style="padding:0 24px">
+      <!-- SKC 详情页 Tab 栏 -->
+      <div class="tabs-bar" style="padding:0">
+        <div class="tab-item">基本信息</div>
+        <div class="tab-item">尺码规格</div>
+        <div class="tab-item">素材管理</div>
+        <div class="tab-item active">变更日志</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:8px">
+      <!-- Tab 内筛选 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="tabs-bar" style="border-bottom:none;margin-bottom:0;gap:4px">
+          <div class="tab-item active" style="padding:4px 12px;border:1px solid var(--primary);border-radius:4px;margin-bottom:0;font-size:12px">全部</div>
+          <div class="tab-item" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:0;font-size:12px;color:var(--text)">字段变更</div>
+          <div class="tab-item" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:0;font-size:12px;color:var(--text)">素材变更</div>
+          <div class="tab-item" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:0;font-size:12px;color:var(--text)">集成事件</div>
+          <div class="tab-item" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:0;font-size:12px;color:var(--text)">访问操作</div>
+        </div>
+        <div class="date-range">
+          <input class="input" type="date" value="2026-06-01" style="height:28px;font-size:12px;min-width:130px">
+          <span class="sep">~</span>
+          <input class="input" type="date" value="2026-06-30" style="height:28px;font-size:12px;min-width:130px">
+          <button class="btn" style="height:28px;font-size:12px;padding:0 12px;margin-left:8px">查询</button>
+        </div>
+      </div>
+      <!-- 同抽屉的日志列表，去掉编码列 -->
+      <table>
+        <thead>
+          <tr>
+            <th style="width:80px">维度</th>
+            <th style="width:140px">操作时间</th>
+            <th style="width:100px">操作人</th>
+            <th>操作内容</th>
+            <th style="width:100px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-spu">SPU</span></td>
+            <td>2026-06-28 14:32</td>
+            <td>王小明</td>
+            <td><span class="tag tag-field">字段变更</span> <span class="summary-text">修改了 销售季、款式等级</span></td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td>2026-06-27 09:15</td>
+            <td>李设计</td>
+            <td><span class="tag tag-event">集成事件</span> <span class="tag tag-error" style="margin-left:4px">失败</span> <span class="summary-text">PLM推送失败</span></td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td>2026-06-26 16:45</td>
+            <td>张跟单</td>
+            <td><span class="tag tag-media">素材变更</span> <span class="summary-text">替换了营销图（2张→3张）</span></td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-skc">SKC</span></td>
+            <td>2026-06-20 15:33</td>
+            <td>王小明</td>
+            <td><span class="tag tag-field">字段变更</span> <span class="summary-text">新建 SKC SS2024-0023-BL</span></td>
+            <td><button class="btn-link">查看详情</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <span class="page-info">共 12 条</span>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">›</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v3 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 4: 变更详情弹窗 · 字段变更
+════════════════════════════════════════ -->
+<div id="v4" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">日志列表 → 「查看详情」</div>
+      <div class="page-title">变更详情弹窗 · 字段变更（FIELD_CHANGE）</div>
+    </div>
+    <div class="modal-scene" style="min-height:500px">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-head-title">变更详情</span>
+          <button class="modal-head-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <!-- 元数据概览 -->
+          <div class="meta-strip">
+            <div class="meta-item">
+              <span class="meta-label">实体</span>
+              <span class="meta-value"><span class="tag tag-spu">SPU</span> SS2024-0023</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作类型</span>
+              <span class="meta-value">编辑SPU基本信息</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作人</span>
+              <span class="meta-value">王小明</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作时间</span>
+              <span class="meta-value">2026-06-28 14:32</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">变更字段数</span>
+              <span class="meta-value">2 个字段</span>
+            </div>
+          </div>
+          <!-- 字段 diff 表格 -->
+          <p class="diff-section-title">字段变更明细</p>
+          <table class="diff-table">
+            <thead>
+              <tr>
+                <th class="col-field">字段</th>
+                <th>变更前</th>
+                <th style="width:40px;text-align:center"></th>
+                <th>变更后</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-field">销售季</td>
+                <td><span class="diff-before">2024春夏</span></td>
+                <td style="text-align:center;color:var(--text-ter)">→</td>
+                <td><span class="diff-after">2024秋冬</span></td>
+              </tr>
+              <tr>
+                <td class="col-field">款式等级</td>
+                <td><span class="diff-before">A级</span></td>
+                <td style="text-align:center;color:var(--text-ter)">→</td>
+                <td><span class="diff-after">S级</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="height:16px"></div>
+          <!-- 状态字段示例 -->
+          <p class="diff-section-title">包含状态流转的字段示例</p>
+          <table class="diff-table">
+            <thead>
+              <tr>
+                <th class="col-field">字段</th>
+                <th>变更前</th>
+                <th style="width:40px;text-align:center"></th>
+                <th>变更后</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-field">款式状态</td>
+                <td><span class="status-pill status-red">待提交</span></td>
+                <td style="text-align:center;color:var(--text-ter)">→</td>
+                <td><span class="status-pill status-green">已提交</span></td>
+              </tr>
+              <tr>
+                <td class="col-field">动销状态</td>
+                <td><span class="diff-empty">—（新增）</span></td>
+                <td style="text-align:center;color:var(--text-ter)">→</td>
+                <td><span class="diff-after">已动销</span></td>
+              </tr>
+              <tr>
+                <td class="col-field">备注</td>
+                <td><span class="diff-before">秋季主推款</span></td>
+                <td style="text-align:center;color:var(--text-ter)">→</td>
+                <td><span class="diff-empty">—（已清空）</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-primary">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v4 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 5: 变更详情弹窗 · 素材变更
+════════════════════════════════════════ -->
+<div id="v5" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">日志列表 → 「查看详情」</div>
+      <div class="page-title">变更详情弹窗 · 素材变更（MEDIA_CHANGE）</div>
+    </div>
+    <div class="modal-scene" style="min-height:500px">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-head-title">素材变更详情</span>
+          <button class="modal-head-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <!-- 元数据概览 -->
+          <div class="meta-strip">
+            <div class="meta-item">
+              <span class="meta-label">实体</span>
+              <span class="meta-value"><span class="tag tag-skc">SKC</span> SS2024-0023-RD</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作类型</span>
+              <span class="meta-value">营销图变更</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作人</span>
+              <span class="meta-value">张跟单</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作时间</span>
+              <span class="meta-value">2026-06-26 16:45</span>
+            </div>
+          </div>
+          <!-- 素材前后对比 -->
+          <p class="diff-section-title">素材前后对比</p>
+          <div class="media-compare">
+            <!-- 变更前 -->
+            <div>
+              <div class="media-col-title">📷 变更前（2张）</div>
+              <div class="media-grid">
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)"></div>
+                </div>
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)"></div>
+                </div>
+              </div>
+            </div>
+            <!-- 变更后 -->
+            <div>
+              <div class="media-col-title">📷 变更后（3张）</div>
+              <div class="media-grid">
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#fa709a 0%,#fee140 100%)"></div>
+                </div>
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#30cfd0 0%,#330867 100%)"></div>
+                </div>
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+          <!-- 新增素材示例 -->
+          <p class="diff-section-title">新增素材示例（变更前为空）</p>
+          <div class="media-compare">
+            <div>
+              <div class="media-col-title">📷 变更前</div>
+              <div class="media-empty-hint">—（无）</div>
+            </div>
+            <div>
+              <div class="media-col-title">📷 变更后（新增2张）</div>
+              <div class="media-grid">
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%)"></div>
+                </div>
+                <div class="thumb">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-primary">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v5 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 6: 变更详情弹窗 · 集成事件
+════════════════════════════════════════ -->
+<div id="v6" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">日志列表 → 「查看详情」</div>
+      <div class="page-title">变更详情弹窗 · 集成事件（INTEGRATION_EVENT）</div>
+    </div>
+    <div class="modal-scene" style="min-height:480px">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-head-title">集成事件详情</span>
+          <button class="modal-head-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <!-- 元数据概览 -->
+          <div class="meta-strip">
+            <div class="meta-item">
+              <span class="meta-label">实体</span>
+              <span class="meta-value"><span class="tag tag-skc">SKC</span> SS2024-0023-BL</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">事件类型</span>
+              <span class="meta-value">推送 PLM</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作人</span>
+              <span class="meta-value">李设计</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作时间</span>
+              <span class="meta-value">2026-06-27 09:15</span>
+            </div>
+          </div>
+
+          <!-- 失败事件示例 -->
+          <p class="diff-section-title">事件结果（失败示例）</p>
+          <div class="event-banner error">
+            <div class="event-icon">❌</div>
+            <div>
+              <div class="event-info-title" style="color:var(--error)">推送失败</div>
+              <div class="event-info-sub">PLM 推送未成功，请检查数据完整性</div>
+            </div>
+          </div>
+          <div class="event-message-box error">
+            <strong>失败原因：</strong>PLM系统返回：BOM资料不完整，缺少面料成分数据。请补充完整后重新推送。
+          </div>
+
+          <div style="height:20px"></div>
+
+          <!-- 成功事件示例 -->
+          <p class="diff-section-title">事件结果（成功示例）</p>
+          <div class="event-banner success">
+            <div class="event-icon">✅</div>
+            <div>
+              <div class="event-info-title" style="color:var(--success)">测价通过</div>
+              <div class="event-info-sub">测价审核已完成</div>
+            </div>
+          </div>
+          <div class="event-message-box success">
+            测价审核通过，核价金额：¥89.00，可以进入下一流程。
+          </div>
+
+          <div style="height:20px"></div>
+
+          <!-- 处理中示例 -->
+          <p class="diff-section-title">事件结果（处理中示例）</p>
+          <div class="event-banner pending">
+            <div class="event-icon">⏳</div>
+            <div>
+              <div class="event-info-title" style="color:var(--warning)">推送处理中</div>
+              <div class="event-info-sub">Agent 任务执行中，请稍候...</div>
+            </div>
+          </div>
+          <div class="event-message-box pending">
+            系统正在处理推送请求，预计需要 2-5 分钟，请稍后刷新查看结果。
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-primary">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v6 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 7: 异常状态集合展示
+════════════════════════════════════════ -->
+<div id="v7" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="page-title">异常状态样式集</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+
+      <!-- 空状态 -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">空状态（无数据）</p>
+        <div class="empty">
+          <div style="font-size:48px;margin-bottom:12px">📭</div>
+          <p style="color:var(--text-sec);font-size:14px">暂无日志记录</p>
+        </div>
+      </div>
+
+      <!-- 查询超时 -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">查询超时（>10s）</p>
+        <div class="error-state">
+          <div class="icon">⏱️</div>
+          <p>查询超时，请稍后重试</p>
+          <button class="btn btn-primary">重新查询</button>
+        </div>
+      </div>
+
+      <!-- 无权限 -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">无权限访问</p>
+        <div class="no-permission">
+          <div class="icon">🔒</div>
+          <h3>暂无访问权限</h3>
+          <p>您没有查看日志中心的权限<br>请联系管理员开通 <code>SDP-SJZX-RZGL-CK</code></p>
+        </div>
+      </div>
+
+      <!-- 加载失败（列表） -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">列表加载失败</p>
+        <div class="error-state">
+          <div class="icon">😵</div>
+          <p>加载失败，请检查网络后重试</p>
+          <button class="btn">重试</button>
+        </div>
+      </div>
+
+      <!-- 弹窗内加载失败 -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">详情弹窗加载失败</p>
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+          <div class="modal-head" style="border-bottom:1px solid var(--border-light)">
+            <span class="modal-head-title">变更详情</span>
+            <button class="modal-head-close">✕</button>
+          </div>
+          <div class="error-state" style="padding:32px 24px">
+            <div class="icon">😵</div>
+            <p>加载失败，请重试</p>
+            <button class="btn">重试</button>
+          </div>
+          <div class="modal-foot"><button class="btn">关闭</button></div>
+        </div>
+      </div>
+
+      <!-- 素材缩略图加载失败 -->
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-sec);margin-bottom:16px;font-weight:500">素材缩略图加载失败</p>
+        <div class="media-grid">
+          <div class="thumb">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2)"></div>
+          </div>
+          <div class="thumb" style="background:#f5f5f5;border:1px dashed var(--border)">
+            <div class="thumb-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16l4-4 3 3 4-5 5 6H3zM7.5 8.5a1 1 0 11-2 0 1 1 0 012 0z"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg>
+              <span style="font-size:10px;color:var(--text-ter)">加载失败</span>
+            </div>
+          </div>
+          <div class="thumb">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-sec);margin-top:8px">灰色占位图 + 文件名文字</p>
+      </div>
+
+    </div><!-- /grid -->
+  </div><!-- /page -->
+</div><!-- /v7 -->
+
+<!-- ════════ Script ════════ -->
+<script>
+  function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.top-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const btn = document.querySelector(`.top-nav button[data-view="${id}"]`);
+    if (btn) btn.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
+

@@ -29,7 +29,7 @@ related_features:
   - "UACS 权限系统（日志查询数据范围）"
 ---
 
-# 款式日志中心
+# 款式日志中心 &nbsp; [![样式预览](https://img.shields.io/badge/样式预览-blue?logo=html5&logoColor=white)](https://htmlpreview.github.io/?https://github.com/lin15622159201-arch/sdp-prd/blob/main/mockups/log-center-styles.html)
 
 ## 1. 模块概述
 
@@ -50,7 +50,7 @@ related_features:
 | 模块 | 分工 |
 |------|------|
 | 款式管理 | 业务操作发生方，负责调用日志写入 API；本模块只负责存储和查询 |
-| 现货管理 | 同上 |
+| 现货管理 | 同上，但**当前版本（v2.8.0）仅处理款式管理日志，不处理现货管理** |
 | 操作日志（原有抽屉） | 原有 SKC 操作日志抽屉由本模块日志 Tab 统一替代，原表数据迁移由研发确认 |
 
 **对接关系**
@@ -91,8 +91,7 @@ flowchart TD
 |---------|---------|---------|---------|------|
 | 日志中心 | 列表页 | 设计中心 → 日志中心 | 页面跳转 | 全局日志查询，支持跨 SPU/SKC 检索，适合管理层审计 |
 | 操作日志抽屉 | 抽屉 | 款式列表 → 「操作日志」 | 抽屉 | 展示当前 SKC + 所属 SPU 的合并变更日志，时间线排列，用标签区分维度 |
-| 变更日志 Tab（款式详情） | Tab 页 | SKC 详情页 → 「变更日志」Tab | Tab 切换 | 同操作日志抽屉内容，嵌入 SKC 详情页 Tab |
-| 变更详情 | 详情弹窗 | 日志列表 → 点击「查看详情」 | 弹窗 | 展示单条日志的完整字段级 diff 或素材前后对比 |
+| 变更详情 | 详情弹窗 | 日志列表 → 点击「查看详情」 | 弹窗 | 展示字段变更的字段级 diff 或素材前后对比；集成事件结果直接展示在列表，不进弹窗 |
 
 ---
 
@@ -101,21 +100,10 @@ flowchart TD
 ### 功能权限
 
 | 操作 | 权限码 | 说明 |
-|------|--------|------|
+| --- | --- | --- |
 | 查看日志中心 | `SDP-SJZX-RZGL-CK` | 访问独立日志中心页面 |
-| 查看变更详情 | `SDP-SJZX-RZGL-CKXQ` | 展开单条日志的字段 diff 详情 |
-
-> SKC 详情页内嵌的「变更日志 Tab」复用款式管理模块的 `SDP-SJZX-KSGL-CKXQ`（查看详情）权限，无需单独配置。
-
-### 数据范围权限
-
-| 权限码 | 说明 |
-|--------|------|
-| `SDP-SJZX-KSGL-QBFZ` | 查看全部款式日志（管理层/运营） |
-| `SDP-SJZX-KSGL-QBZN` | 仅查看本组款式日志 |
-| `SDP-SJZX-KSGL-QBWD` | 仅查看我的款式日志 |
-
-> 数据范围权限复用款式管理模块的现有权限码，日志查询时按相同口径过滤。
+| 查看操作日志抽屉 | `SDP-SJZX-KSGL-CKXQ` | 从款式列表触发的操作日志抽屉，复用款式管理的查看详情权限 |
+| 查看变更详情 | `SDP-SJZX-RZGL-CKXQ` | 展开字段变更和素材变更的详情弹窗 |
 
 ---
 
@@ -127,40 +115,7 @@ flowchart TD
 
 ## 5. 数据模型
 
-### 5.1 实体关系
-
-```mermaid
-erDiagram
-    style_change_log {
-        bigint log_id PK
-        string entity_type
-        bigint entity_id
-        string entity_code
-        string action_type
-        string action_category
-        int operator_id FK
-        string operator_name
-        datetime operated_at
-        json field_diffs
-        json event_detail
-    }
-    style_change_log_field {
-        bigint field_id PK
-        bigint log_id FK
-        string field_name
-        string field_label
-        string field_type
-        string before_value
-        string after_value
-        string before_display
-        string after_display
-    }
-    design_style ||--o{ style_change_log : "SPU日志"
-    prototype ||--o{ style_change_log : "SKC日志"
-    style_change_log ||--o{ style_change_log_field : "字段变更明细"
-```
-
-### 5.2 日志主表（style_change_log）
+### 5.1 日志主表（style_change_log）
 
 #### 系统字段
 
@@ -191,13 +146,6 @@ erDiagram
 | operated_at | 操作时间 | 管理 | 日期时间 | 是 | 业务操作发生时间（非日志写入时间） |
 | source_module | 来源模块 | 管理 | 短文本 | 是 | 写入方标识，如 style-management / spot-goods |
 | remark | 备注 | 业务 | 短文本 | 否 | 操作时填写的原因/备注，如取消 SKC 原因 |
-
-#### 变更内容（冗余存储，便于列表预览）
-
-| 字段名 | 中文名 | 分类 | 类型 | 必填 | 说明 |
-|-------|-------|------|------|------|------|
-| change_summary | 变更摘要 | 业务 | 短文本 | 是 | 供列表预览，如"修改了 销售季、责任设计师"；集成事件填事件描述 |
-| changed_field_count | 变更字段数 | 业务 | 整数 | 否 | FIELD_CHANGE 类型时填写 |
 | event_result | 事件结果 | 业务 | 枚举 | 否 | INTEGRATION_EVENT 类型时填写：SUCCESS / FAILED / PENDING |
 | event_message | 事件消息 | 业务 | 短文本 | 否 | 失败原因或补充说明 |
 
@@ -236,7 +184,6 @@ erDiagram
 | log_id | 日志 ID | 系统 | 引用 | 是 | FK → style_change_log.log_id |
 | field_name | 字段名 | 业务 | 短文本 | 是 | 技术字段名，如 season_name |
 | field_label | 字段中文名 | 业务 | 短文本 | 是 | 展示用，如"销售季" |
-| field_type | 字段展示类型 | 业务 | 枚举 | 是 | TEXT（文本）/ STATUS（状态）/ MEDIA（素材） |
 | before_value | 变更前原始值 | 业务 | 短文本 | 否 | 原始存储值（用于程序逻辑），为空表示新增字段 |
 | after_value | 变更后原始值 | 业务 | 短文本 | 否 | 变更后存储值，为空表示字段被清除 |
 | before_display | 变更前展示值 | 业务 | 短文本 | 否 | 用于页面展示的可读值，如枚举的中文名 |
@@ -281,18 +228,17 @@ erDiagram
 | 操作类型 | 多选 | 根据操作大类联动展示枚举 |
 | 操作人 | 下拉搜索 | 按操作人筛选 |
 | 操作时间 | 日期范围 | 最大范围 90 天 |
-| 品类 | 下拉 | 按 SPU 品类筛选 |
 
 ### 列表展示字段
 
 | 列名 | 说明 |
 |-----|------|
 | 维度标签 | SPU / SKC 彩色标签 |
-| 款式/SKC 编码 | 可点击跳转 SKC 详情页 |
-| 操作时间 | `operated_at`，精确到分钟 |
+| 款式编码 | 文本，显示SPU/SKC编号 |
+| 操作时间 | `operated_at`，精确到秒 |
 | 操作人 | `operator_name`；系统自动操作显示"系统" |
-| 操作内容 | `change_summary` 预览；集成事件显示事件标签（如"PLM推送"）+ 结果状态 |
-| 操作 | 「查看详情」— 打开变更详情弹窗 |
+| 操作内容 | 操作大类标签 + `change_summary` 文字预览；集成事件额外展示结果状态标签（成功/失败/处理中）和 `event_message` 摘要 |
+| 操作 | 字段变更、素材变更：显示「查看详情」按钮，打开变更详情弹窗；集成事件、访问操作：不展示操作按钮 |
 
 - 默认排序：`operated_at` 降序
 - 分页：每页 20 条
@@ -312,11 +258,9 @@ erDiagram
 
 ---
 
-## 7. 操作日志抽屉 / 变更日志 Tab
+## 7. 操作日志抽屉
 
-两个入口共用同一套数据和展示逻辑，差异仅在交互形式：
-- **操作日志抽屉**：从款式管理列表点击「操作日志」触发，以抽屉形式呈现
-- **变更日志 Tab**：嵌入 SKC 详情页，以 Tab 形式呈现
+从款式管理列表点击「操作日志」触发，以抽屉形式呈现。
 
 ### 页面说明
 
@@ -326,7 +270,7 @@ erDiagram
 1. `entity_type = SKC` AND `entity_id = 当前 prototype_id`
 2. `entity_type = SPU` AND `entity_id = 当前 SKC 所属 design_style_id`
 
-### Tab 内筛选条件
+### 抽屉内筛选条件
 
 | 筛选项 | 类型 | 说明 |
 |-------|------|------|
@@ -340,7 +284,8 @@ erDiagram
 ### 关键业务规则
 
 - 合并展示当前 SKC 和所属 SPU 的日志，不支持跨 SKC 查询
-- Tab / 抽屉入口复用款式管理模块的 `SDP-SJZX-KSGL-CKXQ` 权限
+- 抽屉入口复用款式管理模块的 `SDP-SJZX-KSGL-CKXQ` 权限
+- 集成事件结果直接展示在列表中，不提供「查看详情」操作
 
 ### 异常处理
 
@@ -355,7 +300,7 @@ erDiagram
 
 ### 页面说明
 
-点击日志列表中的「查看详情」后弹出，展示单条日志的完整变更内容。
+点击日志列表中的「查看详情」后弹出，仅适用于**字段变更**和**素材变更**类型。集成事件结果直接在列表中展示，不进弹窗。
 
 ### 展示规则
 
@@ -373,11 +318,6 @@ erDiagram
 - 视频：展示封面帧 + 文件名；无封面时显示视频图标占位
 - 新增素材：左侧显示"—"；删除素材：右侧显示"—"
 
-**集成事件（INTEGRATION_EVENT）**
-
-- 展示事件类型、结果状态（成功/失败/处理中）、事件时间
-- 失败时展示 `event_message` 原因说明
-
 ### 示例
 
 **示例1：编辑 SPU 基本信息（SPU_EDIT）**
@@ -391,7 +331,6 @@ erDiagram
 | operator_name | 王小明 |
 | operated_at | 2026-06-28 14:32 |
 | change_summary | 修改了 销售季、款式等级 |
-| changed_field_count | 2 |
 
 字段变更明细（style_change_log_field）：
 
@@ -409,33 +348,7 @@ erDiagram
 
 ---
 
-**示例2：SKC 状态流转（PLM_PUSH 失败）**
-
-日志主记录：
-
-| 字段 | 值 |
-|-----|---|
-| entity_type | SKC |
-| action_type | PLM_PUSH |
-| action_category | INTEGRATION_EVENT |
-| operator_name | 李设计 |
-| operated_at | 2026-06-27 09:15 |
-| change_summary | PLM推送失败 |
-| event_result | FAILED |
-| event_message | PLM系统返回：BOM资料不完整，缺少面料成分 |
-
-页面渲染效果（集成事件详情）：
-
-```
-事件类型：推送 PLM
-结果：❌ 失败
-时间：2026-06-27 09:15
-原因：PLM系统返回：BOM资料不完整，缺少面料成分
-```
-
----
-
-**示例3：营销图替换（MEDIA_MARKETING_PIC）**
+**示例2：营销图替换（MEDIA_MARKETING_PIC）**
 
 日志主记录：
 
@@ -446,7 +359,7 @@ erDiagram
 | action_category | MEDIA_CHANGE |
 | operator_name | 张跟单 |
 | operated_at | 2026-06-26 16:45 |
-| change_summary | 替换了营销图（2张→3张） |
+| change_summary | 替换了营销图 |
 | event_detail | 见下方 JSON |
 
 event_detail 存储内容：
@@ -469,7 +382,7 @@ event_detail 存储内容：
 页面渲染效果（左右分栏对比）：
 
 ```
-变更前（2张）          变更后（3张）
+变更前                 变更后
 [缩略图 a1]           [缩略图 b1]
 [缩略图 a2]           [缩略图 b2]
                       [缩略图 b3]
