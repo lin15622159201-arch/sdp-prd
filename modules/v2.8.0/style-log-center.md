@@ -205,22 +205,26 @@ erDiagram
 
 **操作类型枚举（action_type）**
 
-| 枚举值 | 中文名 | action_category | 适用实体 |
-|-------|-------|----------------|---------|
-| `SPU_EDIT` | 编辑 SPU 基本信息 | FIELD_CHANGE | SPU |
-| `SPU_SUBMIT` | 提交款式资料 | FIELD_CHANGE | SPU |
-| `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SPU |
-| `SKC_CREATE` | 创建 SKC | FIELD_CHANGE | SKC |
-| `SKC_EDIT` | 编辑 SKC 信息 | FIELD_CHANGE | SKC |
-| `SKC_CANCEL` | 取消 SKC | FIELD_CHANGE | SKC |
-| `MEDIA_MARKETING_PIC` | 营销图变更 | MEDIA_CHANGE | SKC |
-| `MEDIA_VIDEO` | 视频变更 | MEDIA_CHANGE | SPU |
-| `PLM_PUSH` | 推送 PLM | INTEGRATION_EVENT | SKC |
-| `LISTING_PUSH` | 推送上架 | INTEGRATION_EVENT | SKC |
-| `PRICE_CHECK` | 核价 | INTEGRATION_EVENT | SKC |
-| `PROTO_DISASSEMBLE` | 拆版完成 | INTEGRATION_EVENT | SKC |
-| `PRICE_APPROVE` | 测价通过 | INTEGRATION_EVENT | SKC |
-| `PRICE_REVOKE` | 测价撤销 | INTEGRATION_EVENT | SKC |
+| 枚举值 | 中文名 | action_category | 适用实体 | 对应代码枚举 |
+|-------|-------|----------------|---------|------------|
+| `SPU_EDIT` | 编辑 SPU 基本信息 | FIELD_CHANGE | SPU | `EDIT`(20) |
+| `SPU_CANCEL` | 取消 SPU | FIELD_CHANGE | SPU | `CANCEL`(50) |
+| `SPU_SUBMIT` | 提交款式资料 | FIELD_CHANGE | SPU | — |
+| `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SPU | `CHANGE_DESIGNER`(26) |
+| `SKC_CREATE` | 创建 SKC | FIELD_CHANGE | SKC | `ADD_SKC`(2) |
+| `SKC_EDIT` | 编辑 SKC 信息 | FIELD_CHANGE | SKC | `EDIT_SKC`(24) |
+| `SKC_CANCEL` | 取消 SKC | FIELD_CHANGE | SKC | `CANCEL_SKC`(51) |
+| `LISTING_DELIST` | 下架 | FIELD_CHANGE | SKC | `OFF_SHELVES`(54) |
+| `MEDIA_MARKETING_PIC` | 营销图变更 | MEDIA_CHANGE | SKC | `EDIT_IMAGE`(25) |
+| `MEDIA_VIDEO` | 视频变更 | MEDIA_CHANGE | SPU | — |
+| `MEDIA_DOWNLOAD` | 图片下载 | MEDIA_CHANGE | SKC/SPU | `DOWNLOAD_IMAGE`(60) |
+| `PLM_PUSH` | 推送 PLM | INTEGRATION_EVENT | SKC | — |
+| `LISTING_PUSH` | 推送上架 | INTEGRATION_EVENT | SKC | `ON_SHELVES`(22) |
+| `LISTING_REJECT` | 上架驳回 | INTEGRATION_EVENT | SKC | `ON_SHELVES_FAIL`(55) |
+| `PRICE_CHECK` | 核价（PLM回传） | INTEGRATION_EVENT | SKC | — |
+| `PROTO_DISASSEMBLE` | 拆版完成 | INTEGRATION_EVENT | SKC | — |
+| `PRICE_APPROVE` | 测价通过 | INTEGRATION_EVENT | SKC | `PRICE_PASSED`(56) |
+| `PRICE_REVOKE` | 测价撤销 | INTEGRATION_EVENT | SKC | — |
 
 ---
 

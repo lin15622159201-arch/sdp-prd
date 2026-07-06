@@ -224,8 +224,7 @@
   <button data-view="v2" onclick="showView('v2')">📂 操作日志抽屉</button>
   <button data-view="v4" onclick="showView('v4')">🔍 变更详情 · 字段变更</button>
   <button data-view="v5" onclick="showView('v5')">🖼 变更详情 · 素材变更</button>
-  <button data-view="v6" onclick="showView('v6')">🔗 变更详情 · 集成事件</button>
-  <button data-view="v7" onclick="showView('v7')">⚠️ 异常状态</button>
+  <button data-view="v6" onclick="showView('v6')">⚠️ 异常状态</button>
 </nav>
 
 <!-- ════════════════════════════════════════
@@ -803,93 +802,6 @@
     </div>
   </div>
 </div><!-- /v5 -->
-
-<!-- ════════════════════════════════════════
-     VIEW 6: 变更详情弹窗 · 集成事件
-════════════════════════════════════════ -->
-<div id="v6" class="view">
-  <div class="page">
-    <div class="page-header">
-      <div class="breadcrumb">日志列表 → 「查看详情」</div>
-      <div class="page-title">变更详情弹窗 · 集成事件（INTEGRATION_EVENT）</div>
-    </div>
-    <div class="modal-scene" style="min-height:480px">
-      <div class="modal">
-        <div class="modal-head">
-          <span class="modal-head-title">集成事件详情</span>
-          <button class="modal-head-close">✕</button>
-        </div>
-        <div class="modal-body">
-          <!-- 元数据概览 -->
-          <div class="meta-strip">
-            <div class="meta-item">
-              <span class="meta-label">实体</span>
-              <span class="meta-value"><span class="tag tag-skc">SKC</span> SS2024-0023-BL</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">事件类型</span>
-              <span class="meta-value">推送 PLM</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">操作人</span>
-              <span class="meta-value">李设计</span>
-            </div>
-            <div class="meta-item">
-              <span class="meta-label">操作时间</span>
-              <span class="meta-value">2026-06-27 09:15</span>
-            </div>
-          </div>
-
-          <!-- 失败事件示例 -->
-          <p class="diff-section-title">事件结果（失败示例）</p>
-          <div class="event-banner error">
-            <div class="event-icon">❌</div>
-            <div>
-              <div class="event-info-title" style="color:var(--error)">推送失败</div>
-              <div class="event-info-sub">PLM 推送未成功，请检查数据完整性</div>
-            </div>
-          </div>
-          <div class="event-message-box error">
-            <strong>失败原因：</strong>PLM系统返回：BOM资料不完整，缺少面料成分数据。请补充完整后重新推送。
-          </div>
-
-          <div style="height:20px"></div>
-
-          <!-- 成功事件示例 -->
-          <p class="diff-section-title">事件结果（成功示例）</p>
-          <div class="event-banner success">
-            <div class="event-icon">✅</div>
-            <div>
-              <div class="event-info-title" style="color:var(--success)">测价通过</div>
-              <div class="event-info-sub">测价审核已完成</div>
-            </div>
-          </div>
-          <div class="event-message-box success">
-            测价审核通过，核价金额：¥89.00，可以进入下一流程。
-          </div>
-
-          <div style="height:20px"></div>
-
-          <!-- 处理中示例 -->
-          <p class="diff-section-title">事件结果（处理中示例）</p>
-          <div class="event-banner pending">
-            <div class="event-icon">⏳</div>
-            <div>
-              <div class="event-info-title" style="color:var(--warning)">推送处理中</div>
-              <div class="event-info-sub">Agent 任务执行中，请稍候...</div>
-            </div>
-          </div>
-          <div class="event-message-box pending">
-            系统正在处理推送请求，预计需要 2-5 分钟，请稍后刷新查看结果。
-          </div>
-        </div>
-        <div class="modal-foot">
-          <button class="btn btn-primary">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /v6 -->
 
 <!-- ════════════════════════════════════════
      VIEW 7: 异常状态集合展示
