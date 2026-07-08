@@ -152,8 +152,7 @@ erDiagram
         string field_type
         string before_value
         string after_value
-        string before_display
-        string after_display
+   
     }
     design_style ||--o{ style_change_log : "SPU日志"
     prototype ||--o{ style_change_log : "SKC日志"
@@ -238,11 +237,8 @@ erDiagram
 | log_id | 日志 ID | 系统 | 引用 | 是 | FK → style_change_log.log_id |
 | field_name | 字段名 | 业务 | 短文本 | 是 | 技术字段名，如 season_name |
 | field_label | 字段中文名 | 业务 | 短文本 | 是 | 展示用，如"销售季" |
-| field_type | 字段展示类型 | 业务 | 枚举 | 是 | TEXT（文本）/ STATUS（状态）/ MEDIA（素材） |
 | before_value | 变更前原始值 | 业务 | 短文本 | 否 | 原始存储值（用于程序逻辑），为空表示新增字段 |
 | after_value | 变更后原始值 | 业务 | 短文本 | 否 | 变更后存储值，为空表示字段被清除 |
-| before_display | 变更前展示值 | 业务 | 短文本 | 否 | 用于页面展示的可读值，如枚举的中文名 |
-| after_display | 变更后展示值 | 业务 | 短文本 | 否 | 用于页面展示的可读值 |
 
 ---
 
@@ -365,7 +361,6 @@ erDiagram
 
 - 展示方式：表格形式，每行一个变更字段
 - 列：字段名 | 变更前 | 变更后
-- 状态字段（field_type = STATUS）：前后值用颜色区分（红色→绿色）
 - 若变更前为空：显示"—"（表示新增字段值）
 - 若变更后为空：显示"—"（表示字段被清除）
 
@@ -397,10 +392,10 @@ erDiagram
 
 字段变更明细（style_change_log_field）：
 
-| field_label | field_type | before_display | after_display |
-|------------|-----------|---------------|--------------|
-| 销售季 | TEXT | 2024春夏 | 2024秋冬 |
-| 款式等级 | TEXT | A级 | S级 |
+| field_label | before_display | after_display |
+|-----------------------|---------------|--------------|
+| 销售季 |  2024春夏 | 2024秋冬 |
+| 款式等级 |  A级 | S级 |
 
 页面渲染效果（变更详情弹窗中的表格）：
 
