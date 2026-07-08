@@ -222,9 +222,11 @@
   <span class="logo">设计中心</span>
   <button data-view="v1" class="active" onclick="showView('v1')">📋 日志中心（主页面）</button>
   <button data-view="v2" onclick="showView('v2')">📂 操作日志抽屉</button>
+  <button data-view="v3" onclick="showView('v3')">🗂 变更日志 Tab</button>
   <button data-view="v4" onclick="showView('v4')">🔍 变更详情 · 字段变更</button>
   <button data-view="v5" onclick="showView('v5')">🖼 变更详情 · 素材变更</button>
-  <button data-view="v6" onclick="showView('v6')">⚠️ 异常状态</button>
+  <button data-view="v6" onclick="showView('v6')">✅ 变更详情 · 集成事件</button>
+  <button data-view="v7" onclick="showView('v7')">⚠️ 异常状态</button>
 </nav>
 
 <!-- ════════════════════════════════════════
@@ -323,10 +325,9 @@
             <td>李设计</td>
             <td>
               <span class="tag tag-event">集成事件</span>
-              <span class="tag tag-error" style="margin-left:6px">失败</span>
-              <span class="summary-text" style="margin-left:6px">PLM推送 · BOM资料不完整，缺少面料成分</span>
+              <span class="summary-text" style="margin-left:6px">PLM推送</span>
             </td>
-            <td>—</td>
+            <td><button class="btn-link">查看详情</button></td>
           </tr>
           <tr>
             <td><span class="tag tag-skc">SKC</span></td>
@@ -452,11 +453,10 @@
                   <div class="log-row1">
                     <span class="tag tag-skc">SKC</span>
                     <span class="tag tag-event">集成事件</span>
-                    <span class="tag tag-error">失败</span>
                     <span class="log-action">推送PLM</span>
                     <span class="log-operator">李设计</span>
                   </div>
-                  <div class="log-summary">PLM推送失败 · BOM资料不完整，缺少面料成分</div>
+                  <div class="log-summary">PLM推送成功</div>
                 </div>
                 <div class="log-op"><button class="btn-link" style="font-size:12px">详情</button></div>
               </div>
@@ -572,7 +572,7 @@
             <td><span class="tag tag-skc">SKC</span></td>
             <td>2026-06-27 09:15</td>
             <td>李设计</td>
-            <td><span class="tag tag-event">集成事件</span> <span class="tag tag-error" style="margin-left:4px">失败</span> <span class="summary-text">PLM推送失败</span></td>
+            <td><span class="tag tag-event">集成事件</span> <span class="summary-text">PLM推送成功</span></td>
             <td><button class="btn-link">查看详情</button></td>
           </tr>
           <tr>
@@ -802,6 +802,80 @@
     </div>
   </div>
 </div><!-- /v5 -->
+
+<!-- ════════════════════════════════════════
+     VIEW 6: 变更详情弹窗 · 集成事件（仅成功）
+════════════════════════════════════════ -->
+<div id="v6" class="view">
+  <div class="page">
+    <div class="page-header">
+      <div class="breadcrumb">日志列表 → 「查看详情」</div>
+      <div class="page-title">变更详情弹窗 · 集成事件（INTEGRATION_EVENT）</div>
+    </div>
+    <p style="color:var(--text-sec);font-size:13px;margin-bottom:16px">
+      集成事件只记录推送成功的事件，详情弹窗展示事件类型和操作时间，无结果状态字段。
+    </p>
+    <div class="modal-scene" style="min-height:420px">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-head-title">变更详情</span>
+          <button class="modal-head-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <!-- 元数据概览 -->
+          <div class="meta-strip">
+            <div class="meta-item">
+              <span class="meta-label">实体</span>
+              <span class="meta-value"><span class="tag tag-skc">SKC</span> SS2024-0023-BL</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作类型</span>
+              <span class="meta-value">推送PLM</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作人</span>
+              <span class="meta-value">李设计</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">操作时间</span>
+              <span class="meta-value">2026-06-27 09:15</span>
+            </div>
+          </div>
+          <!-- 事件横幅（成功） -->
+          <div class="event-banner success">
+            <div class="event-icon">✅</div>
+            <div>
+              <div class="event-info-title">推送PLM 成功</div>
+              <div class="event-info-sub">2026-06-27 09:15</div>
+            </div>
+          </div>
+
+          <!-- 多个事件类型示例 -->
+          <p class="diff-section-title" style="margin-top:24px">其他成功事件示例</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="event-banner success">
+              <div class="event-icon">✅</div>
+              <div>
+                <div class="event-info-title">推送上架 成功</div>
+                <div class="event-info-sub">操作人：系统 · 2026-06-24 17:30</div>
+              </div>
+            </div>
+            <div class="event-banner success">
+              <div class="event-icon">✅</div>
+              <div>
+                <div class="event-info-title">测价通过</div>
+                <div class="event-info-sub">操作人：系统 · 2026-06-20 11:00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-primary">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v6 -->
 
 <!-- ════════════════════════════════════════
      VIEW 7: 异常状态集合展示

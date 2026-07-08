@@ -4,7 +4,7 @@ module_name: 款式日志中心
 version: v1.0.0
 status: draft
 owner: _待填写_
-last_updated: '2026-06-29'
+last_updated: '2026-07-08'
 depends_on:
   - module: style-management
     type: hard
@@ -71,7 +71,7 @@ flowchart TD
     A[用户/系统触发变更] --> B{变更类型}
     B -->|字段变更 SPU/SKC| C[比较前后字段值]
     B -->|素材变更 图片/视频| D[记录素材替换事件]
-    B -->|集成事件 PLM/上架/测价| E[记录事件类型和结果]
+    B -->|集成事件 PLM/上架/测价| E[记录事件类型（仅成功事件）]
     C --> F[写入日志记录 + 字段 diff 列表]
     D --> G[写入日志记录 + 素材前后引用]
     E --> H[写入日志记录 + 事件描述]
@@ -191,14 +191,15 @@ erDiagram
 | source_module | 来源模块 | 管理 | 短文本 | 是 | 写入方标识，如 style-management / spot-goods |
 | remark | 备注 | 业务 | 短文本 | 否 | 操作时填写的原因/备注，如取消 SKC 原因 |
 
-#### 变更内容（冗余存储，便于列表预览）
+#### 变更内容
 
 | 字段名 | 中文名 | 分类 | 类型 | 必填 | 说明 |
 |-------|-------|------|------|------|------|
-| change_summary | 变更摘要 | 业务 | 短文本 | 是 | 供列表预览，如"修改了 销售季、责任设计师"；集成事件填事件描述 |
 | changed_field_count | 变更字段数 | 业务 | 整数 | 否 | FIELD_CHANGE 类型时填写 |
-| event_result | 事件结果 | 业务 | 枚举 | 否 | INTEGRATION_EVENT 类型时填写：SUCCESS / FAILED / PENDING |
-| event_message | 事件消息 | 业务 | 短文本 | 否 | 失败原因或补充说明 |
+
+> 变更摘要（如"修改了 销售季、责任设计师"）由前端根据 `action_type`、`changed_field_count` 及 `style_change_log_field` 中的 `field_label` 拼接展示，不在服务端冗余存储。
+>
+> 集成事件（INTEGRATION_EVENT）只记录推送成功的事件，无需存储事件结果状态；原 `event_result`、`event_message` 字段不再写入。
 
 ---
 
@@ -289,7 +290,7 @@ erDiagram
 | 款式/SKC 编码 | 可点击跳转 SKC 详情页 |
 | 操作时间 | `operated_at`，精确到分钟 |
 | 操作人 | `operator_name`；系统自动操作显示"系统" |
-| 操作内容 | `change_summary` 预览；集成事件显示事件标签（如"PLM推送"）+ 结果状态 |
+| 操作内容 | 前端拼接展示：字段变更显示"修改了 X、Y 等 N 个字段"；集成事件显示事件标签（如"PLM推送"） |
 | 操作 | 「查看详情」— 打开变更详情弹窗 |
 
 - 默认排序：`operated_at` 降序
@@ -372,8 +373,7 @@ erDiagram
 
 **集成事件（INTEGRATION_EVENT）**
 
-- 展示事件类型、结果状态（成功/失败/处理中）、事件时间
-- 失败时展示 `event_message` 原因说明
+- 只记录推送成功的事件，展示事件类型和事件时间
 
 ### 示例
 
@@ -387,7 +387,6 @@ erDiagram
 | action_type | SPU_EDIT |
 | operator_name | 王小明 |
 | operated_at | 2026-06-28 14:32 |
-| change_summary | 修改了 销售季、款式等级 |
 | changed_field_count | 2 |
 
 字段变更明细（style_change_log_field）：
@@ -406,7 +405,7 @@ erDiagram
 
 ---
 
-**示例2：SKC 状态流转（PLM_PUSH 失败）**
+**示例2：集成事件（PLM_PUSH 成功）**
 
 日志主记录：
 
@@ -417,17 +416,12 @@ erDiagram
 | action_category | INTEGRATION_EVENT |
 | operator_name | 李设计 |
 | operated_at | 2026-06-27 09:15 |
-| change_summary | PLM推送失败 |
-| event_result | FAILED |
-| event_message | PLM系统返回：BOM资料不完整，缺少面料成分 |
 
 页面渲染效果（集成事件详情）：
 
-```
+```text
 事件类型：推送 PLM
-结果：❌ 失败
 时间：2026-06-27 09:15
-原因：PLM系统返回：BOM资料不完整，缺少面料成分
 ```
 
 ---
@@ -443,7 +437,6 @@ erDiagram
 | action_category | MEDIA_CHANGE |
 | operator_name | 张跟单 |
 | operated_at | 2026-06-26 16:45 |
-| change_summary | 替换了营销图（2张→3张） |
 | event_detail | 见下方 JSON |
 
 event_detail 存储内容：
@@ -484,5 +477,6 @@ event_detail 存储内容：
 ## 更新记录
 
 | 变更时间 | 变更版本 | 变更类型 | 变更内容 | 涉及章节 |
-|---------|---------|---------|---------|---------|
+| ------- | ------- | ------- | ------- | ------- |
 | 2026-06-29 | v1.0.0 | 新增 | 款式日志中心模块初始版本，支持 SPU/SKC 字段级变更追踪、素材前后对比、集成事件记录；提供独立日志中心页和详情页内嵌 Tab 两级入口 | 全部 |
+| 2026-07-08 | v1.1.0 | 变更 | 移除 change_summary 冗余字段，改由前端根据 field_label 拼接展示；移除 event_result / event_message 字段，集成事件只记录推送成功的事件 | 5.2、6、8 |
