@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商品详情 - BOM与尺寸表 Mockup</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;color:#333;background:#f5f5f5}
+.demo-nav{background:#fff;border-bottom:1px solid #e8e8e8;padding:12px 24px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:500}
+.demo-nav span{color:#999;font-size:12px;margin-right:8px}
+.demo-btn{padding:6px 16px;border:1px solid #d9d9d9;background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:#595959}
+.demo-btn.active{background:#1677ff;color:#fff;border-color:#1677ff}
+.page-wrap{padding:24px;max-width:1200px;margin:0 auto}
+.breadcrumb{font-size:12px;color:#999;margin-bottom:16px}
+.breadcrumb a{color:#1677ff;text-decoration:none}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.page-title{font-size:18px;font-weight:600;color:#262626}
+.card{background:#fff;border-radius:6px;border:1px solid #f0f0f0;margin-bottom:16px}
+.card-header{padding:12px 20px;border-bottom:1px solid #f0f0f0;background:#fafafa;border-radius:6px 6px 0 0;font-weight:600;font-size:14px;color:#262626;display:flex;justify-content:space-between;align-items:center}
+.card-body{padding:20px}
+.info-grid{display:grid;grid-template-columns:160px 1fr 160px 1fr}
+.info-label{padding:8px 12px;background:#fafafa;border:1px solid #f0f0f0;color:#666;font-size:13px}
+.info-value{padding:8px 12px;border:1px solid #f0f0f0;color:#262626;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#fafafa;border:1px solid #f0f0f0;padding:9px 12px;text-align:left;color:#595959;font-weight:500;white-space:nowrap}
+td{border:1px solid #f0f0f0;padding:9px 12px;color:#262626;vertical-align:middle}
+tr:hover td{background:#fafafa}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:12px;margin-right:4px}
+.tag-blue{background:#e6f4ff;color:#1677ff;border:1px solid #91caff}
+.tag-orange{background:#fff7e6;color:#fa8c16;border:1px solid #ffd591}
+.tag-gray{background:#f5f5f5;color:#8c8c8c;border:1px solid #d9d9d9}
+.s-pub{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:#f6ffed;color:#52c41a;border:1px solid #b7eb8f}
+.s-price{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:#e6f4ff;color:#1677ff;border:1px solid #91caff}
+.btn-link{background:none;border:none;color:#1677ff;cursor:pointer;padding:0 4px;font-size:13px}
+.btn-link:hover{color:#4096ff;text-decoration:underline}
+.btn-default{padding:5px 16px;border:1px solid #d9d9d9;background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:#595959}
+.btn-default:hover{border-color:#1677ff;color:#1677ff}
+.img-ph{width:40px;height:40px;background:#f5f5f5;border:1px solid #e8e8e8;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#bfbfbf;font-size:10px}
+.empty{color:#bfbfbf;font-size:13px;padding:20px;text-align:center}
+.mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:flex-start;justify-content:center;padding-top:60px;overflow-y:auto}
+.mask.show{display:flex}
+.modal{background:#fff;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,0.15);width:980px;max-width:96vw;margin-bottom:60px}
+.modal-lg{width:1060px}
+.mhd{padding:16px 24px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.mtitle{font-size:16px;font-weight:600;color:#262626}
+.mclose{background:none;border:none;font-size:22px;cursor:pointer;color:#8c8c8c;line-height:1;padding:0 4px}
+.mclose:hover{color:#262626}
+.mbody{padding:20px 24px;max-height:70vh;overflow-y:auto}
+.mfoot{padding:12px 24px;border-top:1px solid #f0f0f0;text-align:right}
+.info-bar{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:16px;padding:12px 16px;background:#fafafa;border-radius:4px;border:1px solid #f0f0f0}
+.ib-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.ib-item label{color:#666;white-space:nowrap}
+.ib-item select{border:1px solid #d9d9d9;border-radius:4px;padding:3px 8px;font-size:13px;color:#262626;background:#fff}
+.tabs{display:flex;border-bottom:1px solid #f0f0f0;margin-bottom:16px}
+.ti{padding:8px 20px;cursor:pointer;font-size:13px;color:#595959;border-bottom:2px solid transparent;margin-bottom:-1px;user-select:none}
+.ti.active{color:#1677ff;border-bottom-color:#1677ff;font-weight:500}
+.ti:hover{color:#1677ff}
+.tp{display:none}
+.tp.active{display:block}
+</style>
+</head>
+<body>
+
+<div class="demo-nav">
+  <span>切换视图：</span>
+  <button class="demo-btn active" onclick="showView('detail')">① 商品详情页</button>
+  <button class="demo-btn" onclick="showView('bom')">② 查看 BOM 弹窗</button>
+  <button class="demo-btn" onclick="showView('size')">③ 查看尺寸表弹窗</button>
+</div>
+
+<!-- ===== 商品详情页 ===== -->
+<div id="v-detail" class="page-wrap">
+  <div class="breadcrumb"><a href="#">商品管理</a> &rsaquo; <a href="#">商品列表</a> &rsaquo; 商品详情</div>
+  <div class="page-header">
+    <div class="page-title">商品详情</div>
+    <span class="s-pub">已发布到站点</span>
+  </div>
+
+  <div class="card">
+    <div class="card-header">SPU 基本信息</div>
+    <div class="card-body" style="padding:0">
+      <div class="info-grid">
+        <div class="info-label">SPU 编码</div><div class="info-value">SP2606008429</div>
+        <div class="info-label">平台 SPU</div><div class="info-value">6001234567890</div>
+        <div class="info-label">商品名称</div><div class="info-value">女士休闲连衣裙</div>
+        <div class="info-label">店铺</div><div class="info-value">Temu 官方旗舰店</div>
+        <div class="info-label">款式类型</div><div class="info-value">设计款</div>
+        <div class="info-label">内部品类</div><div class="info-value">连衣裙</div>
+        <div class="info-label">平台品类</div><div class="info-value">Women's Dresses</div>
+        <div class="info-label">波段</div><div class="info-value">2026 夏季</div>
+        <div class="info-label">设计师</div><div class="info-value">林廷威 / 设计一组</div>
+        <div class="info-label">上架人</div><div class="info-value">运营01</div>
+        <div class="info-label">上架时间</div><div class="info-value">2026-06-15 10:30:00</div>
+        <div class="info-label">商品标签</div><div class="info-value">
+          <span class="tag tag-blue">测价通过</span>
+          <span class="tag tag-blue">动销款</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">SKC 列表</div>
+    <div class="card-body" style="padding:0">
+      <table>
+        <thead>
+          <tr>
+            <th>SKC 编码</th><th>颜色</th><th>波段</th><th>平台 SKC</th>
+            <th>商品状态</th><th>款式难度</th><th>样衣审版</th><th style="width:175px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>26060084290101</td><td>米白色</td><td>2026 夏季</td><td>7001234001</td>
+            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+            <td>
+              <button class="btn-link" onclick="openBom('26060084290101')">查看 BOM</button>
+              <span style="color:#e0e0e0;margin:0 2px">|</span>
+              <button class="btn-link">价格变动历史</button>
+            </td>
+          </tr>
+          <tr>
+            <td>26060084290102</td><td>浅蓝色</td><td>2026 夏季</td><td>7001234002</td>
+            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+            <td>
+              <button class="btn-link" onclick="openBom('26060084290102')">查看 BOM</button>
+              <span style="color:#e0e0e0;margin:0 2px">|</span>
+              <button class="btn-link">价格变动历史</button>
+            </td>
+          </tr>
+          <tr>
+            <td>26060084290103</td><td>粉色</td><td>2026 夏季</td><td>7001234003</td>
+            <td><span class="s-price">价格申报中</span></td><td>简单</td>
+            <td style="color:#bfbfbf">—</td>
+            <td>
+              <button class="btn-link" onclick="openBom('26060084290103')">查看 BOM</button>
+              <span style="color:#e0e0e0;margin:0 2px">|</span>
+              <button class="btn-link">价格变动历史</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      尺寸表
+      <button class="btn-link" onclick="openSize()">查看尺寸 ›</button>
+    </div>
+    <div class="card-body">
+      <div class="empty">尺寸表为 SPU 维度，点击「查看尺寸」可切换 SKC 及版本查看完整数据</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">其他信息</div>
+    <div class="card-body" style="padding:0">
+      <div class="info-grid">
+        <div class="info-label">站点 ID</div><div class="info-value">US</div>
+        <div class="info-label">视频</div><div class="info-value" style="color:#bfbfbf">—</div>
+        <div class="info-label">尺码图</div><div class="info-value"><div class="img-ph">图片</div></div>
+        <div class="info-label">素材图</div><div class="info-value"><div class="img-ph">图片</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-detail -->
+
+<!-- ===== BOM 弹窗 ===== -->
+<div class="mask" id="mask-bom">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <div class="mtitle">
+        BOM 资料
+        <span id="bom-skc-title" style="font-size:14px;color:#595959;font-weight:400;margin-left:8px"></span>
+      </div>
+      <button class="mclose" onclick="closeModal('mask-bom')">&times;</button>
+    </div>
+    <div class="mbody">
+      <div class="info-bar">
+        <div class="ib-item"><label>SKC</label><span id="bom-skc-val"></span></div>
+        <div class="ib-item">
+          <label>BOM 版本号</label>
+          <select id="bom-ver"></select>
+        </div>
+        <div class="ib-item"><label>创建时间</label><span>2026-07-07 11:19:27</span></div>
+      </div>
+
+      <div class="tabs" id="bom-tabs">
+        <div class="ti active" onclick="switchTab(this,'bom-t1','bom-tabs')">面料明细</div>
+        <div class="ti" onclick="switchTab(this,'bom-t2','bom-tabs')">辅料明细</div>
+        <div class="ti" onclick="switchTab(this,'bom-t3','bom-tabs')">特殊辅料明细</div>
+      </div>
+
+      <div class="tp active" id="bom-t1">
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>物料项目</th><th>图片</th><th>物料 SPU/SKU</th><th>货号</th><th>商品类型</th>
+            <th>成分</th><th>使用部位</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>面料 A</td><td><div class="img-ph">图</div></td>
+              <td>SPU-10001 / SKU-20001</td><td>H2026001</td>
+              <td><span class="tag tag-orange">花型</span></td>
+              <td>100% 棉</td><td>前片 / 后片</td><td>1.2</td><td>1.32</td><td>米</td><td>10%</td>
+              <td style="color:#bfbfbf">—</td>
+            </tr>
+            <tr>
+              <td>面料 B</td><td><div class="img-ph">图</div></td>
+              <td>SPU-10002 / SKU-20002</td><td>H2026002</td>
+              <td><span class="tag tag-gray">净色</span></td>
+              <td>95% 棉 5% 氨纶</td><td>领口</td><td>0.3</td><td>0.33</td><td>米</td><td>10%</td>
+              <td style="color:#bfbfbf">—</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="tp" id="bom-t2">
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>物料项目</th><th>图片</th><th>品名</th><th>物料 SPU</th><th>货号</th>
+            <th>使用部位</th><th>物料属性</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>辅料 A</td><td><div class="img-ph">图</div></td>
+              <td>隐形拉链</td><td>SPU-30001</td><td>F2026001</td>
+              <td>侧缝</td><td>白色 / 30cm</td><td>1</td><td>1.05</td><td>条</td><td>5%</td>
+              <td style="color:#bfbfbf">—</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="tp" id="bom-t3">
+        <table>
+          <thead><tr>
+            <th>物料项目</th><th>品名</th><th>物料 SPU</th><th>货号</th><th>使用部位</th>
+            <th>物料属性</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+          </tr></thead>
+          <tbody>
+            <tr><td colspan="11" class="empty">暂无特殊辅料</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn-default" onclick="closeModal('mask-bom')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 尺寸表弹窗 ===== -->
+<div class="mask" id="mask-size">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <div class="mtitle">
+        尺寸表
+        <span style="font-size:14px;color:#595959;font-weight:400;margin-left:8px">SPU: SP2606008429</span>
+      </div>
+      <button class="mclose" onclick="closeModal('mask-size')">&times;</button>
+    </div>
+    <div class="mbody">
+      <div class="info-bar">
+        <div class="ib-item">
+          <label>SKC</label>
+          <select id="size-skc" onchange="onSkcChange()">
+            <option value="101">26060084290101 米白色</option>
+            <option value="102">26060084290102 浅蓝色</option>
+            <option value="103">26060084290103 粉色</option>
+          </select>
+        </div>
+        <div class="ib-item">
+          <label>版本号</label>
+          <select id="size-ver">
+            <option>SZ260405087301-4</option>
+            <option>SZ260405087301-3</option>
+            <option>SZ260405087301-2</option>
+          </select>
+        </div>
+        <div class="ib-item"><label>提交时间</label><span id="size-submit-time">2026-07-07 11:18:35</span></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>部位</th><th>尺寸/精度</th><th>量法</th><th>样衣尺寸</th><th>纸样尺寸</th><th>跳码</th>
+              <th>2XS</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>允差范围</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>后中长</td><td>X1</td><td>平铺量</td><td>95</td><td>96</td><td>2</td><td>89</td><td>91</td><td>93</td><td>95</td><td>97</td><td>99</td><td>±1.5</td></tr>
+            <tr><td>胸围</td><td>X1</td><td>平铺量</td><td>86</td><td>87</td><td>4</td><td>78</td><td>82</td><td>86</td><td>90</td><td>94</td><td>98</td><td>±2</td></tr>
+            <tr><td>腰围</td><td>X1</td><td>平铺量</td><td>70</td><td>71</td><td>4</td><td>62</td><td>66</td><td>70</td><td>74</td><td>78</td><td>82</td><td>±2</td></tr>
+            <tr><td>臀围</td><td>X1</td><td>平铺量</td><td>92</td><td>93</td><td>4</td><td>84</td><td>88</td><td>92</td><td>96</td><td>100</td><td>104</td><td>±2</td></tr>
+            <tr><td>袖长</td><td>X1</td><td>平铺量</td><td>58</td><td>59</td><td>1.5</td><td>52.5</td><td>54</td><td>55.5</td><td>57</td><td>58.5</td><td>60</td><td>±1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn-default" onclick="closeModal('mask-size')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showView(v) {
+  document.getElementById('v-detail').style.display = (v === 'detail') ? 'block' : 'none';
+  document.querySelectorAll('.demo-btn').forEach(function(b, i) {
+    b.classList.toggle('active', ['detail','bom','size'][i] === v);
+  });
+  if (v === 'bom') openBom('26060084290101');
+  if (v === 'size') openSize();
+}
+
+function openBom(skc) {
+  document.getElementById('bom-skc-title').textContent = 'SKC: ' + skc;
+  document.getElementById('bom-skc-val').textContent = skc;
+  var sel = document.getElementById('bom-ver');
+  sel.innerHTML = '<option>PB' + skc + '-2</option><option>PB' + skc + '-1</option>';
+  // reset tabs
+  document.querySelectorAll('#bom-tabs .ti').forEach(function(t, i) {
+    t.classList.toggle('active', i === 0);
+  });
+  ['bom-t1','bom-t2','bom-t3'].forEach(function(id, i) {
+    document.getElementById(id).classList.toggle('active', i === 0);
+  });
+  document.getElementById('mask-bom').classList.add('show');
+}
+
+function openSize() {
+  document.getElementById('mask-size').classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+// click backdrop to close
+document.getElementById('mask-bom').addEventListener('click', function(e) {
+  if (e.target === this) closeModal('mask-bom');
+});
+document.getElementById('mask-size').addEventListener('click', function(e) {
+  if (e.target === this) closeModal('mask-size');
+});
+
+function switchTab(el, paneId, tabsId) {
+  document.querySelectorAll('#' + tabsId + ' .ti').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  el.classList.add('active');
+  var mbody = el.closest('.mbody');
+  mbody.querySelectorAll('.tp').forEach(function(p) {
+    p.classList.toggle('active', p.id === paneId);
+  });
+}
+
+function onSkcChange() {
+  // Demo: just simulate time update
+  var times = ['2026-07-07 11:18:35', '2026-07-06 09:30:12', '2026-07-05 15:44:00'];
+  var idx = document.getElementById('size-skc').selectedIndex;
+  document.getElementById('size-submit-time').textContent = times[idx] || times[0];
+}
+</script>
+</body>
+</html>
