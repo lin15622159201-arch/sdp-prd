@@ -57,6 +57,16 @@ tr:hover td{background:#fafafa}
 .ti:hover{color:#1677ff}
 .tp{display:none}
 .tp.active{display:block}
+.bom-section{margin-bottom:20px}
+.bom-section:last-child{margin-bottom:0}
+.bom-section-title{font-size:13px;font-weight:600;color:#262626;padding:6px 10px;background:#f5f5f5;border-left:3px solid #1677ff;border-radius:0 3px 3px 0;margin-bottom:10px}
+.comp-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f5f5}
+.comp-row:last-child{border-bottom:none}
+.comp-label{width:100px;color:#666;font-size:13px;flex-shrink:0}
+.comp-value{color:#262626;font-size:13px;flex:1}
+.modal-sm{width:620px}
+.fill-hint{font-size:12px;color:#8c8c8c;margin-left:8px}
+.fill-tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;background:#e6fffb;color:#13c2c2;border:1px solid #87e8de;margin-left:4px}
 </style>
 </head>
 <body>
@@ -99,46 +109,36 @@ tr:hover td{background:#fafafa}
     </div>
   </div>
 
+  <!-- 产品属性 -->
   <div class="card">
-    <div class="card-header">SKC 列表</div>
+    <div class="card-header">产品属性</div>
     <div class="card-body" style="padding:0">
       <table>
         <thead>
           <tr>
-            <th>SKC 编码</th><th>颜色</th><th>波段</th><th>平台 SKC</th>
-            <th>商品状态</th><th>款式难度</th><th>样衣审版</th><th style="width:175px">操作</th>
+            <th style="width:160px">属性名</th>
+            <th>属性值</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>26060084290101</td><td>米白色</td><td>2026 夏季</td><td>7001234001</td>
-            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
-            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+            <td>面料成分</td>
             <td>
-              <button class="btn-link" onclick="openBom('26060084290101')">查看 BOM</button>
-              <span style="color:#e0e0e0;margin:0 2px">|</span>
-              <button class="btn-link">价格变动历史</button>
+              100% 棉（前片/后片）；95% 棉 5% 氨纶（领口）
+              <button class="btn-link" style="margin-left:8px" onclick="openBomSimple('26060084290101')">查看 BOM ›</button>
             </td>
           </tr>
           <tr>
-            <td>26060084290102</td><td>浅蓝色</td><td>2026 夏季</td><td>7001234002</td>
-            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
-            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
-            <td>
-              <button class="btn-link" onclick="openBom('26060084290102')">查看 BOM</button>
-              <span style="color:#e0e0e0;margin:0 2px">|</span>
-              <button class="btn-link">价格变动历史</button>
-            </td>
+            <td>材质</td>
+            <td>纯棉</td>
           </tr>
           <tr>
-            <td>26060084290103</td><td>粉色</td><td>2026 夏季</td><td>7001234003</td>
-            <td><span class="s-price">价格申报中</span></td><td>简单</td>
-            <td style="color:#bfbfbf">—</td>
-            <td>
-              <button class="btn-link" onclick="openBom('26060084290103')">查看 BOM</button>
-              <span style="color:#e0e0e0;margin:0 2px">|</span>
-              <button class="btn-link">价格变动历史</button>
-            </td>
+            <td>领型</td>
+            <td>圆领</td>
+          </tr>
+          <tr>
+            <td>袖型</td>
+            <td>短袖</td>
           </tr>
         </tbody>
       </table>
@@ -146,12 +146,33 @@ tr:hover td{background:#fafafa}
   </div>
 
   <div class="card">
-    <div class="card-header">
-      尺寸表
-      <button class="btn-link" onclick="openSize()">查看尺寸 ›</button>
-    </div>
-    <div class="card-body">
-      <div class="empty">尺寸表为 SPU 维度，点击「查看尺寸」可切换 SKC 及版本查看完整数据</div>
+    <div class="card-header">SKC 列表</div>
+    <div class="card-body" style="padding:0">
+      <table>
+        <thead>
+          <tr>
+            <th>SKC 编码</th><th>颜色</th><th>波段</th><th>平台 SKC</th>
+            <th>商品状态</th><th>款式难度</th><th>样衣审版</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>26060084290101</td><td>米白色</td><td>2026 夏季</td><td>7001234001</td>
+            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+          </tr>
+          <tr>
+            <td>26060084290102</td><td>浅蓝色</td><td>2026 夏季</td><td>7001234002</td>
+            <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+            <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+          </tr>
+          <tr>
+            <td>26060084290103</td><td>粉色</td><td>2026 夏季</td><td>7001234003</td>
+            <td><span class="s-price">价格申报中</span></td><td>简单</td>
+            <td style="color:#bfbfbf">—</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -167,6 +188,54 @@ tr:hover td{background:#fafafa}
     </div>
   </div>
 </div><!-- /v-detail -->
+
+<!-- ===== 简易 BOM 弹窗（成分入口） ===== -->
+<div class="mask" id="mask-bom-simple">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <div class="mtitle">
+        BOM 面料成分
+        <span id="bom-s-skc-title" style="font-size:14px;color:#595959;font-weight:400;margin-left:8px"></span>
+      </div>
+      <button class="mclose" onclick="closeModal('mask-bom-simple')">&times;</button>
+    </div>
+    <div class="mbody">
+      <div class="info-bar">
+        <div class="ib-item"><label>SKC</label><span id="bom-s-skc-val"></span></div>
+        <div class="ib-item">
+          <label>BOM 版本号</label>
+          <select id="bom-s-ver"></select>
+        </div>
+        <div class="ib-item"><label>创建时间</label><span>2026-07-07 11:19:27</span></div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>物料项目</th><th style="width:60px">图片</th><th>成分</th><th>使用部位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>面料 A</td>
+            <td><div class="img-ph">图</div></td>
+            <td>100% 棉</td>
+            <td>前片 / 后片</td>
+          </tr>
+          <tr>
+            <td>面料 B</td>
+            <td><div class="img-ph">图</div></td>
+            <td>95% 棉 5% 氨纶</td>
+            <td>领口</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mfoot">
+      <button class="btn-default" onclick="openBom(currentSimpleSKC);closeModal('mask-bom-simple')" style="margin-right:8px">查看完整 BOM</button>
+      <button class="btn-default" onclick="closeModal('mask-bom-simple')">关闭</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===== BOM 弹窗 ===== -->
 <div class="mask" id="mask-bom">
@@ -188,13 +257,9 @@ tr:hover td{background:#fafafa}
         <div class="ib-item"><label>创建时间</label><span>2026-07-07 11:19:27</span></div>
       </div>
 
-      <div class="tabs" id="bom-tabs">
-        <div class="ti active" onclick="switchTab(this,'bom-t1','bom-tabs')">面料明细</div>
-        <div class="ti" onclick="switchTab(this,'bom-t2','bom-tabs')">辅料明细</div>
-        <div class="ti" onclick="switchTab(this,'bom-t3','bom-tabs')">特殊辅料明细</div>
-      </div>
-
-      <div class="tp active" id="bom-t1">
+      <!-- 面料明细 -->
+      <div class="bom-section">
+        <div class="bom-section-title">面料明细</div>
         <div style="overflow-x:auto">
         <table>
           <thead><tr>
@@ -221,7 +286,9 @@ tr:hover td{background:#fafafa}
         </div>
       </div>
 
-      <div class="tp" id="bom-t2">
+      <!-- 辅料明细 -->
+      <div class="bom-section">
+        <div class="bom-section-title">辅料明细</div>
         <div style="overflow-x:auto">
         <table>
           <thead><tr>
@@ -240,7 +307,10 @@ tr:hover td{background:#fafafa}
         </div>
       </div>
 
-      <div class="tp" id="bom-t3">
+      <!-- 特殊辅料明细 -->
+      <div class="bom-section">
+        <div class="bom-section-title">特殊辅料明细</div>
+        <div style="overflow-x:auto">
         <table>
           <thead><tr>
             <th>物料项目</th><th>品名</th><th>物料 SPU</th><th>货号</th><th>使用部位</th>
@@ -250,6 +320,7 @@ tr:hover td{background:#fafafa}
             <tr><td colspan="11" class="empty">暂无特殊辅料</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
     <div class="mfoot">
@@ -269,6 +340,7 @@ tr:hover td{background:#fafafa}
       <button class="mclose" onclick="closeModal('mask-size')">&times;</button>
     </div>
     <div class="mbody">
+      <div class="bom-section-title" style="margin-bottom:12px">样衣尺寸表（PLM）</div>
       <div class="info-bar">
         <div class="ib-item">
           <label>SKC</label>
@@ -288,7 +360,7 @@ tr:hover td{background:#fafafa}
         </div>
         <div class="ib-item"><label>提交时间</label><span id="size-submit-time">2026-07-07 11:18:35</span></div>
       </div>
-      <div style="overflow-x:auto">
+      <div style="overflow-x:auto;margin-bottom:20px">
         <table>
           <thead>
             <tr>
@@ -305,14 +377,57 @@ tr:hover td{background:#fafafa}
           </tbody>
         </table>
       </div>
+      <div style="overflow-x:auto">
+        <div class="bom-section-title" style="margin-bottom:8px">Temu 平台尺码表（目标）</div>
+        <table id="temu-size-table">
+          <thead>
+            <tr>
+              <th>Temu 部位名称</th><th>2XS</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-temu="衣长"><td>衣长</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr data-temu="胸围全围"><td>胸围全围</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr data-temu="腰围全围"><td>腰围全围</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr data-temu="袖长"><td>袖长</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr data-temu="肩宽"><td>肩宽</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="mfoot">
-      <button class="btn-default" onclick="closeModal('mask-size')">关闭</button>
+    <div class="mfoot" style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:12px;color:#8c8c8c">
+        一键填充：根据样衣尺寸表部位映射对应尺码值
+      </div>
+      <div>
+        <button class="btn-default" onclick="doFillSize()" style="margin-right:8px;border-color:#1677ff;color:#1677ff">一键填充</button>
+        <button class="btn-default" onclick="closeModal('mask-size')">关闭</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+var currentSimpleSKC = '26060084290101';
+
+// NEST 字典映射：PLM部位 → Temu部位
+var NEST_MAP = {
+  '后中长': '衣长',
+  '胸围':   '胸围全围',
+  '腰围':   '腰围全围',
+  '袖长':   '袖长'
+  // 臀围、肩宽等未在Temu表中，不映射
+};
+
+// PLM样衣尺寸表数据（列顺序对应 2XS/XS/S/M/L/XL）
+var PLM_DATA = {
+  '后中长': ['89','91','93','95','97','99'],
+  '胸围':   ['78','82','86','90','94','98'],
+  '腰围':   ['62','66','70','74','78','82'],
+  '臀围':   ['84','88','92','96','100','104'],
+  '袖长':   ['52.5','54','55.5','57','58.5','60']
+};
+
 function showView(v) {
   document.getElementById('v-detail').style.display = (v === 'detail') ? 'block' : 'none';
   document.querySelectorAll('.demo-btn').forEach(function(b, i) {
@@ -322,18 +437,20 @@ function showView(v) {
   if (v === 'size') openSize();
 }
 
+function openBomSimple(skc) {
+  currentSimpleSKC = skc;
+  document.getElementById('bom-s-skc-title').textContent = 'SKC: ' + skc;
+  document.getElementById('bom-s-skc-val').textContent = skc;
+  var sel = document.getElementById('bom-s-ver');
+  sel.innerHTML = '<option>PB' + skc + '-2</option><option>PB' + skc + '-1</option>';
+  document.getElementById('mask-bom-simple').classList.add('show');
+}
+
 function openBom(skc) {
   document.getElementById('bom-skc-title').textContent = 'SKC: ' + skc;
   document.getElementById('bom-skc-val').textContent = skc;
   var sel = document.getElementById('bom-ver');
   sel.innerHTML = '<option>PB' + skc + '-2</option><option>PB' + skc + '-1</option>';
-  // reset tabs
-  document.querySelectorAll('#bom-tabs .ti').forEach(function(t, i) {
-    t.classList.toggle('active', i === 0);
-  });
-  ['bom-t1','bom-t2','bom-t3'].forEach(function(id, i) {
-    document.getElementById(id).classList.toggle('active', i === 0);
-  });
   document.getElementById('mask-bom').classList.add('show');
 }
 
@@ -345,13 +462,51 @@ function closeModal(id) {
   document.getElementById(id).classList.remove('show');
 }
 
-// click backdrop to close
-document.getElementById('mask-bom').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('mask-bom');
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('mask-bom-simple').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('mask-bom-simple');
+  });
+  document.getElementById('mask-bom').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('mask-bom');
+  });
+  document.getElementById('mask-size').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('mask-size');
+  });
 });
-document.getElementById('mask-size').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('mask-size');
-});
+
+function doFillSize() {
+  var rows = document.querySelectorAll('#temu-size-table tbody tr');
+  var filled = 0;
+  rows.forEach(function(row) {
+    var temuPart = row.getAttribute('data-temu');
+    // 反查PLM部位
+    var plmPart = null;
+    for (var k in NEST_MAP) {
+      if (NEST_MAP[k] === temuPart) { plmPart = k; break; }
+    }
+    if (!plmPart || !PLM_DATA[plmPart]) return;
+    var vals = PLM_DATA[plmPart];
+    var cells = row.querySelectorAll('td');
+    // cells[0]=部位名，cells[1..6]=尺码列
+    for (var i = 0; i < vals.length; i++) {
+      if (cells[i + 1]) {
+        cells[i + 1].textContent = vals[i];
+        cells[i + 1].style.background = '#e6fffb';
+        cells[i + 1].style.color = '#13c2c2';
+      }
+    }
+    filled++;
+  });
+  // 提示
+  var hint = document.getElementById('fill-result');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'fill-result';
+    hint.style.cssText = 'font-size:12px;color:#13c2c2;margin-top:10px;padding:6px 10px;background:#e6fffb;border:1px solid #87e8de;border-radius:4px';
+    document.querySelector('#mask-size .mbody').appendChild(hint);
+  }
+  hint.textContent = '已填充 ' + filled + ' 个匹配部位（后中长→衣长、胸围→胸围全围、腰围→腰围全围、袖长→袖长），肩宽无对应PLM数据保留原值。';
+}
 
 function switchTab(el, paneId, tabsId) {
   document.querySelectorAll('#' + tabsId + ' .ti').forEach(function(t) {
@@ -365,10 +520,20 @@ function switchTab(el, paneId, tabsId) {
 }
 
 function onSkcChange() {
-  // Demo: just simulate time update
   var times = ['2026-07-07 11:18:35', '2026-07-06 09:30:12', '2026-07-05 15:44:00'];
   var idx = document.getElementById('size-skc').selectedIndex;
   document.getElementById('size-submit-time').textContent = times[idx] || times[0];
+  // 重置填充
+  var rows = document.querySelectorAll('#temu-size-table tbody tr');
+  rows.forEach(function(row) {
+    row.querySelectorAll('td:not(:first-child)').forEach(function(td) {
+      td.textContent = '—';
+      td.style.background = '';
+      td.style.color = '';
+    });
+  });
+  var hint = document.getElementById('fill-result');
+  if (hint) hint.remove();
 }
 </script>
 </body>

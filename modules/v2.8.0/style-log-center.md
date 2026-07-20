@@ -209,15 +209,13 @@ erDiagram
 |-------|-------|----------------|---------|------------|
 | `SPU_EDIT` | 编辑 SPU 基本信息 | FIELD_CHANGE | SPU | `EDIT`(20) |
 | `SPU_CANCEL` | 取消 SPU | FIELD_CHANGE | SPU | `CANCEL`(50) |
-| `SPU_SUBMIT` | 提交款式资料 | FIELD_CHANGE | SPU | — |
-| `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SPU | `CHANGE_DESIGNER`(26) |
-| `SKC_CREATE` | 创建 SKC | FIELD_CHANGE | SKC | `ADD_SKC`(2) |
+| `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SKC | `CHANGE_DESIGNER`(26) |
 | `SKC_EDIT` | 编辑 SKC 信息 | FIELD_CHANGE | SKC | `EDIT_SKC`(24) |
 | `SKC_CANCEL` | 取消 SKC | FIELD_CHANGE | SKC | `CANCEL_SKC`(51) |
 | `LISTING_DELIST` | 下架 | FIELD_CHANGE | SKC | `OFF_SHELVES`(54) |
 | `MEDIA_MARKETING_PIC` | 营销图变更 | MEDIA_CHANGE | SKC | `EDIT_IMAGE`(25) |
 | `MEDIA_VIDEO` | 视频变更 | MEDIA_CHANGE | SPU | — |
-| `MEDIA_DOWNLOAD` | 图片下载 | ACCESS | SKC/SPU | `DOWNLOAD_IMAGE`(60) |
+| `MEDIA_DOWNLOAD` | 图片下载 | ACCESS | SKC | `DOWNLOAD_IMAGE`(60) |
 | `PLM_PUSH` | 推送 PLM | INTEGRATION_EVENT | SKC | — |
 | `LISTING_PUSH` | 推送上架 | INTEGRATION_EVENT | SKC | `ON_SHELVES`(22) |
 | `LISTING_REJECT` | 上架驳回 | INTEGRATION_EVENT | SKC | `ON_SHELVES_FAIL`(55) |
@@ -480,3 +478,4 @@ event_detail 存储内容：
 | ------- | ------- | ------- | ------- | ------- |
 | 2026-06-29 | v1.0.0 | 新增 | 款式日志中心模块初始版本，支持 SPU/SKC 字段级变更追踪、素材前后对比、集成事件记录；提供独立日志中心页和详情页内嵌 Tab 两级入口 | 全部 |
 | 2026-07-08 | v1.1.0 | 变更 | 移除 change_summary 冗余字段，改由前端根据 field_label 拼接展示；移除 event_result / event_message 字段，集成事件只记录推送成功的事件 | 5.2、6、8 |
+| 2026-07-20 | v1.2.0 | 变更 | 删除 SPU_SUBMIT（提交款式资料）和 SKC_CREATE（创建 SKC）操作类型；图片下载（MEDIA_DOWNLOAD）适用实体收窄为 SKC | 5.2 |
