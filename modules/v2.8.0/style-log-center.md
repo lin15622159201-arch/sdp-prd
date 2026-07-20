@@ -208,7 +208,6 @@ erDiagram
 | 枚举值 | 中文名 | action_category | 适用实体 | 对应代码枚举 |
 |-------|-------|----------------|---------|------------|
 | `SPU_EDIT` | 编辑 SPU 基本信息 | FIELD_CHANGE | SPU | `EDIT`(20) |
-| `SPU_CANCEL` | 取消 SPU | FIELD_CHANGE | SPU | `CANCEL`(50) |
 | `SPU_DESIGNER_CHANGE` | 设计师变更 | FIELD_CHANGE | SKC | `CHANGE_DESIGNER`(26) |
 | `SKC_EDIT` | 编辑 SKC 信息 | FIELD_CHANGE | SKC | `EDIT_SKC`(24) |
 | `SKC_CANCEL` | 取消 SKC | FIELD_CHANGE | SKC | `CANCEL_SKC`(51) |
@@ -223,6 +222,8 @@ erDiagram
 | `PROTO_DISASSEMBLE` | 拆版完成 | INTEGRATION_EVENT | SKC | — |
 | `PRICE_APPROVE` | 测价通过 | INTEGRATION_EVENT | SKC | `PRICE_PASSED`(56) |
 | `PRICE_REVOKE` | 测价撤销 | INTEGRATION_EVENT | SKC | — |
+| `SAMPLE_REVIEW` | 样衣审版 | INTEGRATION_EVENT | SKC | — |
+
 
 ---
 
