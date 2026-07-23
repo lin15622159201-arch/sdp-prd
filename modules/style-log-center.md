@@ -29,7 +29,7 @@ related_features:
   - "UACS 权限系统（日志查询数据范围）"
 ---
 
-# 款式日志中心 &nbsp; [![样式预览](https://img.shields.io/badge/样式预览-blue?logo=html5&logoColor=white)](https://raw.githack.com/lin15622159201-arch/sdp-prd/main/mockups/log-center-styles.html)
+# 款式日志中心
 
 ## 1. 模块概述
 

@@ -39,7 +39,8 @@
     "module_name": "Temu商品管理",
     "file": "modules/temu-product.md",
     "page_count": 13,
-    "version": "2.4.1"
+    "version": "2.4.1",
+    "mockupFile": "mockups/product-detail-bom-size.html"
   },
   {
     "module_key": "size-chart",
