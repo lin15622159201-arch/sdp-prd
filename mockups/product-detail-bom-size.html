@@ -189,12 +189,12 @@ tr:hover td{background:#fafafa}
   </div>
 </div><!-- /v-detail -->
 
-<!-- ===== 简易 BOM 弹窗（成分入口） ===== -->
+<!-- ===== 查看成分弹窗（洗水唛成分，数据源 PLM） ===== -->
 <div class="mask" id="mask-bom-simple">
   <div class="modal modal-sm" onclick="event.stopPropagation()">
     <div class="mhd">
       <div class="mtitle">
-        BOM 面料成分
+        查看成分
         <span id="bom-s-skc-title" style="font-size:14px;color:#595959;font-weight:400;margin-left:8px"></span>
       </div>
       <button class="mclose" onclick="closeModal('mask-bom-simple')">&times;</button>
@@ -202,36 +202,25 @@ tr:hover td{background:#fafafa}
     <div class="mbody">
       <div class="info-bar">
         <div class="ib-item"><label>SKC</label><span id="bom-s-skc-val"></span></div>
-        <div class="ib-item">
-          <label>BOM 版本号</label>
-          <select id="bom-s-ver"></select>
-        </div>
-        <div class="ib-item"><label>创建时间</label><span>2026-07-07 11:19:27</span></div>
+        <div class="ib-item"><label>更新日期</label><span id="bom-s-updated-at">2026-07-07</span></div>
       </div>
       <table>
         <thead>
           <tr>
-            <th>物料项目</th><th style="width:60px">图片</th><th>成分</th><th>使用部位</th>
+            <th>成分描述</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>面料 A</td>
-            <td><div class="img-ph">图</div></td>
-            <td>100% 棉</td>
-            <td>前片 / 后片</td>
+            <td>100% 棉（前片 / 后片）</td>
           </tr>
           <tr>
-            <td>面料 B</td>
-            <td><div class="img-ph">图</div></td>
-            <td>95% 棉 5% 氨纶</td>
-            <td>领口</td>
+            <td>95% 棉 5% 氨纶（领口）</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="mfoot">
-      <button class="btn-default" onclick="openBom(currentSimpleSKC);closeModal('mask-bom-simple')" style="margin-right:8px">查看完整 BOM</button>
       <button class="btn-default" onclick="closeModal('mask-bom-simple')">关闭</button>
     </div>
   </div>
@@ -408,8 +397,6 @@ tr:hover td{background:#fafafa}
 </div>
 
 <script>
-var currentSimpleSKC = '26060084290101';
-
 // NEST 字典映射：PLM部位 → Temu部位
 var NEST_MAP = {
   '后中长': '衣长',
@@ -438,11 +425,10 @@ function showView(v) {
 }
 
 function openBomSimple(skc) {
-  currentSimpleSKC = skc;
   document.getElementById('bom-s-skc-title').textContent = 'SKC: ' + skc;
   document.getElementById('bom-s-skc-val').textContent = skc;
-  var sel = document.getElementById('bom-s-ver');
-  sel.innerHTML = '<option>PB' + skc + '-2</option><option>PB' + skc + '-1</option>';
+  // 更新日期来自 PLM 洗水唛成分接口，此处为 mock 数据
+  document.getElementById('bom-s-updated-at').textContent = '2026-07-07';
   document.getElementById('mask-bom-simple').classList.add('show');
 }
 
