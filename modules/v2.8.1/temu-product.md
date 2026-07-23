@@ -38,7 +38,7 @@ related_features:
 - "PLM 系统（商品详情 BOM 弹窗/尺寸表弹窗实时查询）(v2.8.1 新增)"
 ---
 
-# 商品管理 &nbsp; [![原型预览](https://img.shields.io/badge/原型预览-blue?logo=html5&logoColor=white)](https://htmlpreview.github.io/?https://github.com/lin15622159201-arch/sdp-prd/blob/main/Mockups/product-detail-bom-size.html)
+# 商品管理 &nbsp; [![原型预览](https://img.shields.io/badge/原型预览-blue?logo=html5&logoColor=white)](https://htmlpreview.github.io/?https://github.com/lin15622159201-arch/sdp-prd/blob/main/mockups/product-detail-bom-size.html)
 
 ## 1. 模块概述
 
