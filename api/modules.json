@@ -40,7 +40,7 @@
     "file": "modules/temu-product.md",
     "page_count": 13,
     "version": "2.4.1",
-    "mockupFile": "mockups/product-list.html"
+    "mockupFile": "mockups/temu-product.html"
   },
   {
     "module_key": "size-chart",
