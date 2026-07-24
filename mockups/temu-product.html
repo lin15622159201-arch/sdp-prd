@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商品管理 Mockup</title>
+<style>
+/* ── CSS Variables ── */
+:root {
+  --primary:#1677ff; --primary-hover:#4096ff; --primary-light:#e6f4ff;
+  --success:#52c41a; --success-bg:#f6ffed; --success-border:#b7eb8f;
+  --error:#ff4d4f;   --error-bg:#fff2f0;   --error-border:#ffccc7;
+  --warning:#faad14; --warning-bg:#fffbe6; --warning-border:#ffe58f;
+  --orange-bg:#fff7e6; --orange:#fa8c16; --orange-border:#ffd591;
+  --text:rgba(0,0,0,.88); --text-sec:rgba(0,0,0,.45); --text-ter:rgba(0,0,0,.25);
+  --border:#d9d9d9; --border-light:#f0f0f0;
+  --bg:#f0f2f5; --bg-light:#fafafa; --white:#fff;
+  --radius:6px; --radius-sm:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5714}
+
+/* ── Demo Nav ── */
+.demo-nav{background:#fff;border-bottom:1px solid #e8e8e8;padding:10px 24px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:500}
+.demo-nav span{color:#999;font-size:12px;margin-right:4px}
+.demo-btn{padding:5px 14px;border:1px solid #d9d9d9;background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:#595959;transition:all .15s}
+.demo-btn.active{background:#1677ff;color:#fff;border-color:#1677ff}
+.demo-btn:hover:not(.active){border-color:#1677ff;color:#1677ff}
+
+/* ── View containers ── */
+.view{display:none}
+.view.active{display:block}
+
+/* ── Top Nav (inside list view) ── */
+.top-nav{background:#001529;padding:0 24px;display:flex;align-items:center;gap:4px;height:48px}
+.top-nav .logo{color:#fff;font-size:16px;font-weight:600;padding-right:16px;margin-right:8px;border-right:1px solid rgba(255,255,255,.15);white-space:nowrap}
+.top-nav a{color:rgba(255,255,255,.65);padding:0 16px;height:48px;display:flex;align-items:center;font-size:14px;text-decoration:none;border-bottom:3px solid transparent;cursor:pointer}
+.top-nav a.active{color:#fff;border-bottom-color:var(--primary)}
+.top-nav a:hover:not(.active){color:rgba(255,255,255,.85)}
+
+/* ── Page layout ── */
+.page{padding:24px;min-height:calc(100vh - 48px)}
+.breadcrumb{font-size:13px;color:var(--text-sec);margin-bottom:12px}
+.breadcrumb a{color:var(--text-sec);text-decoration:none}
+.breadcrumb a:hover{color:var(--primary)}
+.breadcrumb .cur{color:var(--text)}
+
+/* ── List card ── */
+.card{background:var(--white);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+
+/* ── Filter ── */
+.filter-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;margin-bottom:12px}
+.filter-row:last-of-type{margin-bottom:0}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:12px;color:var(--text-sec)}
+.inp,.sel{height:32px;padding:0 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--text);outline:none;background:var(--white)}
+.inp{width:220px}
+.inp:focus,.sel:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.1)}
+.sel{width:160px;padding-right:28px;appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bfbfbf'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center}
+.filter-actions{display:flex;gap:8px;align-items:center;margin-left:auto}
+
+/* ── Buttons ── */
+.btn{height:32px;padding:0 15px;border-radius:var(--radius-sm);font-size:14px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);display:inline-flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:var(--white)}
+.btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);color:var(--white)}
+.btn-link{border:none;background:none;color:var(--primary);height:auto;padding:0;font-size:13px;cursor:pointer}
+.btn-link:hover{color:var(--primary-hover);text-decoration:underline}
+.btn-default{padding:5px 16px;border:1px solid #d9d9d9;background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:#595959}
+.btn-default:hover{border-color:#1677ff;color:#1677ff}
+
+/* ── Status tabs ── */
+.status-tabs{display:flex;gap:0;border-bottom:1px solid var(--border-light);margin-bottom:16px}
+.stab{padding:8px 16px;cursor:pointer;color:var(--text-sec);font-size:14px;border-bottom:2px solid transparent;margin-bottom:-1px;user-select:none;transition:all .2s}
+.stab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.stab:hover:not(.active){color:var(--text)}
+.stab-count{margin-left:4px;font-size:12px;color:var(--text-ter)}
+.stab.active .stab-count{color:var(--primary);opacity:.7}
+
+/* ── Table toolbar ── */
+.table-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.table-total{color:var(--text-sec);font-size:13px}
+
+/* ── List table ── */
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--bg-light)}
+th{padding:10px 16px;text-align:left;font-weight:500;color:var(--text);border-bottom:1px solid var(--border-light);font-size:13px;white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--border-light);vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+
+/* ── Product cell ── */
+.prod-cell{display:flex;align-items:flex-start;gap:12px}
+.prod-img{width:60px;height:60px;border-radius:var(--radius-sm);border:1px solid var(--border-light);background:var(--bg-light);display:flex;align-items:center;justify-content:center;color:var(--text-ter);flex-shrink:0;overflow:hidden}
+.prod-info{display:flex;flex-direction:column;gap:3px}
+.prod-name{font-size:13px;color:var(--text);font-weight:500;line-height:1.4}
+.prod-spu{font-size:12px;color:var(--text-sec)}
+.prod-spu a{color:var(--primary);cursor:pointer;text-decoration:none}
+.prod-spu a:hover{text-decoration:underline}
+.prod-cat{font-size:12px;color:var(--text-sec)}
+
+/* ── Tags (list) ── */
+.tag{display:inline-flex;align-items:center;padding:0 7px;height:20px;border-radius:var(--radius-sm);font-size:12px;border:1px solid;white-space:nowrap}
+.tag-pub{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.tag-price{background:var(--primary-light);color:var(--primary);border-color:#91caff}
+.tag-draft{background:var(--bg-light);color:#595959;border-color:var(--border)}
+.tag-off{background:var(--error-bg);color:var(--error);border-color:var(--error-border)}
+
+/* ── Pagination ── */
+.pagination{display:flex;align-items:center;justify-content:flex-end;padding:16px 0 0;gap:4px}
+.page-btn{width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--white);color:var(--text);font-size:13px;user-select:none}
+.page-btn.active{background:var(--primary);border-color:var(--primary);color:var(--white)}
+.page-btn:hover:not(.active){border-color:var(--primary);color:var(--primary)}
+.page-info{color:var(--text-sec);font-size:13px;padding:0 8px}
+.page-size{height:32px;padding:0 8px 0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--white);cursor:pointer;color:var(--text);appearance:none;padding-right:24px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bfbfbf'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 6px center}
+.page-jump{display:flex;align-items:center;gap:6px;margin-left:8px;font-size:13px;color:var(--text-sec)}
+.page-jump input{width:48px;height:32px;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;font-size:13px;outline:none}
+
+/* ── Detail page styles ── */
+.detail-wrap{padding:24px;max-width:1200px;margin:0 auto}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.page-title{font-size:18px;font-weight:600;color:#262626}
+.detail-card{background:#fff;border-radius:6px;border:1px solid #f0f0f0;margin-bottom:16px}
+.detail-card-header{padding:12px 20px;border-bottom:1px solid #f0f0f0;background:#fafafa;border-radius:6px 6px 0 0;font-weight:600;font-size:14px;color:#262626;display:flex;justify-content:space-between;align-items:center}
+.detail-card-body{padding:20px}
+.info-grid{display:grid;grid-template-columns:160px 1fr 160px 1fr}
+.info-label{padding:8px 12px;background:#fafafa;border:1px solid #f0f0f0;color:#666;font-size:13px}
+.info-value{padding:8px 12px;border:1px solid #f0f0f0;color:#262626;font-size:13px}
+.detail-wrap table{font-size:13px}
+.detail-wrap th{background:#fafafa;border:1px solid #f0f0f0;padding:9px 12px;text-align:left;color:#595959;font-weight:500;white-space:nowrap;border-bottom:1px solid #f0f0f0}
+.detail-wrap td{border:1px solid #f0f0f0;padding:9px 12px;color:#262626;vertical-align:middle;border-bottom:1px solid #f0f0f0}
+.detail-wrap tr:last-child td{border-bottom:1px solid #f0f0f0}
+.detail-wrap tr:hover td{background:#fafafa}
+.s-pub{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:#f6ffed;color:#52c41a;border:1px solid #b7eb8f}
+.s-price{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;background:#e6f4ff;color:#1677ff;border:1px solid #91caff}
+.tag-blue{background:#e6f4ff;color:#1677ff;border:1px solid #91caff;display:inline-block;padding:1px 8px;border-radius:3px;font-size:12px;margin-right:4px}
+.tag-orange{background:#fff7e6;color:#fa8c16;border:1px solid #ffd591;display:inline-block;padding:1px 8px;border-radius:3px;font-size:12px;margin-right:4px}
+.tag-gray{background:#f5f5f5;color:#8c8c8c;border:1px solid #d9d9d9;display:inline-block;padding:1px 8px;border-radius:3px;font-size:12px}
+.img-ph{width:40px;height:40px;background:#f5f5f5;border:1px solid #e8e8e8;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#bfbfbf;font-size:10px}
+.empty-cell{color:#bfbfbf;font-size:13px;padding:20px;text-align:center}
+
+/* ── Modal / Mask ── */
+.mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:flex-start;justify-content:center;padding-top:60px;overflow-y:auto}
+.mask.show{display:flex}
+.modal{background:#fff;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,0.15);width:980px;max-width:96vw;margin-bottom:60px}
+.modal-lg{width:1060px}
+.modal-sm{width:620px}
+.mhd{padding:16px 24px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.mtitle{font-size:16px;font-weight:600;color:#262626}
+.mclose{background:none;border:none;font-size:22px;cursor:pointer;color:#8c8c8c;line-height:1;padding:0 4px}
+.mclose:hover{color:#262626}
+.mbody{padding:20px 24px;max-height:70vh;overflow-y:auto}
+.mfoot{padding:12px 24px;border-top:1px solid #f0f0f0;text-align:right}
+.info-bar{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:16px;padding:12px 16px;background:#fafafa;border-radius:4px;border:1px solid #f0f0f0}
+.ib-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.ib-item label{color:#666;white-space:nowrap}
+.ib-item select{border:1px solid #d9d9d9;border-radius:4px;padding:3px 8px;font-size:13px;color:#262626;background:#fff}
+
+/* ── BOM / Size table ── */
+.bom-section{margin-bottom:20px}
+.bom-section:last-child{margin-bottom:0}
+.bom-section-title{font-size:13px;font-weight:600;color:#262626;padding:6px 10px;background:#f5f5f5;border-left:3px solid #1677ff;border-radius:0 3px 3px 0;margin-bottom:10px}
+.tab-bar{display:flex;border-bottom:1px solid #f0f0f0;margin-bottom:16px}
+.ti{padding:8px 20px;cursor:pointer;font-size:13px;color:#595959;border-bottom:2px solid transparent;margin-bottom:-1px;user-select:none}
+.ti.active{color:#1677ff;border-bottom-color:#1677ff;font-weight:500}
+.ti:hover{color:#1677ff}
+.tp{display:none}
+.tp.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- ══ DEMO NAV ══ -->
+<div class="demo-nav">
+  <span>切换视图：</span>
+  <button class="demo-btn active" onclick="showView('list')">① 商品列表</button>
+  <button class="demo-btn" onclick="showView('detail')">② 商品详情</button>
+  <button class="demo-btn" onclick="showView('bom')">③ 查看 BOM 弹窗</button>
+  <button class="demo-btn" onclick="showView('size')">④ 查看尺寸表弹窗</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 1: 商品列表
+══════════════════════════════════════════ -->
+<div id="v-list" class="view active">
+  <nav class="top-nav">
+    <span class="logo">款式开发平台</span>
+    <a href="#">首页</a>
+    <a href="#" class="active">商品管理</a>
+    <a href="#">设计任务</a>
+    <a href="#">日志中心</a>
+  </nav>
+
+  <div class="page">
+    <div class="breadcrumb">
+      <a href="#">首页</a> &nbsp;/&nbsp;
+      <a href="#">商品管理</a> &nbsp;/&nbsp;
+      <span class="cur">商品列表</span>
+    </div>
+
+    <!-- Filter -->
+    <div class="card">
+      <div class="filter-row">
+        <div class="fg">
+          <label>SPU / 商品名称</label>
+          <div style="display:flex;align-items:center">
+            <select class="sel" style="width:90px;border-radius:4px 0 0 4px;border-right:none">
+              <option>SPU</option><option>商品名称</option>
+            </select>
+            <input class="inp" style="border-radius:0 4px 4px 0;width:200px" placeholder="支持批量，用","、空格或换行隔开">
+          </div>
+        </div>
+        <div class="fg">
+          <label>店铺</label>
+          <select class="sel" style="width:180px">
+            <option value="">请选择</option>
+            <option>Lumiloca local</option><option>Blossom Local</option><option>Temu 官方旗舰店</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>内部品类</label>
+          <select class="sel"><option value="">请选择</option><option>连衣裙</option><option>大码夹克</option><option>女士西装</option><option>T恤</option></select>
+        </div>
+        <div class="fg">
+          <label>商品标签</label>
+          <select class="sel" style="width:180px"><option value="">请选择</option><option>限卖款</option><option>动销款</option><option>测价通过</option></select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-primary">查询</button>
+          <button class="btn">重置</button>
+        </div>
+      </div>
+      <div class="filter-row" style="margin-top:10px">
+        <div class="fg">
+          <label>设计师</label>
+          <input class="inp" placeholder="请输入设计师" style="width:160px">
+        </div>
+        <div class="fg">
+          <label>波段</label>
+          <select class="sel"><option value="">请选择</option><option>2026 夏季</option><option>2026 春季</option><option>2025 冬季</option></select>
+        </div>
+        <div class="fg">
+          <label>款式类型</label>
+          <select class="sel"><option value="">请选择</option><option>设计款</option><option>基础款</option><option>联名款</option></select>
+        </div>
+        <div class="fg">
+          <label>创建时间</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input class="inp" type="date" style="width:140px">
+            <span style="color:var(--text-sec);font-size:13px">至</span>
+            <input class="inp" type="date" style="width:140px">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+      <div class="status-tabs">
+        <div class="stab active" onclick="switchTab(this)">全部<span class="stab-count">134,688</span></div>
+        <div class="stab" onclick="switchTab(this)">已发布到站点<span class="stab-count">7,314</span></div>
+        <div class="stab" onclick="switchTab(this)">价格申报中<span class="stab-count">2,722</span></div>
+        <div class="stab" onclick="switchTab(this)">未发布到站点<span class="stab-count">5,239</span></div>
+        <div class="stab" onclick="switchTab(this)">已下架/终止<span class="stab-count">68,549</span></div>
+      </div>
+      <div class="table-toolbar">
+        <span class="table-total">共 134,688 条</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn">批量操作 ▾</button>
+          <button class="btn">同步商品</button>
+          <button class="btn">复制商品</button>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px"><input type="checkbox"></th>
+            <th style="min-width:260px">款式信息</th>
+            <th>店铺</th>
+            <th>内部品类</th>
+            <th>商品状态</th>
+            <th style="text-align:center">SKC 数</th>
+            <th>上架时间</th>
+            <th style="width:110px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="prod-cell">
+                <div class="prod-img"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg></div>
+                <div class="prod-info">
+                  <div class="prod-name">女士休闲连衣裙</div>
+                  <div class="prod-spu">SPU：<a href="#" onclick="showView('detail');return false">SP2606008429</a></div>
+                  <div class="prod-cat">平台SPU：6001234567890</div>
+                </div>
+              </div>
+            </td>
+            <td><div>Temu 官方旗舰店</div><div style="font-size:12px;color:var(--text-sec)">美国站</div></td>
+            <td>连衣裙</td>
+            <td><span class="tag tag-pub">已发布到站点</span></td>
+            <td style="text-align:center">3</td>
+            <td style="font-size:12px;color:var(--text-sec)">2026-06-15 10:30</td>
+            <td>
+              <a class="btn-link" href="#" onclick="showView('detail');return false">查看</a><br>
+              <a class="btn-link" href="#" style="margin-top:4px;display:inline-block">价格变动历史</a>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="prod-cell">
+                <div class="prod-img"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg></div>
+                <div class="prod-info">
+                  <div class="prod-name">大码夹克外套</div>
+                  <div class="prod-spu">SPU：<a href="#" onclick="showView('detail');return false">260700126001</a></div>
+                  <div class="prod-cat">平台SPU：7894775319</div>
+                </div>
+              </div>
+            </td>
+            <td><div>Lumiloca local</div><div style="font-size:12px;color:var(--text-sec)">美国站</div></td>
+            <td>大码夹克</td>
+            <td><span class="tag tag-price">价格申报中</span></td>
+            <td style="text-align:center">4</td>
+            <td style="font-size:12px;color:var(--text-sec)">2026-07-08 17:43</td>
+            <td>
+              <a class="btn-link" href="#" onclick="showView('detail');return false">查看</a><br>
+              <a class="btn-link" href="#" style="margin-top:4px;display:inline-block">价格变动历史</a>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="prod-cell">
+                <div class="prod-img"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg></div>
+                <div class="prod-info">
+                  <div class="prod-name">女士职业西装套装</div>
+                  <div class="prod-spu">SPU：<a href="#" onclick="showView('detail');return false">260700432001</a></div>
+                  <div class="prod-cat">平台SPU：3113690672</div>
+                </div>
+              </div>
+            </td>
+            <td><div>Blossom Local</div><div style="font-size:12px;color:var(--text-sec)">美国站</div></td>
+            <td>女士西装</td>
+            <td><span class="tag tag-pub">已发布到站点</span></td>
+            <td style="text-align:center">5</td>
+            <td style="font-size:12px;color:var(--text-sec)">2026-07-21 15:58</td>
+            <td>
+              <a class="btn-link" href="#" onclick="showView('detail');return false">查看</a><br>
+              <a class="btn-link" href="#" style="margin-top:4px;display:inline-block">价格变动历史</a>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="prod-cell">
+                <div class="prod-img"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg></div>
+                <div class="prod-info">
+                  <div class="prod-name">纯棉圆领短袖T恤</div>
+                  <div class="prod-spu">SPU：<a href="#" onclick="showView('detail');return false">SP2605012301</a></div>
+                  <div class="prod-cat">平台SPU：5002981234</div>
+                </div>
+              </div>
+            </td>
+            <td><div>Temu 官方旗舰店</div><div style="font-size:12px;color:var(--text-sec)">美国站</div></td>
+            <td>T恤</td>
+            <td><span class="tag tag-draft">未发布到站点</span></td>
+            <td style="text-align:center">2</td>
+            <td style="color:var(--text-ter)">—</td>
+            <td><a class="btn-link" href="#" onclick="showView('detail');return false">查看</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="prod-cell">
+                <div class="prod-img"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg></div>
+                <div class="prod-info">
+                  <div class="prod-name">高腰牛仔阔腿裤</div>
+                  <div class="prod-spu">SPU：<a href="#" onclick="showView('detail');return false">SP2604088712</a></div>
+                  <div class="prod-cat">平台SPU：4009876512</div>
+                </div>
+              </div>
+            </td>
+            <td><div>Blossom Local</div><div style="font-size:12px;color:var(--text-sec)">美国站</div></td>
+            <td>裤装</td>
+            <td><span class="tag tag-off">已下架/终止</span></td>
+            <td style="text-align:center">6</td>
+            <td style="font-size:12px;color:var(--text-sec)">2026-04-10 09:15</td>
+            <td>
+              <a class="btn-link" href="#" onclick="showView('detail');return false">查看</a><br>
+              <a class="btn-link" href="#" style="margin-top:4px;display:inline-block">价格变动历史</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <span class="page-info">共 134,688 条</span>
+        <select class="page-size"><option>20条/页</option><option>50条/页</option><option>100条/页</option></select>
+        <div class="page-btn" style="color:var(--text-ter)">&lt;</div>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div><div class="page-btn">3</div><div class="page-btn">4</div><div class="page-btn">5</div><div class="page-btn">6</div>
+        <div class="page-btn" style="border:none;background:none;cursor:default;color:var(--text-ter)">…</div>
+        <div class="page-btn">6735</div>
+        <div class="page-btn">&gt;</div>
+        <div class="page-jump">前往 <input type="text" value="1"> 页</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-list -->
+
+<!-- ══════════════════════════════════════════
+     VIEW 2: 商品详情
+══════════════════════════════════════════ -->
+<div id="v-detail" class="view">
+  <div class="detail-wrap">
+    <div class="breadcrumb">
+      <a href="#" onclick="showView('list');return false">商品管理</a> &rsaquo;
+      <a href="#" onclick="showView('list');return false">商品列表</a> &rsaquo; 商品详情
+    </div>
+    <div class="page-header">
+      <div class="page-title">商品详情</div>
+      <span class="s-pub">已发布到站点</span>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-card-header">SPU 基本信息</div>
+      <div class="detail-card-body" style="padding:0">
+        <div class="info-grid">
+          <div class="info-label">SPU 编码</div><div class="info-value">SP2606008429</div>
+          <div class="info-label">平台 SPU</div><div class="info-value">6001234567890</div>
+          <div class="info-label">商品名称</div><div class="info-value">女士休闲连衣裙</div>
+          <div class="info-label">店铺</div><div class="info-value">Temu 官方旗舰店</div>
+          <div class="info-label">款式类型</div><div class="info-value">设计款</div>
+          <div class="info-label">内部品类</div><div class="info-value">连衣裙</div>
+          <div class="info-label">平台品类</div><div class="info-value">Women's Dresses</div>
+          <div class="info-label">波段</div><div class="info-value">2026 夏季</div>
+          <div class="info-label">设计师</div><div class="info-value">林廷威 / 设计一组</div>
+          <div class="info-label">上架人</div><div class="info-value">运营01</div>
+          <div class="info-label">上架时间</div><div class="info-value">2026-06-15 10:30:00</div>
+          <div class="info-label">商品标签</div><div class="info-value">
+            <span class="tag-blue">测价通过</span>
+            <span class="tag-blue">动销款</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-card-header">产品属性</div>
+      <div class="detail-card-body" style="padding:0">
+        <table>
+          <thead><tr><th style="width:160px">属性名</th><th>属性值</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>面料成分</td>
+              <td>100% 棉（前片/后片）；95% 棉 5% 氨纶（领口）
+                <button class="btn-link" style="margin-left:8px" onclick="showView('bom')">查看成分 ›</button>
+              </td>
+            </tr>
+            <tr><td>材质</td><td>纯棉</td></tr>
+            <tr><td>领型</td><td>圆领</td></tr>
+            <tr><td>袖型</td><td>短袖</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-card-header">SKC 列表</div>
+      <div class="detail-card-body" style="padding:0">
+        <table>
+          <thead>
+            <tr>
+              <th>SKC 编码</th><th>颜色</th><th>波段</th><th>平台 SKC</th>
+              <th>商品状态</th><th>款式难度</th><th>样衣审版</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>26060084290101</td><td>米白色</td><td>2026 夏季</td><td>7001234001</td>
+              <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+              <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+            </tr>
+            <tr>
+              <td>26060084290102</td><td>浅蓝色</td><td>2026 夏季</td><td>7001234002</td>
+              <td><span class="s-pub">已发布到站点</span></td><td>普通</td>
+              <td style="font-size:12px;color:#595959;line-height:1.7">2026-05-20<br>林廷威</td>
+            </tr>
+            <tr>
+              <td>26060084290103</td><td>粉色</td><td>2026 夏季</td><td>7001234003</td>
+              <td><span class="s-price">价格申报中</span></td><td>简单</td>
+              <td style="color:#bfbfbf">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-card-header">其他信息</div>
+      <div class="detail-card-body" style="padding:0">
+        <div class="info-grid">
+          <div class="info-label">站点 ID</div><div class="info-value">US</div>
+          <div class="info-label">视频</div><div class="info-value" style="color:#bfbfbf">—</div>
+          <div class="info-label">尺码图</div><div class="info-value"><div class="img-ph">图片</div></div>
+          <div class="info-label">素材图</div><div class="info-value"><div class="img-ph">图片</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-detail -->
+
+<!-- ══════════════════════════════════════════
+     VIEW 3: BOM 弹窗
+══════════════════════════════════════════ -->
+<div id="v-bom" class="view">
+  <div style="background:rgba(0,0,0,0.45);min-height:calc(100vh - 41px);display:flex;align-items:flex-start;justify-content:center;padding:60px 24px">
+    <div class="modal" onclick="event.stopPropagation()" style="margin-bottom:60px">
+      <div class="mhd">
+        <div class="mtitle">BOM 资料 <span style="font-size:14px;color:#595959;font-weight:400;margin-left:8px">SKC: 26060084290101</span></div>
+        <button class="mclose" onclick="showView('detail')">&times;</button>
+      </div>
+      <div class="mbody">
+        <div class="info-bar">
+          <div class="ib-item"><label>SKC</label><span>26060084290101</span></div>
+          <div class="ib-item"><label>BOM 版本号</label><select><option>PB26060084290101-2</option><option>PB26060084290101-1</option></select></div>
+          <div class="ib-item"><label>创建时间</label><span>2026-07-07 11:19:27</span></div>
+        </div>
+        <div class="bom-section">
+          <div class="bom-section-title">面料明细</div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>物料项目</th><th>图片</th><th>物料 SPU/SKU</th><th>货号</th><th>商品类型</th>
+                <th>成分</th><th>使用部位</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td>面料 A</td><td><div class="img-ph">图</div></td>
+                  <td>SPU-10001 / SKU-20001</td><td>H2026001</td>
+                  <td><span class="tag-orange">花型</span></td>
+                  <td>100% 棉</td><td>前片 / 后片</td><td>1.2</td><td>1.32</td><td>米</td><td>10%</td><td style="color:#bfbfbf">—</td>
+                </tr>
+                <tr>
+                  <td>面料 B</td><td><div class="img-ph">图</div></td>
+                  <td>SPU-10002 / SKU-20002</td><td>H2026002</td>
+                  <td><span class="tag-gray">净色</span></td>
+                  <td>95% 棉 5% 氨纶</td><td>领口</td><td>0.3</td><td>0.33</td><td>米</td><td>10%</td><td style="color:#bfbfbf">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="bom-section">
+          <div class="bom-section-title">辅料明细</div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>物料项目</th><th>图片</th><th>品名</th><th>物料 SPU</th><th>货号</th>
+                <th>使用部位</th><th>物料属性</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td>辅料 A</td><td><div class="img-ph">图</div></td>
+                  <td>隐形拉链</td><td>SPU-30001</td><td>F2026001</td>
+                  <td>侧缝</td><td>白色 / 30cm</td><td>1</td><td>1.05</td><td>条</td><td>5%</td><td style="color:#bfbfbf">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="bom-section">
+          <div class="bom-section-title">特殊辅料明细</div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>物料项目</th><th>品名</th><th>物料 SPU</th><th>货号</th><th>使用部位</th>
+                <th>物料属性</th><th>单件用量</th><th>单件损耗用量</th><th>单位</th><th>损耗率(%)</th><th>备注</th>
+              </tr></thead>
+              <tbody><tr><td colspan="11" class="empty-cell">暂无特殊辅料</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="mfoot">
+        <button class="btn-default" onclick="showView('detail')">关闭</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-bom -->
+
+<!-- ══════════════════════════════════════════
+     VIEW 4: 尺寸表弹窗
+══════════════════════════════════════════ -->
+<div id="v-size" class="view">
+  <div style="background:rgba(0,0,0,0.45);min-height:calc(100vh - 41px);display:flex;align-items:flex-start;justify-content:center;padding:60px 24px">
+    <div class="modal modal-lg" style="margin-bottom:60px">
+      <div class="mhd">
+        <div class="mtitle">尺寸表 <span style="font-size:14px;color:#595959;font-weight:400;margin-left:8px">SPU: SP2606008429</span></div>
+        <button class="mclose" onclick="showView('detail')">&times;</button>
+      </div>
+      <div class="mbody">
+        <div class="bom-section-title" style="margin-bottom:12px">样衣尺寸表（PLM）</div>
+        <div class="info-bar">
+          <div class="ib-item">
+            <label>SKC</label>
+            <select id="size-skc" onchange="onSkcChange()">
+              <option value="101">26060084290101 米白色</option>
+              <option value="102">26060084290102 浅蓝色</option>
+              <option value="103">26060084290103 粉色</option>
+            </select>
+          </div>
+          <div class="ib-item">
+            <label>版本号</label>
+            <select><option>SZ260405087301-4</option><option>SZ260405087301-3</option><option>SZ260405087301-2</option></select>
+          </div>
+          <div class="ib-item"><label>提交时间</label><span id="size-submit-time">2026-07-07 11:18:35</span></div>
+        </div>
+        <div style="overflow-x:auto;margin-bottom:20px">
+          <table>
+            <thead>
+              <tr><th>部位</th><th>尺寸/精度</th><th>量法</th><th>样衣尺寸</th><th>纸样尺寸</th><th>跳码</th><th>2XS</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>允差范围</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>后中长</td><td>X1</td><td>平铺量</td><td>95</td><td>96</td><td>2</td><td>89</td><td>91</td><td>93</td><td>95</td><td>97</td><td>99</td><td>±1.5</td></tr>
+              <tr><td>胸围</td><td>X1</td><td>平铺量</td><td>86</td><td>87</td><td>4</td><td>78</td><td>82</td><td>86</td><td>90</td><td>94</td><td>98</td><td>±2</td></tr>
+              <tr><td>腰围</td><td>X1</td><td>平铺量</td><td>70</td><td>71</td><td>4</td><td>62</td><td>66</td><td>70</td><td>74</td><td>78</td><td>82</td><td>±2</td></tr>
+              <tr><td>臀围</td><td>X1</td><td>平铺量</td><td>92</td><td>93</td><td>4</td><td>84</td><td>88</td><td>92</td><td>96</td><td>100</td><td>104</td><td>±2</td></tr>
+              <tr><td>袖长</td><td>X1</td><td>平铺量</td><td>58</td><td>59</td><td>1.5</td><td>52.5</td><td>54</td><td>55.5</td><td>57</td><td>58.5</td><td>60</td><td>±1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="overflow-x:auto">
+          <div class="bom-section-title" style="margin-bottom:8px">Temu 平台尺码表（目标）</div>
+          <table id="temu-size-table">
+            <thead>
+              <tr><th>Temu 部位名称</th><th>2XS</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
+            </thead>
+            <tbody>
+              <tr data-temu="衣长"><td>衣长</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr data-temu="胸围全围"><td>胸围全围</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr data-temu="腰围全围"><td>腰围全围</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr data-temu="袖长"><td>袖长</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr data-temu="肩宽"><td>肩宽</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mfoot" style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px;color:#8c8c8c">一键填充：根据样衣尺寸表部位映射对应尺码值</div>
+        <div>
+          <button class="btn-default" onclick="doFillSize()" style="margin-right:8px;border-color:#1677ff;color:#1677ff">一键填充</button>
+          <button class="btn-default" onclick="showView('detail')">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-size -->
+
+<script>
+var NEST_MAP = {'后中长':'衣长','胸围':'胸围全围','腰围':'腰围全围','袖长':'袖长'};
+var PLM_DATA = {
+  '后中长':['89','91','93','95','97','99'],
+  '胸围':  ['78','82','86','90','94','98'],
+  '腰围':  ['62','66','70','74','78','82'],
+  '臀围':  ['84','88','92','96','100','104'],
+  '袖长':  ['52.5','54','55.5','57','58.5','60']
+};
+
+function showView(v) {
+  document.querySelectorAll('.view').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('v-' + v).classList.add('active');
+  var btns = document.querySelectorAll('.demo-btn');
+  var map = {list:0, detail:1, bom:2, size:3};
+  btns.forEach(function(b, i) { b.classList.toggle('active', i === map[v]); });
+}
+
+function switchTab(el) {
+  document.querySelectorAll('.stab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function doFillSize() {
+  var rows = document.querySelectorAll('#temu-size-table tbody tr');
+  var filled = 0;
+  rows.forEach(function(row) {
+    var temuPart = row.getAttribute('data-temu');
+    var plmPart = null;
+    for (var k in NEST_MAP) { if (NEST_MAP[k] === temuPart) { plmPart = k; break; } }
+    if (!plmPart || !PLM_DATA[plmPart]) return;
+    var vals = PLM_DATA[plmPart];
+    var cells = row.querySelectorAll('td');
+    for (var i = 0; i < vals.length; i++) {
+      if (cells[i + 1]) {
+        cells[i + 1].textContent = vals[i];
+        cells[i + 1].style.background = '#e6fffb';
+        cells[i + 1].style.color = '#13c2c2';
+      }
+    }
+    filled++;
+  });
+  var hint = document.getElementById('fill-result');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.id = 'fill-result';
+    hint.style.cssText = 'font-size:12px;color:#13c2c2;margin-top:10px;padding:6px 10px;background:#e6fffb;border:1px solid #87e8de;border-radius:4px';
+    document.querySelector('#v-size .mbody').appendChild(hint);
+  }
+  hint.textContent = '已填充 ' + filled + ' 个匹配部位（后中长→衣长、胸围→胸围全围、腰围→腰围全围、袖长→袖长），肩宽无对应PLM数据保留原值。';
+}
+
+function onSkcChange() {
+  var times = ['2026-07-07 11:18:35', '2026-07-06 09:30:12', '2026-07-05 15:44:00'];
+  var idx = document.getElementById('size-skc').selectedIndex;
+  document.getElementById('size-submit-time').textContent = times[idx] || times[0];
+  document.querySelectorAll('#temu-size-table tbody tr').forEach(function(row) {
+    row.querySelectorAll('td:not(:first-child)').forEach(function(td) {
+      td.textContent = '—'; td.style.background = ''; td.style.color = '';
+    });
+  });
+  var hint = document.getElementById('fill-result');
+  if (hint) hint.remove();
+}
+</script>
+</body>
+</html>

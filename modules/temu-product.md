@@ -4,7 +4,8 @@ module_name: 商品管理
 version: 2.7.1
 status: draft
 owner: _待填写_
-last_updated: '2026-07-02'
+last_updated: '2026-07-23'
+mockup: mockups/temu-product.html
 depends_on:
 - module: style-management
   type: hard
