@@ -458,7 +458,7 @@ tr:hover td{background:#fafafa}
             <tr>
               <td>面料成分</td>
               <td>100% 棉（前片/后片）；95% 棉 5% 氨纶（领口）
-                <button class="btn-link" style="margin-left:8px" onclick="showView('bom')">查看成分 ›</button>
+                <button class="btn-link" style="margin-left:8px" onclick="openBomSimple('26060084290101')">查看成分 ›</button>
               </td>
             </tr>
             <tr><td>材质</td><td>纯棉</td></tr>
@@ -661,7 +661,53 @@ tr:hover td{background:#fafafa}
   </div>
 </div><!-- /v-size -->
 
+<!-- ══ 查看成分弹窗（fixed overlay，所有视图均可用） ══ -->
+<div class="mask" id="mask-bom-simple">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="mhd">
+      <div class="mtitle">
+        查看成分
+        <span id="bom-s-skc-title" style="font-size:14px;color:#595959;font-weight:400;margin-left:8px"></span>
+      </div>
+      <button class="mclose" onclick="closeModal('mask-bom-simple')">&times;</button>
+    </div>
+    <div class="mbody">
+      <div class="info-bar">
+        <div class="ib-item"><label>SKC</label><span id="bom-s-skc-val"></span></div>
+        <div class="ib-item"><label>更新日期</label><span id="bom-s-updated-at">2026-07-07</span></div>
+      </div>
+      <table>
+        <thead><tr><th>成分描述</th></tr></thead>
+        <tbody>
+          <tr><td>100% 棉（前片 / 后片）</td></tr>
+          <tr><td>95% 棉 5% 氨纶（领口）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mfoot">
+      <button class="btn-default" onclick="closeModal('mask-bom-simple')">关闭</button>
+    </div>
+  </div>
+</div>
+
 <script>
+function openBomSimple(skc) {
+  document.getElementById('bom-s-skc-title').textContent = 'SKC: ' + skc;
+  document.getElementById('bom-s-skc-val').textContent = skc;
+  document.getElementById('bom-s-updated-at').textContent = '2026-07-07';
+  document.getElementById('mask-bom-simple').classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('mask-bom-simple').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('mask-bom-simple');
+  });
+});
+
 var NEST_MAP = {'后中长':'衣长','胸围':'胸围全围','腰围':'腰围全围','袖长':'袖长'};
 var PLM_DATA = {
   '后中长':['89','91','93','95','97','99'],

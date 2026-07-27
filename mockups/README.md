@@ -111,3 +111,6 @@ python -m http.server 8080
 **生成时间**：2026-07-03  
 **版本**：v1.0.0  
 **状态**：✅ 已完成
+
+
+- [原型按钮维护规则] — prd-viewer 的右上角「原型」按钮由 `api/modules.json` 的 `mockupFile` 字段控制，路径相对于 workSpace 根目录（如 `"mockups/product-detail-bom-size.html"`）。在 markdown H1 里加 shields.io badge 无效，只会渲染成文档内联图片。新模块关联原型时，只需在 modules.json 对应条目加 `"mockupFile": "mockups/xxx.html"`。
