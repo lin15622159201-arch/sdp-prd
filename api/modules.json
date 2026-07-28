@@ -18,7 +18,8 @@
     "module_name": "款式管理",
     "file": "modules/style-management.md",
     "page_count": 10,
-    "version": "2.4.1"
+    "version": "2.4.1",
+    "mockupFile": "mockups/style-management.html"
   },
   {
     "module_key": "image-update",
