@@ -25,7 +25,8 @@
     "module_name": "图片更新任务",
     "file": "modules/image-update.md",
     "page_count": 9,
-    "version": "2.4.1"
+    "version": "2.4.1",
+    "mockupFile": "mockups/image-update-task.html"
   },
   {
     "module_key": "spot-goods",

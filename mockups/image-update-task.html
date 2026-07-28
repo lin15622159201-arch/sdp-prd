@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图片更新任务 Mockup v2.8.2</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-hover:#4096ff; --primary-light:#e6f4ff;
+  --success:#52c41a; --success-bg:#f6ffed; --success-border:#b7eb8f;
+  --error:#ff4d4f;   --error-bg:#fff2f0;   --error-border:#ffccc7;
+  --warning:#faad14; --warning-bg:#fffbe6; --warning-border:#ffe58f;
+  --orange:#fa8c16;  --orange-bg:#fff7e6;  --orange-border:#ffd591;
+  --purple:#722ed1;  --purple-bg:#f9f0ff;  --purple-border:#d3adf7;
+  --text:rgba(0,0,0,.88); --text-sec:rgba(0,0,0,.45); --text-ter:rgba(0,0,0,.25);
+  --border:#d9d9d9; --border-light:#f0f0f0;
+  --bg:#f0f2f5; --bg-light:#fafafa; --white:#fff;
+  --radius:6px; --radius-sm:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5714}
+
+/* Demo Nav */
+.demo-nav{background:#fff;border-bottom:1px solid #e8e8e8;padding:10px 24px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:500}
+.demo-nav span{color:#999;font-size:12px;margin-right:4px}
+.demo-btn{padding:5px 14px;border:1px solid #d9d9d9;background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:#595959;transition:all .15s}
+.demo-btn.active{background:#1677ff;color:#fff;border-color:#1677ff}
+.demo-btn:hover:not(.active){border-color:#1677ff;color:#1677ff}
+.view{display:none}.view.active{display:block}
+
+/* Top Nav */
+.top-nav{background:#001529;padding:0 24px;display:flex;align-items:center;gap:4px;height:48px}
+.top-nav .logo{color:#fff;font-size:16px;font-weight:600;padding-right:16px;margin-right:8px;border-right:1px solid rgba(255,255,255,.15);white-space:nowrap}
+.top-nav a{color:rgba(255,255,255,.65);padding:0 16px;height:48px;display:flex;align-items:center;font-size:14px;text-decoration:none;border-bottom:3px solid transparent;cursor:pointer}
+.top-nav a.active{color:#fff;border-bottom-color:var(--primary)}
+.top-nav a:hover:not(.active){color:rgba(255,255,255,.85)}
+
+/* Layout */
+.page{padding:20px 24px;min-height:calc(100vh - 48px)}
+.breadcrumb{font-size:13px;color:var(--text-sec);margin-bottom:14px}
+.breadcrumb a{color:var(--text-sec);text-decoration:none}
+.breadcrumb a:hover{color:var(--primary)}
+.card{background:var(--white);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
+
+/* Buttons */
+.btn{height:32px;padding:0 15px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);display:inline-flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);color:#fff}
+.btn-danger{background:#fff;border-color:var(--error);color:var(--error)}
+.btn-danger:hover{background:var(--error-bg)}
+.btn-link{border:none;background:none;color:var(--primary);padding:0;font-size:13px;cursor:pointer;height:auto}
+.btn-link:hover{color:var(--primary-hover);text-decoration:underline}
+
+/* Inputs */
+.inp,.sel{height:32px;padding:0 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);outline:none;background:var(--white)}
+.inp{width:200px}.inp:focus,.sel:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.1)}
+.sel{width:150px;padding-right:26px;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bfbfbf'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.fg{display:flex;flex-direction:column;gap:3px}.fg label{font-size:12px;color:var(--text-sec)}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-end;margin-bottom:10px}
+.filter-actions{display:flex;gap:8px;align-items:flex-end;margin-left:auto}
+
+/* Status count bar */
+.stat-bar{display:flex;gap:0;border-bottom:1px solid var(--border-light);margin-bottom:12px;overflow-x:auto}
+.stab{padding:8px 14px;cursor:pointer;color:var(--text-sec);font-size:13px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;user-select:none;transition:all .2s}
+.stab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.stab:hover:not(.active){color:var(--text)}.stab em{font-style:normal;font-size:12px;margin-left:3px;opacity:.75}
+
+/* Action bar */
+.action-bar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+
+/* Table */
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--bg-light)}
+th{padding:9px 12px;text-align:left;font-weight:500;color:var(--text);border-bottom:1px solid var(--border-light);font-size:13px;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border-light);vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}tr:hover td{background:#fafafa}
+
+/* Tags / Badges */
+.tag{display:inline-flex;align-items:center;padding:0 7px;height:20px;border-radius:var(--radius-sm);font-size:12px;border:1px solid;white-space:nowrap}
+.tag-img{background:#e6f4ff;color:var(--primary);border-color:#91caff}
+.tag-video{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)}
+.tag-urgent{background:#fff1f0;color:#cf1322;border-color:#ffa39e;font-weight:500}
+.status-badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:500}
+.s-pending{background:#fff7e6;color:#d46b08;border:1px solid #ffd591}
+.s-review{background:var(--primary-light);color:var(--primary);border:1px solid #91caff}
+.s-rework{background:var(--error-bg);color:var(--error);border:1px solid var(--error-border)}
+.s-done{background:var(--success-bg);color:var(--success);border:1px solid var(--success-border)}
+.s-cancel{background:var(--bg-light);color:#8c8c8c;border:1px solid var(--border)}
+
+/* Thumbnails row */
+.thumb-row{display:flex;gap:4px;flex-wrap:wrap}
+.thumb{width:44px;height:44px;border-radius:3px;border:1px solid var(--border-light);background:var(--bg-light);overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--text-ter);font-size:10px;flex-shrink:0}
+.thumb img{width:100%;height:100%;object-fit:cover}
+
+/* Task info cell */
+.task-no{color:var(--primary);font-weight:500;font-size:13px;cursor:pointer}
+.task-no:hover{text-decoration:underline}
+.task-meta{font-size:12px;color:var(--text-sec);margin-top:2px}
+.task-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:flex-end;padding:14px 0 0;gap:4px}
+.page-btn{min-width:32px;height:32px;padding:0 6px;border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--white);color:var(--text);font-size:13px;user-select:none}
+.page-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.page-btn:hover:not(.active){border-color:var(--primary);color:var(--primary)}
+.page-info{color:var(--text-sec);font-size:13px;margin-right:8px}
+.page-size{height:32px;padding:0 24px 0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--white);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bfbfbf'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+.page-jump{display:flex;align-items:center;gap:5px;margin-left:8px;font-size:13px;color:var(--text-sec)}
+.page-jump input{width:46px;height:32px;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;font-size:13px;outline:none}
+
+/* ─── Modal ─── */
+.mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:flex-start;justify-content:center;padding-top:80px;overflow-y:auto}
+.mask.show{display:flex}
+.modal{background:#fff;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,.15);width:560px;max-width:96vw;margin-bottom:60px}
+.modal-lg{width:1100px}
+.mhd{padding:16px 24px;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center}
+.mtitle{font-size:16px;font-weight:600;color:#262626}
+.mclose{background:none;border:none;font-size:22px;cursor:pointer;color:#8c8c8c;line-height:1;padding:0 4px}
+.mclose:hover{color:#262626}
+.mbody{padding:20px 24px;max-height:72vh;overflow-y:auto}
+.mfoot{padding:12px 24px;border-top:1px solid var(--border-light);display:flex;justify-content:flex-end;gap:8px}
+
+/* ─── Create-task page ─── */
+.ct-wrap{display:flex;gap:0;height:calc(100vh - 48px - 52px);overflow:hidden}
+.ct-left{width:240px;border-right:1px solid var(--border-light);background:#fff;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.ct-left-hd{padding:12px 16px;font-size:13px;font-weight:500;border-bottom:1px solid var(--border-light);background:#fafafa;display:flex;align-items:center;justify-content:space-between}
+.skc-card{padding:10px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .15s;display:flex;gap:10px;align-items:center}
+.skc-card:hover{background:var(--primary-light)}
+.skc-card.active{background:var(--primary-light);border-left:3px solid var(--primary)}
+.skc-thumb{width:48px;height:48px;border-radius:4px;border:1px solid var(--border-light);background:var(--bg-light);display:flex;align-items:center;justify-content:center;color:var(--text-ter);flex-shrink:0;overflow:hidden}
+.skc-info{flex:1;min-width:0}.skc-no{font-size:12px;color:var(--primary);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.skc-sub{font-size:12px;color:var(--text-sec)}
+.ct-mid{flex:1;background:#f5f6f8;overflow-y:auto;padding:16px}
+.ct-mid-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.photo-item{background:#fff;border-radius:4px;border:2px solid var(--border-light);overflow:hidden;cursor:pointer;position:relative;transition:border-color .15s;aspect-ratio:3/4}
+.photo-item.selected{border-color:var(--primary)}
+.photo-item:hover{border-color:#69b1ff}
+.photo-item img{width:100%;height:100%;object-fit:cover}
+.photo-item .pi-no{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;border-radius:3px;padding:1px 5px}
+.photo-item .pi-check{position:absolute;top:6px;left:6px;width:18px;height:18px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;display:none}
+.photo-item.selected .pi-check{display:flex}
+.ct-right{width:320px;border-left:1px solid var(--border-light);background:#fff;overflow-y:auto;padding:16px;flex-shrink:0}
+.ct-right-hd{font-size:13px;font-weight:500;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+
+/* req item */
+.req-item{border:1px solid var(--border-light);border-radius:4px;margin-bottom:10px;overflow:hidden}
+.req-item-hd{padding:7px 10px;background:#fafafa;border-bottom:1px solid var(--border-light);display:flex;gap:8px;align-items:center;font-size:12px;font-weight:500}
+.req-item-body{padding:10px}
+textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;font-size:13px;font-family:inherit;resize:none;outline:none;color:var(--text)}
+textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.1)}
+.char-count{text-align:right;font-size:12px;color:var(--text-ter);margin-top:3px}
+
+/* attach row */
+.attach-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.attach-add{width:52px;height:52px;border:1px dashed var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-ter);font-size:20px;background:var(--bg-light);transition:border-color .15s}
+.attach-add:hover{border-color:var(--primary);color:var(--primary)}
+.attach-thumb{width:52px;height:52px;border-radius:4px;border:1px solid var(--border-light);background:var(--bg-light);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.attach-thumb .rm{position:absolute;top:1px;right:1px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1}
+
+/* tag-group */
+.tag-group{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tg-item{padding:3px 10px;border:1px solid var(--border);border-radius:3px;font-size:12px;cursor:pointer;user-select:none;transition:all .15s}
+.tg-item:hover{border-color:var(--primary);color:var(--primary)}
+.tg-item.on{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+
+/* section label */
+.sec-label{font-size:12px;color:var(--text-sec);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.sec-label .req{color:var(--error)}
+
+/* video section */
+.video-zone{border:1px solid var(--border-light);border-radius:4px;padding:12px;background:#fafafa;text-align:center;margin-top:10px}
+.video-zone .icon{font-size:28px;color:var(--text-ter);margin-bottom:6px}
+.video-zone p{font-size:12px;color:var(--text-sec)}
+
+/* bottom bar */
+.bottom-bar{background:#fff;border-top:1px solid var(--border-light);padding:12px 24px;display:flex;align-items:center;justify-content:flex-end;gap:10px;position:sticky;bottom:0;z-index:100}
+.assign-row{display:flex;align-items:center;gap:8px;margin-right:auto;font-size:13px;color:var(--text-sec)}
+</style>
+</head>
+<body>
+
+<!-- DEMO NAV -->
+<div class="demo-nav">
+  <span>切换视图：</span>
+  <button class="demo-btn active" onclick="showView('list',this)">① 任务列表</button>
+  <button class="demo-btn" onclick="showView('list',this);setTimeout(()=>openModal('m-launch'),100)">② 发起修图任务弹窗</button>
+  <button class="demo-btn" onclick="showView('create',this)">③ 创建修图任务</button>
+  <button class="demo-btn" onclick="showView('list',this);setTimeout(()=>openModal('m-upload'),100)">④ 上传图片弹窗</button>
+  <button class="demo-btn" onclick="showView('list',this);setTimeout(()=>openModal('m-audit'),100)">⑤ 审核更新弹窗</button>
+</div>
+
+<!-- ══════════════════════════════════
+     VIEW 1: 任务列表
+══════════════════════════════════ -->
+<div id="v-list" class="view active">
+  <nav class="top-nav">
+    <span class="logo">F.AGENT</span>
+    <a href="#">首页</a><a href="#">款式开发</a><a href="#" class="active">设计中心</a><a href="#">Temu商品管理</a>
+  </nav>
+  <div class="page">
+    <div class="breadcrumb"><a href="#">首页</a> / <a href="#">设计中心</a> / <span style="color:var(--text)">图片更新任务</span></div>
+
+    <!-- 筛选区 -->
+    <div class="card">
+      <!-- 第一行筛选 -->
+      <div class="filter-row">
+        <div class="fg">
+          <label>任务编号</label>
+          <input class="inp" placeholder="支持批量，空格或逗号分隔" style="width:220px">
+        </div>
+        <div class="fg">
+          <label>SPU 编号</label>
+          <input class="inp" placeholder="支持批量，空格或逗号分隔" style="width:220px">
+        </div>
+        <div class="fg">
+          <label>SKC 编号 <span style="color:var(--primary);font-size:11px">New</span></label>
+          <input class="inp" placeholder="支持批量，逗号分隔" style="width:200px">
+        </div>
+        <div class="fg">
+          <label>店铺</label>
+          <select class="sel" style="width:160px"><option value="">请选择</option><option>Light Urban</option><option>Blossom Local</option><option>Lumiloca</option></select>
+        </div>
+        <div class="fg">
+          <label>是否加急</label>
+          <select class="sel" style="width:120px"><option value="">全部</option><option>仅加急</option></select>
+        </div>
+        <div class="filter-actions">
+          <div class="fg"><label>&nbsp;</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary">查询</button>
+              <button class="btn">重置</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 第二行筛选 -->
+      <div class="filter-row" style="margin-bottom:0">
+        <div class="fg">
+          <label>创建人</label>
+          <input class="inp" placeholder="请输入创建人" style="width:140px">
+        </div>
+        <div class="fg">
+          <label>设计师</label>
+          <input class="inp" placeholder="请输入设计师" style="width:140px">
+        </div>
+        <div class="fg">
+          <label>任务类型</label>
+          <select class="sel" style="width:130px"><option value="">全部</option><option>图片</option><option>视频</option><option>图片+视频</option></select>
+        </div>
+        <div class="fg">
+          <label>创建时间</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input class="inp" type="date" style="width:135px">
+            <span style="color:var(--text-sec);font-size:13px">至</span>
+            <input class="inp" type="date" style="width:135px">
+          </div>
+        </div>
+        <div class="fg" style="justify-content:flex-end">
+          <label>&nbsp;</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text)">
+            <input type="checkbox"> 只看自己
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 表格区 -->
+    <div class="card" style="padding:16px 20px">
+      <!-- 状态统计 tab -->
+      <div class="stat-bar">
+        <div class="stab active" onclick="switchTab(this)">全部<em>698</em></div>
+        <div class="stab" onclick="switchTab(this)">未创建<em>0</em></div>
+        <div class="stab" onclick="switchTab(this)">待处理<em>44</em></div>
+        <div class="stab" onclick="switchTab(this)">待审核<em>28</em></div>
+        <div class="stab" onclick="switchTab(this)">待返修<em>17</em></div>
+        <div class="stab" onclick="switchTab(this)">已完成<em>249</em></div>
+        <div class="stab" onclick="switchTab(this)">已取消<em>360</em></div>
+      </div>
+      <!-- 操作按钮行 -->
+      <div class="action-bar">
+        <button class="btn">取消任务</button>
+        <button class="btn">审核任务</button>
+        <button class="btn">↓ 下载图片</button>
+        <button class="btn" onclick="openModal('m-upload')">↑ 上传图片</button>
+        <button class="btn btn-primary" onclick="openModal('m-launch')">+ 创建任务</button>
+      </div>
+      <!-- 表格 -->
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px"><input type="checkbox"></th>
+            <th style="min-width:200px">任务信息</th>
+            <th style="min-width:180px">关联款式 / SKC</th>
+            <th style="width:80px">状态</th>
+            <th style="min-width:140px">待修图</th>
+            <th style="width:100px">修图需求分类</th>
+            <th style="width:90px">修图备注</th>
+            <th style="width:80px">上传图片人</th>
+            <th style="width:90px">任务处理人(美工)</th>
+            <th style="width:80px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 行1：图片任务，待处理，加急 -->
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>
+              <div class="task-no" onclick="openModal('m-upload')">IM26072700001</div>
+              <div class="task-tags">
+                <span class="tag tag-img">图片</span>
+                <span class="tag tag-urgent">加急</span>
+              </div>
+              <div class="task-meta">店铺：Light Urban</div>
+            </td>
+            <td>
+              <div style="font-size:13px;color:var(--primary);font-weight:500">B52607220000013</div>
+              <div style="font-size:12px;color:var(--text-sec)">SPU：526072200004</div>
+              <div style="font-size:12px;color:var(--text-sec)">设计组：测试二组 · 林志华</div>
+            </td>
+            <td>
+              <div class="thumb-row">
+                <div class="thumb" style="background:#e8d5c4"></div>
+                <div class="thumb" style="background:#c4d5e8"></div>
+                <div class="thumb" style="background:#d4c4e8"></div>
+              </div>
+            </td>
+            <td><span style="color:var(--primary);font-size:12px">换脸</span></td>
+            <td style="font-size:12px;color:var(--text-sec)">vrv</td>
+            <td style="color:var(--text-ter)">—</td>
+            <td style="color:var(--text-ter)">—</td>
+            <td>
+              <button class="btn-link" onclick="openModal('m-upload')" style="display:block;margin-bottom:4px">上传图片</button>
+              <button class="btn-link" style="display:block;color:var(--text-sec)">取消</button>
+            </td>
+          </tr>
+          <!-- 行2：图片任务，已完成，加急 -->
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>
+              <div class="task-no">IM26072200003</div>
+              <div class="task-tags">
+                <span class="tag tag-img">图片</span>
+                <span class="tag tag-urgent">加急</span>
+              </div>
+              <div class="task-meta">店铺：Light Urban</div>
+            </td>
+            <td>
+              <div style="font-size:13px;color:var(--primary);font-weight:500">B52607220000013</div>
+              <div style="font-size:12px;color:var(--text-sec)">SPU：526072200004</div>
+              <div style="font-size:12px;color:var(--text-sec)">设计组：测试二组 · 林志华</div>
+            </td>
+            <td><span class="status-badge s-done">已完成</span></td>
+            <td>
+              <div class="thumb-row">
+                <div class="thumb" style="background:#e8d5c4"></div>
+                <div class="thumb" style="background:#c4d5e8"></div>
+                <div class="thumb" style="background:#d4e8c4"></div>
+                <div class="thumb" style="background:#e8e4c4"></div>
+              </div>
+            </td>
+            <td><span style="color:var(--primary);font-size:12px">换脸</span></td>
+            <td style="font-size:12px;color:var(--text-sec)">1313131</td>
+            <td style="font-size:12px">林志华</td>
+            <td style="font-size:12px">林志华</td>
+            <td>
+              <button class="btn-link" style="display:block;margin-bottom:4px">↓ 下载</button>
+            </td>
+          </tr>
+          <!-- 行3：图片+视频任务，待审核 -->
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="task-no" onclick="openModal('m-audit')">IM26072600008</div>
+              <div class="task-tags">
+                <span class="tag tag-img">图片</span>
+                <span class="tag tag-video">视频</span>
+              </div>
+              <div class="task-meta">店铺：Blossom Local</div>
+            </td>
+            <td>
+              <div style="font-size:13px;color:var(--primary);font-weight:500">B52607230000101</div>
+              <div style="font-size:12px;color:var(--text-sec)">SPU：526072300012</div>
+              <div style="font-size:12px;color:var(--text-sec)">设计组：商品开发组 · 林廷威</div>
+            </td>
+            <td><span class="status-badge s-review">待审核</span></td>
+            <td>
+              <div class="thumb-row">
+                <div class="thumb" style="background:#c4e8d5"></div>
+                <div class="thumb" style="background:#e8c4c4"></div>
+              </div>
+            </td>
+            <td><span style="color:var(--primary);font-size:12px">改款 换脸</span></td>
+            <td style="font-size:12px;color:var(--text-sec)">需要换背景</td>
+            <td style="font-size:12px">张三</td>
+            <td style="font-size:12px">李美工</td>
+            <td>
+              <button class="btn-link" onclick="openModal('m-audit')" style="display:block;margin-bottom:4px">审核</button>
+              <button class="btn-link" style="display:block;color:var(--text-sec)">取消</button>
+            </td>
+          </tr>
+          <!-- 行4：视频任务，待返修 -->
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>
+              <div class="task-no">IM26072500015</div>
+              <div class="task-tags">
+                <span class="tag tag-video">视频</span>
+              </div>
+              <div class="task-meta">店铺：Lumiloca</div>
+            </td>
+            <td>
+              <div style="font-size:13px;color:var(--primary);font-weight:500">B52607210000880</div>
+              <div style="font-size:12px;color:var(--text-sec)">SPU：526072100088</div>
+              <div style="font-size:12px;color:var(--text-sec)">设计组：测试一组 · 王设计</div>
+            </td>
+            <td><span class="status-badge s-rework">待返修</span></td>
+            <td style="color:var(--text-ter)">—</td>
+            <td style="color:var(--text-ter)">—</td>
+            <td style="font-size:12px;color:var(--text-sec)">视频节奏太慢</td>
+            <td style="font-size:12px">王设计</td>
+            <td style="font-size:12px">赵美工</td>
+            <td>
+              <button class="btn-link" onclick="openModal('m-upload')" style="display:block;margin-bottom:4px">上传图片</button>
+              <button class="btn-link" style="display:block;color:var(--text-sec)">取消</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <span class="page-info">共 698 条</span>
+        <select class="page-size"><option>20条/页</option><option>50条/页</option></select>
+        <div class="page-btn" style="color:var(--text-ter)">&lt;</div>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div><div class="page-btn">3</div><div class="page-btn">4</div><div class="page-btn">5</div>
+        <div class="page-btn" style="border:none;background:none;cursor:default;color:var(--text-ter)">…</div>
+        <div class="page-btn">35</div>
+        <div class="page-btn">&gt;</div>
+        <div class="page-jump">前往 <input type="text" value="1"> 页</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /v-list -->
+
+<!-- ══════════════════════════════════
+     VIEW 2: 创建修图任务（整页）
+══════════════════════════════════ -->
+<div id="v-create" class="view">
+  <nav class="top-nav">
+    <span class="logo">F.AGENT</span>
+    <a href="#">首页</a><a href="#">款式开发</a><a href="#" class="active">设计中心</a>
+  </nav>
+  <!-- 页头 -->
+  <div style="background:#fff;border-bottom:1px solid var(--border-light);padding:10px 24px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div class="breadcrumb" style="margin-bottom:0"><a href="#" onclick="showView('list');return false">图片更新任务</a> / <span style="color:var(--text)">创建图片更新任务</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="assign-row">
+        <span>指定美工：</span>
+        <select class="sel" style="width:160px"><option value="">输入姓名关键字</option><option>李美工</option><option>赵美工</option></select>
+      </div>
+      <button class="btn" onclick="showView('list')">返回</button>
+      <button class="btn btn-primary">创建</button>
+    </div>
+  </div>
+
+  <!-- 三栏主体 -->
+  <div class="ct-wrap">
+    <!-- 左：SKC 列表 -->
+    <div class="ct-left">
+      <div class="ct-left-hd">
+        <span>款式列表</span>
+        <span style="font-size:12px;color:var(--text-sec)">1 个 SKC</span>
+      </div>
+      <div class="skc-card active">
+        <div class="skc-thumb" style="background:#c4d8e8">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ab" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+        </div>
+        <div class="skc-info">
+          <div class="skc-no">526070001490105</div>
+          <div class="skc-sub">商品开发组 · 林廷威</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中：图片选择区 -->
+    <div class="ct-mid">
+      <div class="ct-mid-hd">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+          <input type="checkbox" checked> 全选
+        </label>
+        <span style="font-size:12px;color:var(--text-sec)">已选 1 张，共 4 张</span>
+        <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;margin-left:auto">
+          <input type="checkbox" id="chk-video" onchange="document.getElementById('video-req-zone').style.display=this.checked?'block':'none'">
+          包含视频需求
+        </label>
+      </div>
+      <div class="photo-grid">
+        <div class="photo-item selected" onclick="this.classList.toggle('selected')">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#c8d8e8 0%,#a8b8c8 100%);display:flex;align-items:center;justify-content:center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#789" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+          </div>
+          <div class="pi-no">1</div>
+          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="photo-item" onclick="this.classList.toggle('selected')">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8d8c8 0%,#c8a898 100%);display:flex;align-items:center;justify-content:center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a89" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+          </div>
+          <div class="pi-no">2</div>
+          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="photo-item" onclick="this.classList.toggle('selected')">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#d8e8d0 0%,#a8c8a0 100%);display:flex;align-items:center;justify-content:center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a9" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+          </div>
+          <div class="pi-no">3</div>
+          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="photo-item" onclick="this.classList.toggle('selected')">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8e0d0 0%,#c8b8a0 100%);display:flex;align-items:center;justify-content:center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9a8" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+          </div>
+          <div class="pi-no">4</div>
+          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+      </div>
+
+      <!-- 视频需求区（勾选「包含视频需求」后显示） -->
+      <div id="video-req-zone" style="margin-top:16px;padding-top:14px;border-top:1px dashed var(--border-light);display:none">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+          <span style="display:inline-block;width:3px;height:13px;background:var(--purple);border-radius:2px"></span>
+          视频更新需求
+        </div>
+        <div class="video-zone">
+          <div class="icon">🎬</div>
+          <p>当前 SKC 暂无营销视频</p>
+          <p style="margin-top:4px;color:var(--text-ter)">上传后将替换现有视频</p>
+        </div>
+        <div style="margin-top:10px">
+          <div class="sec-label">视频需求说明（非必填）</div>
+          <textarea rows="3" placeholder="请输入视频更新需求说明，最多 500 字"></textarea>
+          <div class="char-count">0 / 500</div>
+          <div class="sec-label" style="margin-top:8px">需求说明参考图（最多 5 张）</div>
+          <div class="attach-row">
+            <div class="attach-add">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：修图需求 -->
+    <div class="ct-right">
+      <div class="ct-right-hd">
+        <span>修图需求设置</span>
+        <button class="btn-link" style="color:var(--error);font-size:12px">清空</button>
+      </div>
+
+      <!-- 需求分类 -->
+      <div class="sec-label"><span class="req">*</span> 修图需求分类（可多选）</div>
+      <div class="tag-group">
+        <span class="tg-item" onclick="this.classList.toggle('on')">去水印</span>
+        <span class="tg-item on" onclick="this.classList.toggle('on')">换脸</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">改款</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">调色</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">增加元素</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">换模特</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">换模特</span>
+        <span class="tg-item" onclick="this.classList.toggle('on')">其他</span>
+      </div>
+
+      <!-- 加急 -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 10px;background:var(--bg-light);border-radius:4px">
+        <span style="font-size:13px">加急</span>
+        <label class="toggle" style="cursor:pointer;display:flex;align-items:center;gap:6px">
+          <div id="toggleBtn" onclick="this.classList.toggle('on')" style="width:36px;height:20px;border-radius:10px;background:#d9d9d9;position:relative;cursor:pointer;transition:background .2s">
+            <div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+          </div>
+        </label>
+      </div>
+
+      <!-- 已选图片1：修图说明 -->
+      <div class="req-item">
+        <div class="req-item-hd">
+          <div style="width:32px;height:32px;border-radius:3px;background:linear-gradient(135deg,#c8d8e8,#a8b8c8);flex-shrink:0"></div>
+          <span>图片 1</span>
+        </div>
+        <div class="req-item-body">
+          <div class="sec-label">修图需求说明（非必填）</div>
+          <textarea rows="3" placeholder="请输入修图需求说明">换掉模特脸部，使用清晰正脸素材</textarea>
+          <div class="char-count">17 / 500</div>
+          <div class="sec-label" style="margin-top:8px">说明参考图（最多 5 张）<span style="color:var(--text-ter);margin-left:4px">附件</span></div>
+          <div class="attach-row">
+            <div class="attach-thumb" style="background:#f0e8e0">
+              <div style="font-size:18px">🖼️</div>
+              <span class="rm">×</span>
+            </div>
+            <div class="attach-thumb" style="background:#e0e8f0">
+              <div style="font-size:18px">🖼️</div>
+              <span class="rm">×</span>
+            </div>
+            <div class="attach-add">+</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="color:var(--text-ter);font-size:12px;text-align:center;padding:12px 0">选择其他图片后将在此处显示对应说明</div>
+    </div>
+  </div>
+</div><!-- /v-create -->
+
+<!-- ══════════════════════════════════
+     MODAL 1: 发起修图任务
+══════════════════════════════════ -->
+<div id="m-launch" class="mask" onclick="if(event.target===this)closeModal('m-launch')">
+  <div class="modal">
+    <div class="mhd">
+      <span class="mtitle">发起修图任务</span>
+      <button class="mclose" onclick="closeModal('m-launch')">×</button>
+    </div>
+    <div class="mbody">
+      <div>
+        <div class="sec-label"><span class="req">*</span> 输入 SKC 编号</div>
+        <textarea rows="5" placeholder="支持批量输入，换行或逗号分隔&#10;526070001490105&#10;526070001490106" style="width:100%">526070001490105</textarea>
+        <div style="font-size:12px;color:var(--text-sec);margin-top:4px">已输入 1 个，确认后将查询款式管理及现货管理</div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeModal('m-launch')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('m-launch');showView('create')">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     MODAL 2: 上传图片弹窗
+══════════════════════════════════ -->
+<div id="m-upload" class="mask" onclick="if(event.target===this)closeModal('m-upload')">
+  <div class="modal modal-lg">
+    <div class="mhd">
+      <span class="mtitle">上传图片</span>
+      <button class="mclose" onclick="closeModal('m-upload')">×</button>
+    </div>
+    <div class="mbody" style="padding:0">
+      <div style="display:flex;height:520px">
+        <!-- 左：SKC 卡片 -->
+        <div style="width:200px;border-right:1px solid var(--border-light);overflow-y:auto;flex-shrink:0">
+          <div style="padding:10px 12px;font-size:12px;color:var(--text-sec);border-bottom:1px solid var(--border-light);background:#fafafa">共 1 个 SKC</div>
+          <div style="padding:10px 12px;border-bottom:1px solid var(--border-light);background:var(--primary-light);border-left:3px solid var(--primary);cursor:pointer">
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:40px;height:40px;border-radius:3px;background:#c4d8e8;flex-shrink:0"></div>
+              <div>
+                <div style="font-size:12px;color:var(--primary);font-weight:500">B52607220000013</div>
+                <div style="font-size:11px;color:var(--text-sec)">测试二组 · 林志华</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 右：内容区 -->
+        <div style="flex:1;overflow-y:auto;padding:16px">
+          <!-- 任务信息摘要 -->
+          <div style="background:var(--bg-light);border:1px solid var(--border-light);border-radius:4px;padding:10px 14px;margin-bottom:14px;display:flex;gap:24px;flex-wrap:wrap">
+            <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求分类：</span><span style="color:var(--primary)">换脸</span></div>
+            <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求说明：</span>换掉模特脸部</div>
+          </div>
+          <!-- 需求实际分类 -->
+          <div style="margin-bottom:14px">
+            <div class="sec-label"><span class="req">*</span> 需求实际分类（可多选）<button class="btn-link" style="margin-left:8px;font-size:12px;color:var(--error)">清空</button></div>
+            <div class="tag-group">
+              <span class="tg-item" onclick="this.classList.toggle('on')">去水印</span>
+              <span class="tg-item on" onclick="this.classList.toggle('on')">换脸</span>
+              <span class="tg-item" onclick="this.classList.toggle('on')">改款</span>
+              <span class="tg-item" onclick="this.classList.toggle('on')">调色</span>
+              <span class="tg-item" onclick="this.classList.toggle('on')">增加元素</span>
+              <span class="tg-item" onclick="this.classList.toggle('on')">换模特</span>
+              <span class="tg-item" onclick="this.classList.toggle('on')">其他</span>
+            </div>
+          </div>
+          <!-- 三栏：当前图片 / 上传区 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <!-- 当前图片 -->
+            <div>
+              <div style="font-size:13px;font-weight:500;margin-bottom:8px">当前图片</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border-light);border-radius:4px">
+                  <div style="width:64px;height:80px;border-radius:3px;background:linear-gradient(135deg,#d8c8b8,#b8a898);flex-shrink:0"></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:12px;color:var(--text-sec);margin-bottom:6px">修图需求说明：<span style="color:var(--text)">换掉模特脸部</span></div>
+                    <button class="btn" style="height:26px;font-size:12px;padding:0 10px">保留</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border-light);border-radius:4px">
+                  <div style="width:64px;height:80px;border-radius:3px;background:linear-gradient(135deg,#c8d8c8,#a8b8a8);flex-shrink:0"></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:12px;color:var(--text-sec);margin-bottom:6px">修图需求说明：<span style="color:var(--text-ter)">—</span></div>
+                    <button class="btn" style="height:26px;font-size:12px;padding:0 10px">保留</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border-light);border-radius:4px">
+                  <div style="width:64px;height:80px;border-radius:3px;background:linear-gradient(135deg,#c8c8d8,#a8a8b8);flex-shrink:0"></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:12px;color:var(--text-sec);margin-bottom:6px">修图需求说明：<span style="color:var(--text-ter)">—</span></div>
+                    <button class="btn" style="height:26px;font-size:12px;padding:0 10px">保留</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 更新内容 + 上传区 -->
+            <div>
+              <div style="font-size:13px;font-weight:500;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+                <span>* 更新内容</span>
+                <div style="display:flex;gap:8px">
+                  <button class="btn-link" style="font-size:12px;color:var(--primary)">全部保留</button>
+                  <button class="btn-link" style="font-size:12px;color:var(--error)">全部删除</button>
+                </div>
+              </div>
+              <!-- 上传区 -->
+              <div style="border:1px dashed var(--border);border-radius:4px;padding:20px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:10px" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                <div style="font-size:24px;color:var(--text-ter);margin-bottom:6px">📎</div>
+                <div style="font-size:13px;color:var(--text-sec)">粘贴或拖放图片</div>
+                <button class="btn btn-primary" style="margin-top:10px;height:28px;font-size:12px">点击上传</button>
+              </div>
+              <!-- 已上传图片 -->
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <div style="width:64px;height:64px;border-radius:3px;border:1px solid var(--primary);background:linear-gradient(135deg,#b8c8d8,#98a8b8);position:relative">
+                  <span style="position:absolute;top:1px;right:1px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">×</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 美工备注 -->
+          <div style="margin-top:14px;border-top:1px solid var(--border-light);padding-top:12px">
+            <div class="sec-label">美工备注<span style="color:var(--text-ter);margin-left:4px">（非必填，最多 200 字）</span></div>
+            <textarea rows="2" placeholder="请输入美工处理备注说明" style="width:100%"></textarea>
+            <div class="char-count">0 / 200</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeModal('m-upload')">取消</button>
+      <button class="btn btn-primary">提交更新</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     MODAL 3: 审核更新结果
+══════════════════════════════════ -->
+<div id="m-audit" class="mask" onclick="if(event.target===this)closeModal('m-audit')">
+  <div class="modal modal-lg">
+    <div class="mhd">
+      <span class="mtitle">批量审核更新结果</span>
+      <button class="mclose" onclick="closeModal('m-audit')">×</button>
+    </div>
+    <div class="mbody" style="padding:0">
+      <div style="display:flex;height:520px">
+        <!-- 左：SKC 卡片 -->
+        <div style="width:200px;border-right:1px solid var(--border-light);overflow-y:auto;flex-shrink:0">
+          <div style="padding:10px 12px;font-size:12px;color:var(--text-sec);border-bottom:1px solid var(--border-light);background:#fafafa">共 1 个 SKC</div>
+          <div style="padding:10px 12px;border-bottom:1px solid var(--border-light);background:var(--primary-light);border-left:3px solid var(--primary);cursor:pointer">
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:40px;height:40px;border-radius:3px;background:#c4d8e8;flex-shrink:0"></div>
+              <div>
+                <div style="font-size:12px;color:var(--primary);font-weight:500">526040030040101</div>
+                <div style="font-size:11px;color:var(--text-sec)">商品开发组 · 林廷威</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 右：内容区 -->
+        <div style="flex:1;overflow-y:auto;padding:16px">
+          <!-- 摘要栏 -->
+          <div style="background:var(--bg-light);border:1px solid var(--border-light);border-radius:4px;padding:10px 14px;margin-bottom:12px;display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+            <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求分类：</span><span style="color:var(--primary)">去水印 &nbsp; 改款 &nbsp; 换脸</span></div>
+            <div style="font-size:13px"><span style="color:var(--text-sec)">需求实际分类：</span><span style="color:var(--orange)">去水印 &nbsp; 改款 &nbsp; 换脸 &nbsp; 换模特</span></div>
+            <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求说明：</span>1</div>
+            <button class="btn-link" style="margin-left:auto;font-size:12px" onclick="document.getElementById('history-panel').style.display=document.getElementById('history-panel').style.display==='none'?'block':'none'">查看返修记录 (2)</button>
+          </div>
+
+          <!-- 返修历史折叠面板 -->
+          <div id="history-panel" style="display:none;border:1px solid var(--warning-border);border-radius:4px;background:var(--warning-bg);padding:12px 14px;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:#7c4a00">返修历史记录</div>
+            <!-- 第2次返修 -->
+            <div style="background:#fff;border:1px solid var(--border-light);border-radius:4px;padding:10px 12px;margin-bottom:8px">
+              <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;font-size:12px">
+                <span style="font-weight:500;color:var(--error)">第 2 次返修</span>
+                <span><span style="color:var(--text-sec)">类型：</span>图片返修</span>
+                <span><span style="color:var(--text-sec)">处理人：</span>张三</span>
+                <span><span style="color:var(--text-sec)">时间：</span>2026-07-25 14:30</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-sec);margin-bottom:6px">返修说明：脸部换得不自然，需要重做</div>
+              <div style="display:flex;gap:6px">
+                <div style="width:52px;height:52px;border-radius:3px;background:linear-gradient(135deg,#d0c8c0,#b0a898)"></div>
+                <div style="width:52px;height:52px;border-radius:3px;background:linear-gradient(135deg,#c8d0c8,#a8b0a8)"></div>
+              </div>
+            </div>
+            <!-- 第1次返修 -->
+            <div style="background:#fff;border:1px solid var(--border-light);border-radius:4px;padding:10px 12px">
+              <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;font-size:12px">
+                <span style="font-weight:500;color:var(--text-sec)">第 1 次返修</span>
+                <span><span style="color:var(--text-sec)">类型：</span>图片返修</span>
+                <span><span style="color:var(--text-sec)">处理人：</span>李四</span>
+                <span><span style="color:var(--text-sec)">时间：</span>2026-07-23 10:15</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-sec);margin-bottom:6px">返修说明：图片模糊，请重新上传高清图</div>
+              <div style="font-size:12px;color:var(--text-sec)">美工备注：使用了 A 方案素材</div>
+            </div>
+          </div>
+
+          <!-- 审核操作 tab -->
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <button id="btn-pass" class="btn btn-primary" onclick="setAudit('pass')" style="height:32px">审核通过</button>
+            <button id="btn-fail" class="btn" onclick="setAudit('fail')" style="height:32px">审核不通过</button>
+          </div>
+
+          <!-- 不通过：返修说明（默认隐藏） -->
+          <div id="audit-fail-area" style="display:none;margin-bottom:14px;padding:12px;background:var(--error-bg);border:1px solid var(--error-border);border-radius:4px">
+            <div class="sec-label"><span class="req">*</span> 返修说明（最多 500 字）</div>
+            <textarea rows="3" placeholder="请输入审核不通过的具体原因..." style="width:100%"></textarea>
+            <div class="char-count">0 / 500</div>
+            <div class="sec-label" style="margin-top:8px">说明图片（最多 1 张）</div>
+            <div class="attach-row">
+              <div class="attach-add">+</div>
+            </div>
+          </div>
+
+          <!-- 图片对比区 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div>
+              <div style="font-size:13px;font-weight:500;margin-bottom:8px">当前图片</div>
+              <div style="display:flex;gap:8px;align-items:flex-start;padding:8px;border:1px solid var(--border-light);border-radius:4px">
+                <div style="width:80px;height:100px;border-radius:3px;background:linear-gradient(135deg,#c8d4e0,#a8b4c0);flex-shrink:0"></div>
+                <div style="font-size:12px;color:var(--text-sec)">修图需求说明：—</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:500;margin-bottom:8px">更新图片</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;border:1px solid var(--border-light);border-radius:4px">
+                <div style="width:80px;height:100px;border-radius:3px;background:linear-gradient(135deg,#b8c8d8,#98a8b8)"></div>
+                <div style="width:80px;height:100px;border-radius:3px;background:linear-gradient(135deg,#d0b8c0,#b09898)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeModal('m-audit')">取消</button>
+      <button class="btn btn-primary" id="submit-audit">提交审核 (1)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('active');
+  document.querySelectorAll('.demo-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function switchTab(el){
+  el.closest('.stat-bar').querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+function setAudit(mode){
+  const area=document.getElementById('audit-fail-area');
+  const btnPass=document.getElementById('btn-pass');
+  const btnFail=document.getElementById('btn-fail');
+  if(mode==='fail'){
+    area.style.display='block';
+    btnFail.classList.add('btn-primary');btnFail.style.background='var(--error)';btnFail.style.borderColor='var(--error)';btnFail.style.color='#fff';
+    btnPass.classList.remove('btn-primary');btnPass.style.background='';btnPass.style.borderColor='';btnPass.style.color='';
+  } else {
+    area.style.display='none';
+    btnPass.classList.add('btn-primary');btnPass.style.background='';btnPass.style.borderColor='';btnPass.style.color='';
+    btnFail.classList.remove('btn-primary');btnFail.style.background='';btnFail.style.borderColor='';btnFail.style.color='';
+  }
+}
+</script>
+</body>
+</html>
+
