@@ -176,6 +176,15 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
 /* bottom bar */
 .bottom-bar{background:#fff;border-top:1px solid var(--border-light);padding:12px 24px;display:flex;align-items:center;justify-content:flex-end;gap:10px;position:sticky;bottom:0;z-index:100}
 .assign-row{display:flex;align-items:center;gap:8px;margin-right:auto;font-size:13px;color:var(--text-sec)}
+
+/* store tab in ct-mid */
+.store-tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border-light);margin-bottom:12px;overflow-x:auto;flex-shrink:0}
+.store-tab{padding:6px 14px;cursor:pointer;font-size:13px;color:var(--text-sec);border-bottom:2px solid transparent;margin-bottom:-1px;user-select:none;white-space:nowrap;transition:all .2s}
+.store-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.store-tab:hover:not(.active){color:var(--text)}
+.store-tab em{font-style:normal;font-size:11px;margin-left:3px;color:var(--text-ter)}
+.store-tab.active em{color:var(--primary);opacity:.7}
+.store-grid{display:none}.store-grid.active{display:block}
 </style>
 </head>
 <body>
@@ -456,6 +465,19 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
     </div>
     <div style="display:flex;align-items:center;gap:10px">
       <div class="assign-row">
+        <span>批量店铺：</span>
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;font-weight:400;color:var(--text)">
+          <input type="radio" name="batchStore" value="common" checked onchange="batchStoreToggle(this)"> 通用
+        </label>
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;font-weight:400;color:var(--text)">
+          <input type="radio" name="batchStore" value="specific" onchange="batchStoreToggle(this)"> 指定店铺
+        </label>
+        <select id="batchStoreSelectWrap" class="sel" style="width:130px;display:none" onchange="applyBatchStore(this.value)">
+          <option value="">请选择店铺</option>
+          <option>SHEIN</option><option>ROMWE</option><option>CUPSHE</option><option>Molly</option>
+        </select>
+      </div>
+      <div class="assign-row" style="margin-right:0">
         <span>指定美工：</span>
         <select class="sel" style="width:160px"><option value="">输入姓名关键字</option><option>李美工</option><option>赵美工</option></select>
       </div>
@@ -486,43 +508,116 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
     <!-- 中：图片选择区 -->
     <div class="ct-mid">
       <div class="ct-mid-hd">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
-          <input type="checkbox" checked> 全选
-        </label>
-        <span style="font-size:12px;color:var(--text-sec)">已选 1 张，共 4 张</span>
+        <span style="font-size:13px;font-weight:500;color:var(--text)">选择待修图片</span>
         <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;margin-left:auto">
           <input type="checkbox" id="chk-video" onchange="document.getElementById('video-req-zone').style.display=this.checked?'block':'none'">
           包含视频需求
         </label>
       </div>
-      <div class="photo-grid">
-        <div class="photo-item selected" onclick="this.classList.toggle('selected')">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#c8d8e8 0%,#a8b8c8 100%);display:flex;align-items:center;justify-content:center">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#789" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-          </div>
-          <div class="pi-no">1</div>
-          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+
+      <!-- 店铺 Tab -->
+      <div class="store-tab-bar">
+        <div class="store-tab active" onclick="switchStoreTab(this,'sg-common')">通用<em>4张</em></div>
+        <div class="store-tab" onclick="switchStoreTab(this,'sg-shein')">SHEIN<em>3张</em></div>
+        <div class="store-tab" onclick="switchStoreTab(this,'sg-romwe')">ROMWE<em>2张</em></div>
+      </div>
+
+      <!-- 通用图片组 -->
+      <div id="sg-common" class="store-grid active">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked> 全选
+          </label>
+          <span style="font-size:12px;color:var(--text-sec)">已选 1 张，共 4 张</span>
         </div>
-        <div class="photo-item" onclick="this.classList.toggle('selected')">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8d8c8 0%,#c8a898 100%);display:flex;align-items:center;justify-content:center">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a89" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+        <div class="photo-grid">
+          <div class="photo-item selected" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#c8d8e8,#a8b8c8);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#789" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">1</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
           </div>
-          <div class="pi-no">2</div>
-          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8d8c8,#c8a898);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a89" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">2</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#d8e8d0,#a8c8a0);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a9" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">3</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8e0d0,#c8b8a0);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9a8" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">4</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
         </div>
-        <div class="photo-item" onclick="this.classList.toggle('selected')">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#d8e8d0 0%,#a8c8a0 100%);display:flex;align-items:center;justify-content:center">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a9" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-          </div>
-          <div class="pi-no">3</div>
-          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+      </div>
+
+      <!-- SHEIN图片组 -->
+      <div id="sg-shein" class="store-grid">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+            <input type="checkbox"> 全选
+          </label>
+          <span style="font-size:12px;color:var(--text-sec)">已选 0 张，共 3 张</span>
         </div>
-        <div class="photo-item" onclick="this.classList.toggle('selected')">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8e0d0 0%,#c8b8a0 100%);display:flex;align-items:center;justify-content:center">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9a8" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+        <div class="photo-grid">
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#c8e8d8,#a8c8b8);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8ab" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">S1</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
           </div>
-          <div class="pi-no">4</div>
-          <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#d8c8e8,#b8a8c8);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ab" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">S2</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8d8c0,#c8b890);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ba9" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">S3</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROMWE图片组 -->
+      <div id="sg-romwe" class="store-grid">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+            <input type="checkbox"> 全选
+          </label>
+          <span style="font-size:12px;color:var(--text-sec)">已选 0 张，共 2 张</span>
+        </div>
+        <div class="photo-grid">
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8c8c8,#c8a0a0);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#b89" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">R1</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
+          <div class="photo-item" onclick="this.classList.toggle('selected')">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#c8e0e8,#a0c0c8);display:flex;align-items:center;justify-content:center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8ab" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            </div>
+            <div class="pi-no">R2</div>
+            <div class="pi-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+          </div>
         </div>
       </div>
 
@@ -554,6 +649,17 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
       <div class="ct-right-hd">
         <span>修图需求设置</span>
         <button class="btn-link" style="color:var(--error);font-size:12px">清空</button>
+      </div>
+
+      <!-- 所属店铺（单图维度） -->
+      <div class="req-store-row" style="margin-bottom:12px">
+        <span class="rs-label">所属店铺：</span>
+        <label><input type="radio" name="imgStore_1" value="common" checked onchange="imgStoreToggle(this,'imgStoreSelect_1')"> 通用</label>
+        <label><input type="radio" name="imgStore_1" value="specific" onchange="imgStoreToggle(this,'imgStoreSelect_1')"> 指定店铺</label>
+        <select id="imgStoreSelect_1" class="rs-select">
+          <option value="">请选择</option>
+          <option>SHEIN</option><option>ROMWE</option><option>CUPSHE</option><option>Molly</option>
+        </select>
       </div>
 
       <!-- 需求分类 -->
@@ -659,7 +765,8 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
         <!-- 右：内容区 -->
         <div style="flex:1;overflow-y:auto;padding:16px">
           <!-- 任务信息摘要 -->
-          <div style="background:var(--bg-light);border:1px solid var(--border-light);border-radius:4px;padding:10px 14px;margin-bottom:14px;display:flex;gap:24px;flex-wrap:wrap">
+          <div style="background:var(--bg-light);border:1px solid var(--border-light);border-radius:4px;padding:10px 14px;margin-bottom:14px;display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+            <div style="font-size:13px"><span style="color:var(--text-sec)">所属店铺：</span><span style="background:#e6f4ff;color:#1677ff;border:1px solid #91caff;border-radius:3px;padding:1px 8px;font-size:12px">SHEIN</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求分类：</span><span style="color:var(--primary)">换脸</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求说明：</span>换掉模特脸部</div>
           </div>
@@ -772,6 +879,7 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
         <div style="flex:1;overflow-y:auto;padding:16px">
           <!-- 摘要栏 -->
           <div style="background:var(--bg-light);border:1px solid var(--border-light);border-radius:4px;padding:10px 14px;margin-bottom:12px;display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+            <div style="font-size:13px"><span style="color:var(--text-sec)">所属店铺：</span><span style="background:#e6f4ff;color:#1677ff;border:1px solid #91caff;border-radius:3px;padding:1px 8px;font-size:12px">SHEIN</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求分类：</span><span style="color:var(--primary)">去水印 &nbsp; 改款 &nbsp; 换脸</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">需求实际分类：</span><span style="color:var(--orange)">去水印 &nbsp; 改款 &nbsp; 换脸 &nbsp; 换模特</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求说明：</span>1</div>
@@ -865,6 +973,13 @@ function switchTab(el){
   el.closest('.stat-bar').querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
 }
+function switchStoreTab(el, gridId) {
+  el.closest('.store-tab-bar').querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  el.closest('.ct-mid').querySelectorAll('.store-grid').forEach(g => g.classList.remove('active'));
+  document.getElementById(gridId).classList.add('active');
+}
+
 function setAudit(mode){
   const area=document.getElementById('audit-fail-area');
   const btnPass=document.getElementById('btn-pass');
@@ -878,6 +993,38 @@ function setAudit(mode){
     btnPass.classList.add('btn-primary');btnPass.style.background='';btnPass.style.borderColor='';btnPass.style.color='';
     btnFail.classList.remove('btn-primary');btnFail.style.background='';btnFail.style.borderColor='';btnFail.style.color='';
   }
+}
+
+/* 批量店铺联动 */
+function batchStoreToggle(radio) {
+  var wrap = document.getElementById('batchStoreSelectWrap');
+  wrap.style.display = radio.value === 'specific' ? 'inline-block' : 'none';
+  if (radio.value !== 'specific') {
+    wrap.value = '';
+    clearAllSelections();
+  }
+}
+function applyBatchStore(val) {
+  if (!val) return;
+  // 清空所有图片 Tab 的已选状态
+  clearAllSelections();
+  // 自动切换到对应店铺 Tab
+  var tabMap = { 'SHEIN': 'sg-shein', 'ROMWE': 'sg-romwe', 'CUPSHE': 'sg-romwe', 'Molly': 'sg-romwe' };
+  var gridId = tabMap[val] || 'sg-common';
+  var tab = document.querySelector('.store-tab-bar .store-tab[onclick*="' + gridId + '"]');
+  if (tab) switchStoreTab(tab, gridId);
+}
+function clearAllSelections() {
+  document.querySelectorAll('.photo-item.selected').forEach(function(el) {
+    el.classList.remove('selected');
+  });
+}
+
+/* 视频店铺联动 */
+function videoStoreToggle(radio) {
+  var sel = document.getElementById('videoStoreSelect');
+  sel.style.display = radio.value === 'specific' ? 'inline-block' : 'none';
+  if (radio.value !== 'specific') sel.value = '';
 }
 </script>
 </body>

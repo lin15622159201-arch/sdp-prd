@@ -104,6 +104,73 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 .rec-card-type{font-size:11px;color:#8c8c8c;text-align:center}
 .rec-section-title{font-size:13px;font-weight:600;color:#262626;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0}
 .rec-empty{color:#bfbfbf;font-size:13px;padding:24px;text-align:center;background:#fafafa;border-radius:4px;border:1px dashed #e8e8e8}
+
+/* ── Image Management Tab ── */
+.img-tab-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.img-tab-title{font-size:14px;font-weight:600;color:#262626}
+.img-section{margin-bottom:24px}
+.img-section:last-child{margin-bottom:0}
+.img-section-title{font-size:13px;font-weight:600;color:#262626;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.store-group{margin-bottom:16px;border:1px solid #f0f0f0;border-radius:6px;overflow:hidden}
+.store-group-header{padding:8px 14px;background:#fafafa;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:13px;font-weight:500;color:#262626}
+.store-group-header:hover{background:#f0f5ff}
+.store-group-header .store-name{flex:1}
+.store-group-header .store-count{color:#8c8c8c;font-size:12px;font-weight:400}
+.store-group-header .arrow{font-size:10px;color:#8c8c8c;transition:transform .2s}
+.store-group-header.collapsed .arrow{transform:rotate(-90deg)}
+.store-group-body{padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.store-group-body.collapsed{display:none}
+.img-card{border:1px solid #f0f0f0;border-radius:4px;overflow:hidden;cursor:pointer;position:relative}
+.img-card:hover{border-color:#1677ff;box-shadow:0 2px 8px rgba(22,119,255,.12)}
+.img-card .img-thumb{width:100%;aspect-ratio:1;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#bfbfbf;font-size:11px}
+.img-card .img-info{padding:4px 6px;background:#fff}
+.img-card .img-name{font-size:11px;color:#595959;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-card .img-ops{position:absolute;top:4px;right:4px;display:none;gap:3px}
+.img-card:hover .img-ops{display:flex}
+.img-op-btn{width:22px;height:22px;background:rgba(0,0,0,.5);border-radius:3px;border:none;color:#fff;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+.img-upload-zone{border:1px dashed #d9d9d9;border-radius:6px;padding:24px;text-align:center;color:#8c8c8c;font-size:13px;cursor:pointer;transition:all .2s;background:#fafafa}
+.img-upload-zone:hover{border-color:#1677ff;color:#1677ff;background:#f0f5ff}
+
+/* ── Inline upload card ── */
+.img-upload-inline{border:1px dashed #d9d9d9;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fafafa;min-height:80px;transition:all .2s}
+.img-upload-inline:hover{border-color:#1677ff;background:#f0f5ff}
+.upload-inline-icon{font-size:22px;color:#bfbfbf;line-height:1;margin-bottom:4px;transition:color .2s}
+.upload-inline-text{font-size:11px;color:#8c8c8c;transition:color .2s}
+.img-upload-inline:hover .upload-inline-icon,.img-upload-inline:hover .upload-inline-text{color:#1677ff}
+
+/* ── Video section ── */
+.vid-card{border:1px solid #f0f0f0;border-radius:4px;overflow:hidden;cursor:pointer;position:relative}
+.vid-card:hover{border-color:#1677ff;box-shadow:0 2px 8px rgba(22,119,255,.12)}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:#1c1c2e;display:flex;align-items:center;justify-content:center;position:relative}
+.vid-play{width:32px;height:32px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+.vid-info{padding:4px 6px;background:#fff}
+.vid-name{font-size:11px;color:#595959;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vid-ops{position:absolute;top:4px;right:4px;display:none;gap:3px}
+.vid-card:hover .vid-ops{display:flex}
+.vid-upload-zone{border:1px dashed #d9d9d9;border-radius:6px;padding:24px;text-align:center;color:#8c8c8c;font-size:13px;cursor:pointer;transition:all .2s;background:#fafafa}
+.vid-upload-zone:hover{border-color:#1677ff;color:#1677ff;background:#f0f5ff}
+
+/* ── Modal ── */
+.modal-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
+.modal-mask.open{display:flex}
+.modal-box{background:#fff;border-radius:8px;width:480px;max-width:96vw;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.modal-head{padding:16px 20px 14px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.modal-head-title{font-size:15px;font-weight:600;color:#262626}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:#8c8c8c;line-height:1;padding:0}
+.modal-close:hover{color:#262626}
+.modal-body{padding:20px}
+.form-item{margin-bottom:16px}
+.form-label{font-size:13px;color:#595959;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.form-label .req{color:#ff4d4f}
+.form-select{width:100%;height:32px;border:1px solid #d9d9d9;border-radius:4px;padding:0 10px;font-size:13px;color:#262626;background:#fff;outline:none}
+.form-select:focus{border-color:#1677ff;box-shadow:0 0 0 2px rgba(22,119,255,.1)}
+.upload-zone{border:1px dashed #d9d9d9;border-radius:6px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa}
+.upload-zone:hover{border-color:#1677ff;background:#f0f5ff}
+.upload-zone svg{display:block;margin:0 auto 8px}
+.upload-zone p{font-size:13px;color:#8c8c8c;margin:0}
+.upload-zone p span{color:#1677ff}
+.upload-hint{font-size:12px;color:#bfbfbf;margin-top:6px}
+.modal-foot{padding:12px 20px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:8px}
 </style>
 </head>
 <body>
@@ -143,6 +210,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
           <div class="ti" onclick="switchTab(this,'tp-bom')">BOM 资料</div>
           <div class="ti" onclick="switchTab(this,'tp-size')">尺寸表</div>
           <div class="ti" onclick="switchTab(this,'tp-rec')">推荐面料/花型</div>
+          <div class="ti" onclick="switchTab(this,'tp-img')">图片管理</div>
         </div>
 
         <!-- Tab: 基础信息 -->
@@ -289,10 +357,276 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
           <div style="margin-top:12px;font-size:12px;color:#8c8c8c">推荐面料/花型由算法服务异步推送，仅供参考，不可编辑。</div>
         </div><!-- /tp-rec -->
 
+        <!-- 图片管理 Tab -->
+        <div id="tp-img" class="tp">
+          <!-- 营销图 区域 -->
+          <div class="img-section">
+            <div class="img-section-title">
+              <span>营销图</span>
+              <button class="btn btn-primary" onclick="openGroupModal()" style="height:28px;font-size:13px">＋ 新增营销分组</button>
+            </div>
+            <!-- 店铺分组：通用 -->
+            <div class="store-group">
+              <div class="store-group-header" onclick="toggleGroup(this)">
+                <span class="store-name">🌐 通用</span>
+                <span class="store-count">2 张</span>
+                <span class="arrow">▼</span>
+              </div>
+              <div class="store-group-body">
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">CMN_001.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">CMN_002.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-upload-inline" onclick="openUploadModal('marketing')" title="上传图片">
+                  <div class="upload-inline-icon">＋</div>
+                  <div class="upload-inline-text">上传图片</div>
+                </div>
+              </div>
+            </div>
+            <!-- 店铺分组：SHEIN -->
+            <div class="store-group">
+              <div class="store-group-header" onclick="toggleGroup(this)">
+                <span class="store-name">🏪 SHEIN</span>
+                <span class="store-count">3 张</span>
+                <span class="arrow">▼</span>
+              </div>
+              <div class="store-group-body">
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">MKT_001.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">MKT_002.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">MKT_003.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-upload-inline" onclick="openUploadModal('marketing')" title="上传图片">
+                  <div class="upload-inline-icon">＋</div>
+                  <div class="upload-inline-text">上传图片</div>
+                </div>
+              </div>
+            </div>
+            <!-- 店铺分组：ROMWE -->
+            <div class="store-group">
+              <div class="store-group-header" onclick="toggleGroup(this)">
+                <span class="store-name">🏪 ROMWE</span>
+                <span class="store-count">2 张</span>
+                <span class="arrow">▼</span>
+              </div>
+              <div class="store-group-body">
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">RMW_001.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-card">
+                  <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                  <div class="img-info"><div class="img-name">RMW_002.jpg</div></div>
+                  <div class="img-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="img-upload-inline" onclick="openUploadModal('marketing')" title="上传图片">
+                  <div class="upload-inline-icon">＋</div>
+                  <div class="upload-inline-text">上传图片</div>
+                </div>
+              </div>
+            </div>
+            <!-- 无店铺分组时的空状态 -->
+            <!-- <div class="rec-empty">暂无营销图，点击右上角按钮上传</div> -->
+          </div>
+
+          <!-- 设计图 区域 -->
+          <div class="img-section">
+            <div class="img-section-title">
+              <span>设计图</span>
+    
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px">
+              <div class="img-card">
+                <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg></div>
+                <div class="img-info"><div class="img-name">设计图_正面.jpg</div></div>
+                <div class="img-ops">
+                  <button class="img-op-btn" title="预览">👁</button>
+                  <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                </div>
+              </div>
+              <div class="img-card">
+                <div class="img-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg></div>
+                <div class="img-info"><div class="img-name">设计图_背面.jpg</div></div>
+                <div class="img-ops">
+                  <button class="img-op-btn" title="预览">👁</button>
+                  <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 视频 区域 -->
+          <div class="img-section">
+            <div class="img-section-title">
+              <span>视频</span>
+              </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px">
+              <!-- 已有视频卡片示例 -->
+              <div class="vid-card">
+                <div class="vid-thumb">
+                  <div class="vid-play">▶</div>
+                  <div class="vid-ops">
+                    <button class="img-op-btn" title="预览">👁</button>
+                    <button class="img-op-btn" title="删除" style="background:rgba(255,77,79,.7)">✕</button>
+                  </div>
+                </div>
+                <div class="vid-info"><div class="vid-name">展示视频_01.mp4</div></div>
+              </div>
+              <!-- 上传新视频入口卡片 -->
+              <div class="vid-upload-zone" onclick="openUploadModal('video')" style="aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;gap:6px">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:#bfbfbf">
+                  <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                <span style="font-size:11px;color:#8c8c8c">上传视频</span>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:#bfbfbf">支持 MP4、MOV，单个不超过 500MB</div>
+          </div>
+
+        </div><!-- /tp-img -->
+
       </div><!-- /detail-card-body -->
     </div><!-- /detail-card -->
   </div><!-- /detail-wrap -->
 </div><!-- /v-detail -->
+
+<!-- ══ 上传图片 Modal ══ -->
+<div class="modal-mask" id="uploadModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-head-title" id="modalTitle">上传营销图</span>
+      <button class="modal-close" onclick="closeUploadModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- 店铺选择（仅营销图显示） -->
+      <div class="form-item" id="storeFormItem">
+        <div class="form-label"><span class="req">*</span> 所属店铺</div>
+        <div style="display:flex;gap:20px;margin-bottom:8px">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
+            <input type="radio" name="storeType" value="common" checked onchange="toggleStoreSelect(this)"> 通用
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
+            <input type="radio" name="storeType" value="specific" onchange="toggleStoreSelect(this)"> 指定店铺
+          </label>
+        </div>
+        <div id="storeSelectWrap" style="display:none">
+          <select class="form-select" id="storeSelect">
+            <option value="">请选择店铺</option>
+            <option value="SHEIN">SHEIN</option>
+            <option value="ROMWE">ROMWE</option>
+            <option value="CUPSHE">CUPSHE</option>
+            <option value="Molly">Molly</option>
+          </select>
+        </div>
+      </div>
+      <!-- 上传区域 -->
+      <div class="form-item">
+        <div class="form-label"><span class="req">*</span> 选择文件</div>
+        <div class="upload-zone" onclick="this.style.borderColor='#1677ff'" id="uploadZoneLabel">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1677ff" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <p id="uploadZoneText">点击或拖拽图片到此处上传<br><span>支持 JPG、PNG、WEBP</span></p>
+          <div class="upload-hint" id="uploadZoneHint">单次最多上传 10 张，单张不超过 10MB</div>
+        </div>
+      </div>
+      <!-- 已选文件列表（示意） -->
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#595959;background:#fafafa;border:1px solid #f0f0f0;border-radius:4px;padding:6px 10px">
+          <span style="color:#1677ff">📄</span>
+          <span style="flex:1">MKT_new_01.jpg</span>
+          <span style="color:#8c8c8c">2.4 MB</span>
+          <button style="background:none;border:none;color:#ff4d4f;cursor:pointer;font-size:13px">✕</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeUploadModal()">取消</button>
+      <button class="btn btn-primary" onclick="closeUploadModal()">确认上传</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 新增营销分组 Modal ══ -->
+<div class="modal-mask" id="groupModal">
+  <div class="modal-box" style="width:400px">
+    <div class="modal-head">
+      <span class="modal-head-title">新增营销分组</span>
+      <button class="modal-close" onclick="closeGroupModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-item">
+        <div class="form-label"><span class="req">*</span> 分组类型</div>
+        <div style="display:flex;gap:16px;margin-bottom:4px">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
+            <input type="radio" name="groupType" value="common" checked onchange="toggleGroupName(this)"> 通用
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
+            <input type="radio" name="groupType" value="store" onchange="toggleGroupName(this)"> 指定店铺
+          </label>
+        </div>
+      </div>
+      <div class="form-item" id="groupStoreWrap" style="display:none">
+        <div class="form-label"><span class="req">*</span> 选择店铺</div>
+        <select class="form-select" id="groupStoreSelect">
+          <option value="">请选择店铺</option>
+          <option value="SHEIN">SHEIN</option>
+          <option value="ROMWE">ROMWE</option>
+          <option value="CUPSHE">CUPSHE</option>
+          <option value="Molly">Molly</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <div class="form-label">备注</div>
+        <input type="text" placeholder="选填，用于区分多个同类分组" style="width:100%;height:32px;border:1px solid #d9d9d9;border-radius:4px;padding:0 10px;font-size:13px;outline:none;color:#262626">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeGroupModal()">取消</button>
+      <button class="btn btn-primary" onclick="closeGroupModal()">确认新增</button>
+    </div>
+  </div>
+</div>
 
 <script>
 function switchTab(el, tpId) {
@@ -300,6 +634,64 @@ function switchTab(el, tpId) {
   el.classList.add('active');
   el.closest('.detail-card-body').querySelectorAll('.tp').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById(tpId).classList.add('active');
+}
+
+function toggleGroup(header) {
+  header.classList.toggle('collapsed');
+  header.nextElementSibling.classList.toggle('collapsed');
+}
+
+function openUploadModal(type) {
+  var modal = document.getElementById('uploadModal');
+  var title = document.getElementById('modalTitle');
+  var storeItem = document.getElementById('storeFormItem');
+  var zoneText = document.getElementById('uploadZoneText');
+  var zoneHint = document.getElementById('uploadZoneHint');
+  if (type === 'marketing') {
+    title.textContent = '上传营销图';
+    storeItem.style.display = 'block';
+    zoneText.innerHTML = '点击或拖拽图片到此处上传<br><span>支持 JPG、PNG、WEBP</span>';
+    zoneHint.textContent = '单次最多上传 10 张，单张不超过 10MB';
+  } else if (type === 'video') {
+    title.textContent = '上传视频';
+    storeItem.style.display = 'none';
+    zoneText.innerHTML = '点击或拖拽视频到此处上传<br><span>支持 MP4、MOV</span>';
+    zoneHint.textContent = '单个文件不超过 500MB';
+  } else {
+    title.textContent = '上传设计图';
+    storeItem.style.display = 'none';
+    zoneText.innerHTML = '点击或拖拽图片到此处上传<br><span>支持 JPG、PNG、WEBP</span>';
+    zoneHint.textContent = '单次最多上传 10 张，单张不超过 10MB';
+  }
+  modal.classList.add('open');
+}
+
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open');
+  document.querySelectorAll('input[name="storeType"]')[0].checked = true;
+  document.getElementById('storeSelectWrap').style.display = 'none';
+  document.getElementById('storeSelect').value = '';
+}
+
+function toggleStoreSelect(radio) {
+  document.getElementById('storeSelectWrap').style.display = radio.value === 'specific' ? 'block' : 'none';
+  if (radio.value !== 'specific') document.getElementById('storeSelect').value = '';
+}
+
+function openGroupModal() {
+  document.getElementById('groupModal').classList.add('open');
+}
+
+function closeGroupModal() {
+  document.getElementById('groupModal').classList.remove('open');
+  document.querySelectorAll('input[name="groupType"]')[0].checked = true;
+  document.getElementById('groupStoreWrap').style.display = 'none';
+  document.getElementById('groupStoreSelect').value = '';
+}
+
+function toggleGroupName(radio) {
+  document.getElementById('groupStoreWrap').style.display = radio.value === 'store' ? 'block' : 'none';
+  if (radio.value !== 'store') document.getElementById('groupStoreSelect').value = '';
 }
 </script>
 </body>
