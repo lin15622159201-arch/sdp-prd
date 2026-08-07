@@ -132,6 +132,16 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 .img-upload-zone:hover{border-color:#1677ff;color:#1677ff;background:#f0f5ff}
 
 /* ── Inline upload card ── */
+/* ── Inline new group row ── */
+.new-group-row{border:1px dashed #1677ff;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;background:#f0f5ff;margin-bottom:12px}
+.new-group-row select{height:30px;border:1px solid #d9d9d9;border-radius:4px;padding:0 8px;font-size:13px;color:#262626;background:#fff;outline:none;min-width:160px}
+.new-group-row select:focus{border-color:#1677ff}
+.new-group-row .ng-tip{font-size:13px;color:#1677ff;flex:1}
+.new-group-row .ng-confirm{height:28px;padding:0 14px;background:#1677ff;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer}
+.new-group-row .ng-confirm:hover{background:#4096ff}
+.new-group-row .ng-cancel{height:28px;padding:0 10px;background:#fff;color:#595959;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;cursor:pointer}
+.new-group-row .ng-cancel:hover{border-color:#ff4d4f;color:#ff4d4f}
+
 .img-upload-inline{border:1px dashed #d9d9d9;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fafafa;min-height:80px;transition:all .2s}
 .img-upload-inline:hover{border-color:#1677ff;background:#f0f5ff}
 .upload-inline-icon{font-size:22px;color:#bfbfbf;line-height:1;margin-bottom:4px;transition:color .2s}
@@ -215,7 +225,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 
         <!-- Tab: 基础信息 -->
         <div id="tp-info" class="tp active">
-          <div class="info-grid">
+          <div class="info-grid" style="margin-bottom:16px">
             <div class="info-label">SKC 编码</div><div class="info-value">26060084290101</div>
             <div class="info-label">SPU 编码</div><div class="info-value">SP2606008429</div>
             <div class="info-label">颜色</div><div class="info-value">米白色</div>
@@ -232,6 +242,10 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
               <span class="tag-purple">推荐花型</span>
             </div>
             <div class="info-label">创建时间</div><div class="info-value">2026-06-01 10:00:00</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:16px;border-top:1px solid #f0f0f0">
+            <button class="btn">返回</button>
+            <button class="btn btn-primary">💾 提交</button>
           </div>
         </div>
 
@@ -363,8 +377,10 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
           <div class="img-section">
             <div class="img-section-title">
               <span>营销图</span>
-              <button class="btn btn-primary" onclick="openGroupModal()" style="height:28px;font-size:13px">＋ 新增营销分组</button>
+              <button class="btn btn-primary" onclick="addGroupInline()" style="height:28px;font-size:13px">＋ 新增营销分组</button>
             </div>
+            <!-- 内联新增分组容器（动态插入） -->
+            <div id="newGroupContainer"></div>
             <!-- 店铺分组：通用 -->
             <div class="store-group">
               <div class="store-group-header" onclick="toggleGroup(this)">
@@ -520,7 +536,10 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
             </div>
             <div style="margin-top:8px;font-size:12px;color:#bfbfbf">支持 MP4、MOV，单个不超过 500MB</div>
           </div>
-
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:16px;border-top:1px solid #f0f0f0;margin-top:8px">
+            <button class="btn">返回</button>
+            <button class="btn btn-primary">💾 提交</button>
+          </div>
         </div><!-- /tp-img -->
 
       </div><!-- /detail-card-body -->
@@ -587,46 +606,6 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   </div>
 </div>
 
-<!-- ══ 新增营销分组 Modal ══ -->
-<div class="modal-mask" id="groupModal">
-  <div class="modal-box" style="width:400px">
-    <div class="modal-head">
-      <span class="modal-head-title">新增营销分组</span>
-      <button class="modal-close" onclick="closeGroupModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-item">
-        <div class="form-label"><span class="req">*</span> 分组类型</div>
-        <div style="display:flex;gap:16px;margin-bottom:4px">
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
-            <input type="radio" name="groupType" value="common" checked onchange="toggleGroupName(this)"> 通用
-          </label>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px">
-            <input type="radio" name="groupType" value="store" onchange="toggleGroupName(this)"> 指定店铺
-          </label>
-        </div>
-      </div>
-      <div class="form-item" id="groupStoreWrap" style="display:none">
-        <div class="form-label"><span class="req">*</span> 选择店铺</div>
-        <select class="form-select" id="groupStoreSelect">
-          <option value="">请选择店铺</option>
-          <option value="SHEIN">SHEIN</option>
-          <option value="ROMWE">ROMWE</option>
-          <option value="CUPSHE">CUPSHE</option>
-          <option value="Molly">Molly</option>
-        </select>
-      </div>
-      <div class="form-item">
-        <div class="form-label">备注</div>
-        <input type="text" placeholder="选填，用于区分多个同类分组" style="width:100%;height:32px;border:1px solid #d9d9d9;border-radius:4px;padding:0 10px;font-size:13px;outline:none;color:#262626">
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="closeGroupModal()">取消</button>
-      <button class="btn btn-primary" onclick="closeGroupModal()">确认新增</button>
-    </div>
-  </div>
-</div>
 
 <script>
 function switchTab(el, tpId) {
@@ -678,20 +657,57 @@ function toggleStoreSelect(radio) {
   if (radio.value !== 'specific') document.getElementById('storeSelect').value = '';
 }
 
-function openGroupModal() {
-  document.getElementById('groupModal').classList.add('open');
+function addGroupInline() {
+  var container = document.getElementById('newGroupContainer');
+  // 若已有未确认的行则不重复插入
+  if (container.querySelector('.new-group-row')) {
+    container.querySelector('.new-group-row select').focus();
+    return;
+  }
+  var row = document.createElement('div');
+  row.className = 'new-group-row';
+  row.innerHTML = '<span class="ng-tip">选择店铺：</span>'
+    + '<select onchange="this.dataset.chosen=this.value">'
+    + '<option value="">请选择店铺</option>'
+    + '<option value="SHEIN">SHEIN</option>'
+    + '<option value="ROMWE">ROMWE</option>'
+    + '<option value="CUPSHE">CUPSHE</option>'
+    + '<option value="Molly">Molly</option>'
+    + '</select>'
+    + '<button class="ng-confirm" onclick="confirmNewGroup(this)">确认</button>'
+    + '<button class="ng-cancel" onclick="cancelNewGroup(this)">取消</button>';
+  container.appendChild(row);
+  row.querySelector('select').focus();
 }
 
-function closeGroupModal() {
-  document.getElementById('groupModal').classList.remove('open');
-  document.querySelectorAll('input[name="groupType"]')[0].checked = true;
-  document.getElementById('groupStoreWrap').style.display = 'none';
-  document.getElementById('groupStoreSelect').value = '';
+function cancelNewGroup(btn) {
+  btn.closest('.new-group-row').remove();
 }
 
-function toggleGroupName(radio) {
-  document.getElementById('groupStoreWrap').style.display = radio.value === 'store' ? 'block' : 'none';
-  if (radio.value !== 'store') document.getElementById('groupStoreSelect').value = '';
+function confirmNewGroup(btn) {
+  var row = btn.closest('.new-group-row');
+  var sel = row.querySelector('select');
+  var val = sel.value;
+  if (!val) { sel.style.borderColor = '#ff4d4f'; sel.focus(); return; }
+  var labelMap = {common:'🌐 通用', SHEIN:'🏪 SHEIN', ROMWE:'🏪 ROMWE', CUPSHE:'🏪 CUPSHE', Molly:'🏪 Molly'};
+  var label = labelMap[val] || val;
+  // 插入新分组到容器后面
+  var container = document.getElementById('newGroupContainer');
+  var groupHtml = '<div class="store-group">'
+    + '<div class="store-group-header" onclick="toggleGroup(this)">'
+    + '<span class="store-name">' + label + '</span>'
+    + '<span class="store-count">0 张</span>'
+    + '<span class="arrow">▼</span>'
+    + '</div>'
+    + '<div class="store-group-body">'
+    + '<div class="img-upload-inline" onclick="openUploadModal(\'marketing\')" title="上传图片">'
+    + '<div class="upload-inline-icon">＋</div>'
+    + '<div class="upload-inline-text">上传图片</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>';
+  container.insertAdjacentHTML('afterend', groupHtml.replace('<div class="store-group">', '<div class="store-group" style="margin-bottom:12px">'));
+  row.remove();
 }
 </script>
 </body>
