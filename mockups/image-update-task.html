@@ -185,6 +185,23 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
 .store-tab em{font-style:normal;font-size:11px;margin-left:3px;color:var(--text-ter)}
 .store-tab.active em{color:var(--primary);opacity:.7}
 .store-grid{display:none}.store-grid.active{display:block}
+
+/* ─── Marketing image group viewer ─── */
+.mkt-group{border:1px solid var(--border-light);border-radius:4px;background:var(--bg-light);margin-bottom:14px}
+.mkt-group-hd{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-radius:4px;transition:background .15s}
+.mkt-group-hd:hover{background:#f0f0f0}
+.mkt-group-hd .mkt-title{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px}
+.mkt-group-hd .mkt-count{font-size:12px;color:var(--text-sec);font-weight:400}
+.mkt-group-bd{padding:8px 12px 12px;border-top:1px solid var(--border-light);display:flex;gap:8px;flex-wrap:wrap}
+.mkt-img-item{flex-shrink:0;width:60px;height:76px;border-radius:3px;border:1px solid var(--border-light);position:relative;overflow:hidden;cursor:pointer}
+.mkt-img-item:hover .mkt-img-overlay{opacity:1}
+.mkt-img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;color:#fff;font-size:16px}
+.mkt-img-no{position:absolute;bottom:2px;right:3px;font-size:10px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.45);border-radius:2px;padding:0 3px;line-height:15px}
+
+/* ─── Upload mode radio ─── */
+.upload-mode-row{display:flex;align-items:center;gap:14px;padding:8px 10px;background:#fff;border-radius:4px;margin-bottom:10px;border:1px solid var(--border-light)}
+.upload-mode-row .um-label{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap}
+.upload-mode-row label{display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;color:var(--text)}
 </style>
 </head>
 <body>
@@ -770,6 +787,23 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求分类：</span><span style="color:var(--primary)">换脸</span></div>
             <div style="font-size:13px"><span style="color:var(--text-sec)">修图需求说明：</span>换掉模特脸部</div>
           </div>
+          <!-- 当前目标营销图组 -->
+          <div class="mkt-group" id="mkt-upload">
+            <div class="mkt-group-hd" onclick="toggleMktGroup('mkt-upload')">
+              <div class="mkt-title">
+                <span>📸</span><span>当前目标营销图组</span><span class="mkt-count">共 6 张</span>
+              </div>
+              <span id="mkt-upload-icon" style="font-size:12px;color:var(--text-sec)">▾ 收起</span>
+            </div>
+            <div class="mkt-group-bd" id="mkt-upload-bd">
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8d8e8,#a8b8c8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">1</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#d8c8b8,#b8a898)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">2</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8e0d0,#a8c0b0)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">3</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#e0d0c8,#c0b0a8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">4</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#d0c8e0,#b0a8c0)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">5</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8e8d8,#a8c8b8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">6</div></div>
+            </div>
+          </div>
           <!-- 需求实际分类 -->
           <div style="margin-bottom:14px">
             <div class="sec-label"><span class="req">*</span> 需求实际分类（可多选）<button class="btn-link" style="margin-left:8px;font-size:12px;color:var(--error)">清空</button></div>
@@ -820,6 +854,13 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
                   <button class="btn-link" style="font-size:12px;color:var(--primary)">全部保留</button>
                   <button class="btn-link" style="font-size:12px;color:var(--error)">全部删除</button>
                 </div>
+              </div>
+              <!-- 增加/覆盖 -->
+              <div class="upload-mode-row">
+                <span class="um-label">上传方式：</span>
+                <label><input type="radio" name="uploadMode" value="add" checked onchange="uploadModeChange(this)"> 增加</label>
+                <label><input type="radio" name="uploadMode" value="cover" onchange="uploadModeChange(this)"> 覆盖</label>
+                <span id="upload-mode-tip" style="font-size:12px;color:var(--text-sec);margin-left:4px">上传的图片将追加到当前图组</span>
               </div>
               <!-- 上传区 -->
               <div style="border:1px dashed var(--border);border-radius:4px;padding:20px;text-align:center;cursor:pointer;background:#fafafa;margin-bottom:10px" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
@@ -916,6 +957,23 @@ textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,
             </div>
           </div>
 
+          <!-- 当前目标营销图组 -->
+          <div class="mkt-group" id="mkt-audit">
+            <div class="mkt-group-hd" onclick="toggleMktGroup('mkt-audit')">
+              <div class="mkt-title">
+                <span>📸</span><span>当前目标营销图组</span><span class="mkt-count">共 6 张</span>
+              </div>
+              <span id="mkt-audit-icon" style="font-size:12px;color:var(--text-sec)">▾ 收起</span>
+            </div>
+            <div class="mkt-group-bd" id="mkt-audit-bd">
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8d8e8,#a8b8c8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">1</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#d8c8b8,#b8a898)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">2</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8e0d0,#a8c0b0)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">3</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#e0d0c8,#c0b0a8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">4</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#d0c8e0,#b0a8c0)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">5</div></div>
+              <div class="mkt-img-item" style="background:linear-gradient(135deg,#c8e8d8,#a8c8b8)"><div class="mkt-img-overlay">🔍</div><div class="mkt-img-no">6</div></div>
+            </div>
+          </div>
           <!-- 审核操作 tab -->
           <div style="display:flex;gap:8px;margin-bottom:14px">
             <button id="btn-pass" class="btn btn-primary" onclick="setAudit('pass')" style="height:32px">审核通过</button>
@@ -1025,6 +1083,29 @@ function videoStoreToggle(radio) {
   var sel = document.getElementById('videoStoreSelect');
   sel.style.display = radio.value === 'specific' ? 'inline-block' : 'none';
   if (radio.value !== 'specific') sel.value = '';
+}
+
+/* 营销图组折叠/展开 */
+function toggleMktGroup(groupId) {
+  var bd = document.getElementById(groupId + '-bd');
+  var icon = document.getElementById(groupId + '-icon');
+  if (!bd) return;
+  var isOpen = bd.style.display !== 'none';
+  bd.style.display = isOpen ? 'none' : 'flex';
+  icon.textContent = isOpen ? '▸ 展开' : '▾ 收起';
+}
+
+/* 上传方式切换 */
+function uploadModeChange(radio) {
+  var tip = document.getElementById('upload-mode-tip');
+  if (!tip) return;
+  if (radio.value === 'cover') {
+    tip.textContent = '上传的图片将覆盖当前图组中对应位置的图片';
+    tip.style.color = 'var(--warning)';
+  } else {
+    tip.textContent = '上传的图片将追加到当前图组';
+    tip.style.color = 'var(--text-sec)';
+  }
 }
 </script>
 </body>
